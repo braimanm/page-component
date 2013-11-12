@@ -5,7 +5,8 @@
   <artifactId>core</artifactId>
   <version>1.0.0</version>
   <packaging>jar</packaging>
-  <name>page-component</name>
+  <name>page-component</name>  
+  <description>Selenium Page Object pattern extension to support composite components</description>
   <url>https://code.google.com/p/page-component/</url>
    <licenses>
     <license>
@@ -65,5 +66,6 @@
   		<artifactId>cglib-nodep</artifactId>
   		<version>2.1_3</version>
   	</dependency>
-  </dependencies>     
+  </dependencies>   
+ 
 </project>

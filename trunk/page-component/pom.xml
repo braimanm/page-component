@@ -1,15 +1,31 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
-  <groupId>braimanm.com</groupId>
-  <artifactId>PageComponent</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <groupId>com.googlecode.page-component</groupId>
+  <artifactId>core</artifactId>
+  <version>1.0.0</version>
   <packaging>jar</packaging>
-
-  <name>PageComponent</name>
-  <url>http://maven.apache.org</url>
-
+  <name>page-component</name>
+  <url>https://code.google.com/p/page-component/</url>
+   <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>Michael Braiman</name>
+      <email>braimanm@gmail.com</email>
+    </developer>
+  </developers>
+  <scm>
+  	<connection>scm:svn:http://page-component.googlecode.com/svn/trunk/page-component</connection>
+  	<developerConnection>scm:svn:https://page-component.googlecode.com/svn/trunk/page-component</developerConnection>
+  	<url>https://code.google.com/p/page-component/</url>
+  </scm>
+  
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -24,10 +40,9 @@
   				<source>1.7</source>
           		<target>1.7</target>
   			</configuration>
-  		</plugin>
+  		</plugin>  
   	</plugins>
-  </build>
-
+  </build> 	
 
   <dependencies>
   	<dependency>
@@ -42,8 +57,13 @@
   	</dependency>
   	<dependency>
   		<groupId>org.seleniumhq.selenium</groupId>
-  		<artifactId>selenium-java</artifactId>
+  		<artifactId>selenium-support</artifactId>
   		<version>2.37.1</version>
   	</dependency>
-  </dependencies>
+  	<dependency>
+  		<groupId>cglib</groupId>
+  		<artifactId>cglib-nodep</artifactId>
+  		<version>2.1_3</version>
+  	</dependency>
+  </dependencies>     
 </project>

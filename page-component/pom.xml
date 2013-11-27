@@ -3,9 +3,9 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.googlecode.page-component</groupId>
   <artifactId>page-component</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <packaging>jar</packaging>
-  <name>page-component</name>  
+  <name>page-component</name>
   <description>Selenium Page Object pattern extension to support composite components</description>
   <url>https://code.google.com/p/page-component/</url>
    <licenses>
@@ -42,6 +42,20 @@
           		<target>1.7</target>
   			</configuration>
   		</plugin>  
+      <plugin>
+        	<groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-gpg-plugin</artifactId>
+	        <version>1.4</version>
+	        <executions>
+	          <execution>
+	            <id>sign-artifacts</id>
+	            <phase>verify</phase>
+	            <goals>
+	              <goal>sign</goal>
+	            </goals>
+	          </execution>
+	        </executions>
+      </plugin>   
   	</plugins>
   </build> 	
 
@@ -67,5 +81,14 @@
   		<version>2.1_3</version>
   	</dependency>
   </dependencies>   
- 
+  
+  <distributionManagement>
+      <repository>
+          <id>nexus-releases</id>
+          <name>Nexus Release Repository</name>
+          <url>http://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+      </repository>
+  </distributionManagement>
+  
+  
 </project>

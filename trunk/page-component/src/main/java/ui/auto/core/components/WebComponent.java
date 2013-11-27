@@ -30,23 +30,27 @@ public class WebComponent extends PageComponent {
 	
 	@Override
 	public String getValue(){
-		return coreElement.getAttribute("value");
+		String value=coreElement.getAttribute("value");
+		if (value==null){
+			value=coreElement.getText();
+		}
+		return value;
 	}
 	
 	@Override
 	public void validateData(){
 		if (getData()!=null)
-			Assert.assertEquals(coreElement.getText(),getData());
+			Assert.assertEquals(getValue(),getData());
 	}
 
 	@Override
 	public void validateInitialData() {
 		if (getInitialData()!=null)
-			Assert.assertEquals(coreElement.getAttribute("value"),getInitialData());
+			Assert.assertEquals(getValue(),getInitialData());
 	}
 
 	public void validateData(String data) {
-		Assert.assertEquals(coreElement.getAttribute("value"),data);
+		Assert.assertEquals(getValue(),data);
 	}
 	
 

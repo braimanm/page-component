@@ -106,10 +106,6 @@ public  abstract class PageComponent implements ComponentData, DefaultAction{
 		return coreElement.isDisplayed();
 	}
 	
-	public String getValue(){
-		return coreElement.getAttribute("value");
-	}
-
 	public String getText() {
 		return coreElement.getText();
 	}

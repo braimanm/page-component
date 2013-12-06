@@ -31,7 +31,7 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 public class PageObject extends DataPersistence{
 	@XStreamOmitField
-	private PageComponentContext context=null;
+	private PageComponentContext context;
 	@XStreamOmitField
 	private String currentUrl;
 	@XStreamOmitField
@@ -151,7 +151,12 @@ public class PageObject extends DataPersistence{
 					} catch (IllegalAccessException e) {
 						throw new RuntimeException(e);
 					}
-					action.doAction(component,field);
+					try {
+						action.doAction(component,field);
+					} catch (Exception e){
+						throw new RuntimeException("Failure during field enumeration for field: " + 
+								this.getClass().getName() + ":" + field.getName(),e);
+					}
 				}
 			}
 		}
@@ -193,7 +198,8 @@ public class PageObject extends DataPersistence{
 	public void initData(PageObject pageObject){
 		PageComponentContext currentContext=context;
 		deepCopy(pageObject,this);
-		initPage(currentContext);
+		if (currentContext!=null)
+			initPage(currentContext);
 	}
 	
 	public static void sleep(long millis){

@@ -48,7 +48,4 @@ public class WebComponent extends PageComponent {
 		Assert.assertEquals(getValue(),data);
 	}
 
-
-	
-
 }

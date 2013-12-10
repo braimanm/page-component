@@ -24,7 +24,7 @@ import org.openqa.selenium.support.pagefactory.DefaultElementLocatorFactory;
 
 import ui.auto.core.context.PageComponentContext;
 import ui.auto.core.data.DataPersistence;
-import ui.auto.core.data.DataValidationMethod;
+import ui.auto.core.data.DataTypes;
 
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
@@ -180,10 +180,10 @@ public class PageObject extends DataPersistence{
 	}
 	
 	protected void autoValidatePage(){
-		autoValidatePage(DataValidationMethod.Data);
+		autoValidatePage(DataTypes.Data);
 	}
 	
-	protected void autoValidatePage(final DataValidationMethod validationMethod){
+	protected void autoValidatePage(final DataTypes validationMethod){
 		if (context==null) throw new RuntimeException("PageObject is not initialized, invoke initPage method!");
 		enumerateFields(new FieldEnumerationAction() {
 			

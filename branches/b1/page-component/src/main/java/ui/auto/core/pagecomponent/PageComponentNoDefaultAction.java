@@ -2,7 +2,7 @@ package ui.auto.core.pagecomponent;
 
 import org.openqa.selenium.WebElement;
 
-import ui.auto.core.data.DataValidationMethod;
+import ui.auto.core.data.DataTypes;
 
 public abstract class PageComponentNoDefaultAction extends PageComponent {
 
@@ -23,7 +23,7 @@ public abstract class PageComponentNoDefaultAction extends PageComponent {
 	}
 
 	@Override
-	public void validateData(DataValidationMethod validationMethod) {
+	public void validateData(DataTypes validationMethod) {
 	}
 
 }

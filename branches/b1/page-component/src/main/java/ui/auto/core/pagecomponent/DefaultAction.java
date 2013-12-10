@@ -17,10 +17,10 @@ Copyright 2010-2012 Michael Braiman
 
 package ui.auto.core.pagecomponent;
 
-import ui.auto.core.data.DataValidationMethod;
+import ui.auto.core.data.DataTypes;
 
 public interface DefaultAction {
 	public void setValue();
 	public String getValue();
-	public void validateData(DataValidationMethod validationMethod);
+	public void validateData(DataTypes validationMethod);
 }

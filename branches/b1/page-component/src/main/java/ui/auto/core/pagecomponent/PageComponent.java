@@ -25,7 +25,7 @@ import org.openqa.selenium.WebElement;
 import ui.auto.core.data.ComponentData;
 
 
-public  abstract class PageComponent implements ComponentData, DefaultAction{
+public abstract class PageComponent implements ComponentData, DefaultAction{
 	protected WebElement coreElement;
 	private String data;
 	private String initialData;
@@ -60,25 +60,25 @@ public  abstract class PageComponent implements ComponentData, DefaultAction{
 	public String getData() {
 		return data;
 	}
-
+	
+	@Override
+	public String getInitialData() {
+		return initialData;
+	}
+	
+	@Override
+	public String getExpectedData() {
+		return expectedData;
+	}
+	
 	@Override
 	public void setData(String data) {
 		this.data=data;
 	}
 
 	@Override
-	public String getInitialData() {
-		return initialData;
-	}
-
-	@Override
 	public void setInitialData(String data) {
 		this.initialData=data;
-	}
-	
-	@Override
-	public String getExpectedData() {
-		return expectedData;
 	}
 
 	@Override

@@ -3,7 +3,7 @@ package ui.auto.core.components;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 
-import ui.auto.core.data.DataValidationMethod;
+import ui.auto.core.data.DataTypes;
 import ui.auto.core.pagecomponent.PageComponent;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -38,7 +38,7 @@ public class WebComponent extends PageComponent {
 	}
 
 	@Override
-	public void validateData(DataValidationMethod validationMethod) {
+	public void validateData(DataTypes validationMethod) {
 		String valData=validationMethod.getData(this);
 		if (valData!=null)
 			Assert.assertEquals(getValue(),valData);
@@ -46,6 +46,10 @@ public class WebComponent extends PageComponent {
 	
 	public void validateData(String data) {
 		Assert.assertEquals(getValue(),data);
+	}
+
+	public void validateData() {
+		validateData(DataTypes.Data);
 	}
 
 }

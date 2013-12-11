@@ -18,24 +18,36 @@ Copyright 2010-2012 Michael Braiman
 package ui.auto.core.pagecomponent;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import ui.auto.core.context.PageComponentContext;
 import ui.auto.core.data.ComponentData;
+import ui.auto.core.data.DataAliases;
+import ui.auto.core.data.DataTypes;
 
 
-public  abstract class PageComponent implements ComponentData, DefaultAction{
+public abstract class PageComponent implements ComponentData, DefaultAction{
 	protected WebElement coreElement;
 	private String data;
 	private String initialData;
+	private String expectedData;
 	
 	protected abstract void init();
 	
-	public PageComponent(String data, String initialData){
+	public PageComponent(){
+	}
+	
+	@Override
+	public void initializeData (String data, String initialData, String expectedData){
 		this.data=data;
 		this.initialData=initialData;
+		this.expectedData=expectedData;
 	}
+	
 	public PageComponent(WebElement coreElement) {
 		this.coreElement=coreElement;
 		init();
@@ -49,25 +61,63 @@ public  abstract class PageComponent implements ComponentData, DefaultAction{
 		this.coreElement=coreElement;
 	}
 	
-
+	
+	public String getData(DataTypes type,boolean resolveAliases){
+		String dat=null;
+		switch (type){
+			case Data: 
+				dat=data;
+				break;
+			case Initial:
+				dat=initialData;
+				break;
+			case Expected:
+				dat=expectedData;
+				break;
+		}
+		if (dat!=null && resolveAliases){
+			Pattern pat=Pattern.compile("\\$\\{[\\w-]+\\}");
+			Matcher mat=pat.matcher(dat);
+			while (mat.find()){
+				String key=mat.group();
+				DataAliases aliases= PageComponentContext.getGlobalAliases();
+				String value=aliases.get(key);
+				if(value!=null){
+				 dat=dat.replace(key,value);
+				}
+			}
+		}
+		return dat;
+	}
+	
 	@Override
 	public String getData() {
-		return data;
+		return getData(DataTypes.Data,true);
 	}
-
+	
+	@Override
+	public String getInitialData() {
+		return getData(DataTypes.Initial,true);
+	}
+	
+	@Override
+	public String getExpectedData() {
+		return getData(DataTypes.Expected,true);
+	}
+	
 	@Override
 	public void setData(String data) {
 		this.data=data;
 	}
 
 	@Override
-	public String getInitialData() {
-		return initialData;
+	public void setInitialData(String data) {
+		this.initialData=data;
 	}
 
 	@Override
-	public void setInitialData(String data) {
-		this.initialData=data;
+	public void setExpectedData(String data) {
+		expectedData=data;
 	}
 
 	public void click() {
@@ -90,10 +140,6 @@ public  abstract class PageComponent implements ComponentData, DefaultAction{
 		return coreElement.isDisplayed();
 	}
 	
-	public String getValue(){
-		return coreElement.getAttribute("value");
-	}
-
 	public String getText() {
 		return coreElement.getText();
 	}

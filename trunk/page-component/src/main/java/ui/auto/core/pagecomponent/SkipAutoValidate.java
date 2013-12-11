@@ -14,13 +14,15 @@ Copyright 2010-2012 Michael Braiman
    limitations under the License.
 */
 
-
 package ui.auto.core.pagecomponent;
 
-import ui.auto.core.data.DataTypes;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public interface DefaultAction {
-	public void setValue();
-	public String getValue();
-	public void validateData(DataTypes validationMethod);
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+public @interface SkipAutoValidate {
+
 }

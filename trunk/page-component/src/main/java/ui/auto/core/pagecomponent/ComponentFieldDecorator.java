@@ -39,6 +39,7 @@ public class ComponentFieldDecorator extends DefaultFieldDecorator {
 	public Object decorate(ClassLoader loader, final Field field) {
 		String dataValue=null;
 		String initialValue=null;
+		String expectedValue=null;
 		
 		if (PageComponent.class.isAssignableFrom(field.getType())){
 			ElementLocator locator = factory.createLocator(field);
@@ -54,14 +55,15 @@ public class ComponentFieldDecorator extends DefaultFieldDecorator {
             if (componentData!=null) {
 				dataValue=componentData.getData();
 				initialValue=componentData.getInitialData();
+				expectedValue=componentData.getExpectedData();
             }
           
 			Enhancer enhancer=new Enhancer();
 			enhancer.setSuperclass(field.getType());
 			enhancer.setCallback(new ComponentMethodInterceptor(locator));
-			Class<?>[] argsTypes={String.class,String.class};
-			Object[] args={dataValue,initialValue};
-			return enhancer.create(argsTypes,args);
+			Object componentProxy=enhancer.create();
+			((ComponentData) componentProxy).initializeData(dataValue, initialValue, expectedValue);
+			return componentProxy;
 		}
 		
 		return super.decorate(loader, field);

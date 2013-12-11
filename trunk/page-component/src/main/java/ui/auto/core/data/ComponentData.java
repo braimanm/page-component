@@ -22,4 +22,8 @@ public interface ComponentData {
 	public void setData(String data);
 	public String getInitialData();
 	public void setInitialData(String data);
+	public String getExpectedData();
+	public void setExpectedData(String data);
+	
+	public void initializeData(String data,String initial,String expected);
 }

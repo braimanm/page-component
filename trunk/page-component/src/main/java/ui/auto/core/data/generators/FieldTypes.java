@@ -218,7 +218,7 @@ public enum FieldTypes {
 			if (type!=null) 
 				instance=(Class<?>) type;
 			object=instance.newInstance();
-			((ComponentData) object).initializeData(value,"","");
+			((ComponentData) object).initializeData(value,null,null);
 			return object;
 		}
 

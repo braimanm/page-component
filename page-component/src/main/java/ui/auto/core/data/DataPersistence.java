@@ -21,6 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import ui.auto.core.context.PageComponentContext;
 import ui.auto.core.data.generators.DataSetGenerator;
 import ui.auto.core.pagecomponent.PageObject;
 
@@ -106,7 +107,9 @@ public class DataPersistence {
 		XStream xstream=initXstream(forClass);
 		DataPersistence data=(DataPersistence) xstream.fromXML(xml);
 		if (data.aliases!=null){
-			xml=data.procesAliases(xml);
+			for (String key:data.aliases.getKeys()){
+				PageComponentContext.getGlobalAliases().put("${"+key+"}", data.aliases.get(key));
+			}
 		}
 		return (T) xstream.fromXML(xml);
 	}
@@ -151,14 +154,6 @@ public class DataPersistence {
 		} else {
 			return fromXml("<" + forClass.getName() + "/>", forClass);
 		}
-	}
-	
-	private String procesAliases(String xml){
-		for (String key:aliases.map.keySet()){
-			xml=xml.replace("${"+key+"}", aliases.get(key));
-		}
-		return xml;
-		
 	}
 
 	public void setAliases(DataAliases aliases) {

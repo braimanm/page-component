@@ -63,7 +63,7 @@ public class DataSetGenerator {
 
 	String generate(Field field){
 		if (!field.isAnnotationPresent(Data.class))
-			return field.getName();
+			return "${"+field.getName()+"}";
 		String value=field.getAnnotation(Data.class).value();
 
 		GeneratorType type=field.getAnnotation(Data.class).type();

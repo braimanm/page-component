@@ -35,20 +35,22 @@ public class PageComponentDataConverter implements Converter{
 	public void marshal(Object value, HierarchicalStreamWriter writer, MarshallingContext context) {
 		ComponentData dataValue=(ComponentData) value;
 		if (dataValue.getInitialData()!=null) writer.addAttribute("initial", dataValue.getInitialData());
+		if (dataValue.getExpectedData()!=null) writer.addAttribute("expected", dataValue.getExpectedData());
 		if (dataValue.getData()!=null) writer.setValue(dataValue.getData());
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Object unmarshal(HierarchicalStreamReader reader ,UnmarshallingContext context) {
 		String initial=reader.getAttribute("initial");
+		String expected=reader.getAttribute("expected");
 		String value=reader.getValue();
 		Object type = null;
 		try {
-			type=context.getRequiredType().getConstructor(String.class,String.class).newInstance(value,initial);
-		} catch (Exception e) {
+			type=context.getRequiredType().newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
+		((ComponentData) type).initializeData(value,initial,expected);
 		return type;
 	}
 

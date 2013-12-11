@@ -14,13 +14,32 @@ Copyright 2010-2012 Michael Braiman
    limitations under the License.
 */
 
+package ui.auto.core.data;
 
-package ui.auto.core.pagecomponent;
+import java.lang.reflect.Method;
 
-import ui.auto.core.data.DataTypes;
-
-public interface DefaultAction {
-	public void setValue();
-	public String getValue();
-	public void validateData(DataTypes validationMethod);
+public enum DataTypes {
+	Data("getData"),
+	Initial("getInitialData"),
+	Expected("getExpectedData");
+	
+	private String type;
+	
+	private DataTypes(String type){
+		this.type=type;
+	}
+	
+	public String getData(ComponentData data){
+		String valData=null;
+		if (data!=null){
+			try {
+				Method m=ComponentData.class.getMethod(type);
+				valData=(String) m.invoke(data);
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		}
+		return valData;
+	}
+	
 }

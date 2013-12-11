@@ -24,13 +24,14 @@ import org.openqa.selenium.support.pagefactory.DefaultElementLocatorFactory;
 
 import ui.auto.core.context.PageComponentContext;
 import ui.auto.core.data.DataPersistence;
+import ui.auto.core.data.DataTypes;
 
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 
 public class PageObject extends DataPersistence{
 	@XStreamOmitField
-	private PageComponentContext context=null;
+	private PageComponentContext context;
 	@XStreamOmitField
 	private String currentUrl;
 	@XStreamOmitField
@@ -117,12 +118,16 @@ public class PageObject extends DataPersistence{
 	
 	protected void setElementValue(PageComponent component,boolean validate){
 		if (component.getData()!=null && !component.getData().isEmpty()) {
+			String valData=null;
 			for (int i=0;i<3;i++){
 				component.setValue();
 				if (!validate) return;
-				if (component.getValue().equals(component.getData())) return;
+				valData=component.getData();
+				if (component.getExpectedData()!=null)
+					valData=component.getExpectedData();
+				if (component.getValue().equals(valData)) return;
 			}
-			throw new RuntimeException("Can't set element '" + component.getClass().getSimpleName() + "' to value: " + component.getData());
+			throw new RuntimeException("Can't set element '" + component.getClass().getSimpleName() + "' to value: " + valData);
 		}
 	}
 	
@@ -135,13 +140,9 @@ public class PageObject extends DataPersistence{
 		component.setData(realValue);
 	}
 	
-	protected void enumerateFields(FieldEnumerationAction action){
-		enumerateFields(action,true);
-	}
-	
-	protected void enumerateFields(FieldEnumerationAction action,boolean enableSkipAutoFill) {
+	protected void enumerateFields(FieldEnumerationAction action) {
 		for (Field field:this.getClass().getDeclaredFields()){
-			if (!field.isAnnotationPresent(XStreamOmitField.class) && (!enableSkipAutoFill || !field.isAnnotationPresent(SkipAutoFill.class))) {
+			if (!field.isAnnotationPresent(XStreamOmitField.class) ) {
 				if (PageComponent.class.isAssignableFrom(field.getType())){
 					field.setAccessible(true);
 					PageComponent component=null;
@@ -150,7 +151,12 @@ public class PageObject extends DataPersistence{
 					} catch (IllegalAccessException e) {
 						throw new RuntimeException(e);
 					}
-					action.doAction(component,field);
+					try {
+						action.doAction(component,field);
+					} catch (Exception e){
+						throw new RuntimeException("Failure during field enumeration for field: " + 
+								this.getClass().getName() + ":" + field.getName(),e);
+					}
 				}
 			}
 		}
@@ -166,27 +172,25 @@ public class PageObject extends DataPersistence{
 			
 			@Override
 			public void doAction(PageComponent PageComponent,Field field) {
-				setElementValue(PageComponent,validate);
+				if (!field.isAnnotationPresent(SkipAutoFill.class))
+					setElementValue(PageComponent,validate);
 			}
 		});
 	
 	}
 	
 	protected void autoValidatePage(){
-		autoValidatePage(false);
+		autoValidatePage(DataTypes.Data);
 	}
 	
-	protected void autoValidatePage(final boolean initialData){
+	protected void autoValidatePage(final DataTypes validationMethod){
 		if (context==null) throw new RuntimeException("PageObject is not initialized, invoke initPage method!");
 		enumerateFields(new FieldEnumerationAction() {
 			
 			@Override
-			public void doAction(PageComponent PageComponent,Field field) {
-				if (initialData){
-					PageComponent.validateInitialData();
-				} else {
-					PageComponent.validateData();
-				}
+			public void doAction(PageComponent pageComponent,Field field) {
+				if (!field.isAnnotationPresent(SkipAutoValidate.class))
+						pageComponent.validateData(validationMethod);
 			}
 		});
 	}
@@ -194,7 +198,8 @@ public class PageObject extends DataPersistence{
 	public void initData(PageObject pageObject){
 		PageComponentContext currentContext=context;
 		deepCopy(pageObject,this);
-		initPage(currentContext);
+		if (currentContext!=null)
+			initPage(currentContext);
 	}
 	
 	public static void sleep(long millis){

@@ -61,7 +61,7 @@ public abstract class PageComponent implements ComponentData, DefaultAction{
 		this.coreElement=coreElement;
 	}
 	
-	
+	@Override
 	public String getData(DataTypes type,boolean resolveAliases){
 		String dat=null;
 		switch (type){
@@ -79,11 +79,12 @@ public abstract class PageComponent implements ComponentData, DefaultAction{
 			Pattern pat=Pattern.compile("\\$\\{[\\w-]+\\}");
 			Matcher mat=pat.matcher(dat);
 			while (mat.find()){
-				String key=mat.group();
+				String alias=mat.group();
+				String key=alias.replace("${","").replace("}","");
 				DataAliases aliases= PageComponentContext.getGlobalAliases();
 				String value=aliases.get(key);
 				if(value!=null){
-				 dat=dat.replace(key,value);
+				 dat=dat.replace(alias,value);
 				}
 			}
 		}

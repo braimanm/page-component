@@ -22,6 +22,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import ui.auto.core.context.PageComponentContext;
 import ui.auto.core.data.DataAliases;
 import ui.auto.core.data.DataPersistence;
 import ui.auto.core.data.generators.AddressGenerator.Address;
@@ -33,14 +34,13 @@ public class DataSetGenerator {
 	private Address address = null;
 	private HumanNameGenerator nameGen=null;
 	private WordGenerator wordGen=null;
-	protected DataAliases aliases;
 	private static String timeStamp=new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss").format(Calendar.getInstance().getTime());
 	private static String filePath="generated-data/"+timeStamp; 
 	private static DataSetGenerator instance=null;
 	private int recursionLevel=2;
 	private int levelCounter=0;
 	int containerLevelCounter=0;
-	
+	private DataAliases aliases=PageComponentContext.getGlobalAliases();
 	
 	protected DataSetGenerator(){	
 	}
@@ -63,14 +63,14 @@ public class DataSetGenerator {
 
 	String generate(Field field){
 		if (!field.isAnnotationPresent(Data.class))
-			return "${"+field.getName()+"}";
+			return field.getName();
+		
 		String value=field.getAnnotation(Data.class).value();
-
 		GeneratorType type=field.getAnnotation(Data.class).type();
 		String init=field.getAnnotation(Data.class).init();
-		String alias =field.getAnnotation(Data.class).alias();
+		String alias =field.getAnnotation(Data.class).alias().replace("${","").replace("}","");
 		String returnValue="";
-		if (aliases!=null && aliases.containsKey(alias) && value.isEmpty()) 
+		if (aliases.containsKey(alias) && value.isEmpty()) 
 			return "${" + alias + "}";
 		if (value.isEmpty() && type==null)
 			value=field.getName();
@@ -126,11 +126,8 @@ public class DataSetGenerator {
 		}
 		
 		if (!alias.isEmpty()) {
-			if (aliases==null){
-				aliases=new DataAliases();
-			}
 			if (aliases.containsKey(alias))
-				throw new RuntimeException("Alias '" + alias + "' is already in use!\n If you would Like to use alias then value should be empty in your @Data annotation" );
+				throw new RuntimeException("Alias '" + alias + "' is already in use!" );
 			aliases.put(alias, returnValue);
 			returnValue="${" + alias +"}";
 		}
@@ -184,6 +181,9 @@ public class DataSetGenerator {
 				levelCounter=0;
 			}
 		}
+		if (root){
+			((DataPersistence) obj).setAliases(aliases);
+		}
 		
 	}
 	
@@ -196,7 +196,6 @@ public class DataSetGenerator {
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
-			((DataPersistence) dataSet).setAliases(aliases);
 			String fileName=null;
 			file=null;
 			int i=0;

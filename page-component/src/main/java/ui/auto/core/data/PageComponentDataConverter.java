@@ -34,9 +34,12 @@ public class PageComponentDataConverter implements Converter{
 	@Override
 	public void marshal(Object value, HierarchicalStreamWriter writer, MarshallingContext context) {
 		ComponentData dataValue=(ComponentData) value;
-		if (dataValue.getInitialData()!=null) writer.addAttribute("initial", dataValue.getInitialData());
-		if (dataValue.getExpectedData()!=null) writer.addAttribute("expected", dataValue.getExpectedData());
-		if (dataValue.getData()!=null) writer.setValue(dataValue.getData());
+		String initial=dataValue.getData(DataTypes.Initial,false);
+		String expected=dataValue.getData(DataTypes.Expected,false);;
+		String data=dataValue.getData(DataTypes.Data,false);;
+		if (initial!=null) writer.addAttribute("initial", initial);
+		if (expected!=null) writer.addAttribute("expected", expected);
+		if (data!=null) writer.setValue(data);
 	}
 
 	@Override

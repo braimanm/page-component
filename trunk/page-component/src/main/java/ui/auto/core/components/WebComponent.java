@@ -24,7 +24,7 @@ import ui.auto.core.pagecomponent.PageComponent;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
-@XStreamAlias("basic-component")
+@XStreamAlias("web-component")
 public class WebComponent extends PageComponent {
 
 	public WebComponent(){}

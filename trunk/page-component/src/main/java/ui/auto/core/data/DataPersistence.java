@@ -54,7 +54,7 @@ public class DataPersistence {
 	
 	public void setDataAlais(String key,String value){
 		if (aliases==null){
-			aliases=new DataAliases();
+			aliases=PageComponentContext.getGlobalAliases();
 		}
 		aliases.put(key, value);
 	}
@@ -83,7 +83,8 @@ public class DataPersistence {
 				((PageObject)this).getContext()!=null){
 			xstream.aliasSystemAttribute(null,"class");
 		}
-		return header + xstream.toXML(this);
+		String xml=xstream.toXML(this);
+		return header + xml;
 	}
 	
 	public void toFile(String filePath){
@@ -105,12 +106,12 @@ public class DataPersistence {
 	@SuppressWarnings("unchecked")
 	public static <T> T fromXml(String xml,Class<T> forClass){	
 		XStream xstream=initXstream(forClass);
-		DataPersistence data=(DataPersistence) xstream.fromXML(xml);
-		if (data.aliases!=null){
-			for (String key:data.aliases.getKeys()){
-				PageComponentContext.getGlobalAliases().put("${"+key+"}", data.aliases.get(key));
-			}
-		}
+//		DataPersistence data=(DataPersistence) xstream.fromXML(xml);
+//		if (data.aliases!=null){
+//			for (String key:data.aliases.getKeys()){
+//				PageComponentContext.getGlobalAliases().put("${"+key+"}", data.aliases.get(key));
+//			}
+//		}
 		return (T) xstream.fromXML(xml);
 	}
 	

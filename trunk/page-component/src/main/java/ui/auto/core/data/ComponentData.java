@@ -24,6 +24,8 @@ public interface ComponentData {
 	public void setInitialData(String data);
 	public String getExpectedData();
 	public void setExpectedData(String data);
+	public String getData(DataTypes type, boolean resolveAliases);
 	
 	public void initializeData(String data,String initial,String expected);
+	
 }

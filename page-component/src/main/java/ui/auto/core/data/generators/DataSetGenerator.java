@@ -40,7 +40,7 @@ public class DataSetGenerator {
 	private int recursionLevel=2;
 	private int levelCounter=0;
 	int containerLevelCounter=0;
-	private DataAliases aliases=PageComponentContext.getGlobalAliases();
+	private DataAliases aliases;
 	
 	protected DataSetGenerator(){	
 	}
@@ -69,8 +69,8 @@ public class DataSetGenerator {
 		GeneratorType type=field.getAnnotation(Data.class).type();
 		String init=field.getAnnotation(Data.class).init();
 		String alias =field.getAnnotation(Data.class).alias().replace("${","").replace("}","");
-		String returnValue="";
-		if (aliases.containsKey(alias) && value.isEmpty()) 
+		String returnValue=null;
+		if (aliases!=null && aliases.containsKey(alias) && value.isEmpty()) 
 			return "${" + alias + "}";
 		if (value.isEmpty() && type==null)
 			value=field.getName();
@@ -123,10 +123,14 @@ public class DataSetGenerator {
 			case FILE2LIST:
 				File2ListGenerator fileList=new File2ListGenerator(value);
 				returnValue=fileList.getValue();
+				break;
 		}
 		
 		if (!alias.isEmpty()) {
-			if (aliases.containsKey(alias))
+			if (aliases==null){
+				aliases=PageComponentContext.getGlobalAliases();
+			}
+			if (aliases.containsKey(alias) && !aliases.get(alias).equals(value))
 				throw new RuntimeException("Alias '" + alias + "' is already in use!" );
 			aliases.put(alias, returnValue);
 			returnValue="${" + alias +"}";

@@ -47,7 +47,7 @@ public class DataPersistence {
 	
 	public String getDataAlias(String key){
 		if (aliases!=null){
-			return aliases.get(key);
+			return aliases.get(key).toString();
 		} 
 		return null;
 	}

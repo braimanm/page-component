@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<test.com.PageComponent.DataSet1>
+  <aliases>
+    <alias3>value3</alias3>
+    <alias1></alias1>
+    <alias-l1>list of web components</alias-l1>
+    <array-alias>array-value</array-alias>
+  </aliases>
+  <comp1>comp1</comp1>
+  <comp2></comp2>
+  <comp3>${alias3}</comp3>
+  <list1>
+    <web-component>${alias-l1}</web-component>
+    <web-component>${alias-l1}</web-component>
+    <web-component>${alias-l1}</web-component>
+  </list1>
+  <list2>
+    <web-component>${alias-l1}</web-component>
+    <web-component>${alias-l1}</web-component>
+    <web-component>${alias-l1}</web-component>
+  </list2>
+  <dataSet2>
+    <comp4>${alias1}</comp4>
+    <comp5>component5</comp5>
+    <list3>
+      <web-component>${alias-l1}</web-component>
+      <web-component>${alias-l1}</web-component>
+      <web-component>${alias-l1}</web-component>
+    </list3>
+    <array1>
+      <web-component>${array-alias}</web-component>
+      <web-component>${array-alias}</web-component>
+      <web-component>${array-alias}</web-component>
+      <web-component>${array-alias}</web-component>
+      <web-component>${array-alias}</web-component>
+      <web-component>${array-alias}</web-component>
+      <web-component>${array-alias}</web-component>
+      <web-component>${array-alias}</web-component>
+      <web-component>${array-alias}</web-component>
+      <web-component>${array-alias}</web-component>
+    </array1>
+  </dataSet2>
+</test.com.PageComponent.DataSet1>

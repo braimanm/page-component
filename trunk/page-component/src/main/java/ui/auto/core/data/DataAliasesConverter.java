@@ -36,7 +36,7 @@ public class DataAliasesConverter implements Converter {
 			DataAliases aliases=(DataAliases)source;
 			for (String key:aliases.map.keySet()){
 				writer.startNode(key);
-				writer.setValue(aliases.get(key));
+				writer.setValue(aliases.get(key).toString());
 				writer.endNode();
 			}
 		}

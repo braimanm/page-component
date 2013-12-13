@@ -16,34 +16,80 @@ Copyright 2010-2012 Michael Braiman
 
 package ui.auto.core.data;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
-public class DataAliases  {
+public class DataAliases implements Map<String,Object> {
 	@XStreamOmitField
-	Map<String,String> map;
+	Map<String,Object> map;
+
 	
 	public DataAliases() {
-		 map=new HashMap<String,String>();
+		map=new HashMap<String,Object>();
 	}
 	
-	public String get(String key){
-		return map.get(key);
-	}
-	
-	public void put(String key,String value){
-		map.put(key, value);
+	@Override
+	public void clear() {
+		map.clear();
 	}
 
-	public boolean containsKey(String key) {
+	@Override
+	public boolean containsKey(Object key) {
 		return map.containsKey(key);
 	}
 
-	public Set<String> getKeys() {
+	@Override
+	public boolean containsValue(Object value) {
+		return map.containsValue(value);
+	}
+
+	@Override
+	public Set<java.util.Map.Entry<String, Object>> entrySet() {
+		return  map.entrySet();
+	}
+
+	@Override
+	public Object get(Object key) {
+		return map.get(key);
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return map.isEmpty();
+	}
+
+	@Override
+	public Set<String> keySet() {
 		return map.keySet();
 	}
+
+	@Override
+	public Object put(String key, Object value) {
+		return map.put(key, value);
+	}
+
+	@Override
+	public void putAll(Map<? extends String, ? extends Object> m) {
+		map.putAll(m);
+	}
+
+	@Override
+	public Object remove(Object key) {
+		return map.remove(key);
+	}
+
+	@Override
+	public int size() {
+		return map.size();
+	}
+
+	@Override
+	public Collection<Object> values() {
+		return map.values();
+	}	
 	
 }

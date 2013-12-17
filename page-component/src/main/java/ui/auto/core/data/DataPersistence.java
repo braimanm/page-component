@@ -103,20 +103,24 @@ public class DataPersistence {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static <T> T fromXml(String xml,Class<T> forClass){	
-		XStream xstream=initXstream(forClass);
-		DataPersistence data=(DataPersistence) xstream.fromXML(xml);
+	
+	private static void addAliases(DataPersistence data){
 		if (data.aliases!=null){
 			for (String key:data.aliases.keySet()){
 				PageComponentContext.getGlobalAliases().put(key, data.aliases.get(key));
 			}
 		}
-		return (T) xstream.fromXML(xml);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public static <T> T fromXml(String xml,Class<T> forClass){	
+		DataPersistence data=(DataPersistence) initXstream(forClass).fromXML(xml);
+		addAliases(data);
+		return (T) data;
+	}
+	
+	@SuppressWarnings("unchecked")
 	public static <T> T fromFile(String filePath,Class<T> forClass){
-		T dataDef=null;
 		FileInputStream fis=null;
 		try {
 			fis=new FileInputStream(filePath);
@@ -124,9 +128,7 @@ public class DataPersistence {
 			throw new RuntimeException("File " + filePath + " was not found",e);
 		}
 		DataPersistence data=(DataPersistence) initXstream(forClass).fromXML(fis);
-		String xml=data.toXML();
-		dataDef=fromXml(xml, forClass);
-		
+		addAliases(data);
 		if (fis!=null){
 			try {
 				fis.close();
@@ -134,7 +136,7 @@ public class DataPersistence {
 				throw new RuntimeException(e);
 			}
 		}
-		return dataDef;
+		return (T) data;
 	}
 	
 	@SuppressWarnings("unchecked")

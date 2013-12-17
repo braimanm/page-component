@@ -106,6 +106,12 @@ public class DataPersistence {
 	@SuppressWarnings("unchecked")
 	public static <T> T fromXml(String xml,Class<T> forClass){	
 		XStream xstream=initXstream(forClass);
+		DataPersistence data=(DataPersistence) xstream.fromXML(xml);
+		if (data.aliases!=null){
+			for (String key:data.aliases.keySet()){
+				PageComponentContext.getGlobalAliases().put(key, data.aliases.get(key));
+			}
+		}
 		return (T) xstream.fromXML(xml);
 	}
 	

@@ -7,6 +7,7 @@ import java.util.Scanner;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import ui.auto.core.context.PageComponentContext;
 import ui.auto.core.data.DataPersistence;
 import ui.auto.core.data.DataTypes;
 import ui.auto.core.pagecomponent.PageComponent;
@@ -71,4 +72,13 @@ public class TestAliases {
 		assertDataSet(ds2);
 		
 	}
+	
+	@Test
+	public void testAliasesFromFile(){
+		PageComponentContext.getGlobalAliases().clear();
+		String filePath=TestAliases.class.getResource("/ExpectedDataSet.xml").getPath();
+		DataSet1 ds=DataPersistence.fromFile(filePath,DataSet1.class);
+		assertDataSet(ds);
+	}
+	
 }

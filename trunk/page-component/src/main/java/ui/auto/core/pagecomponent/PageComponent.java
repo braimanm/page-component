@@ -82,9 +82,11 @@ public abstract class PageComponent implements ComponentData, DefaultAction{
 				String alias=mat.group();
 				String key=alias.replace("${","").replace("}","");
 				DataAliases aliases= PageComponentContext.getGlobalAliases();
-				String value=aliases.get(key).toString();
-				if(value!=null){
-				 dat=dat.replace(alias,value);
+				if (aliases.containsKey(key)){
+					String value=aliases.get(key).toString();
+					if(value!=null){
+						dat=dat.replace(alias,value);
+					}
 				}
 			}
 		}

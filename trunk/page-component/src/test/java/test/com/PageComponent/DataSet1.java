@@ -17,16 +17,5 @@ public class DataSet1 extends DataPersistence {
 	@Data(alias="alias-l1")
 	List<WebComponent> list2;
 	DataSet2 dataSet2;
-	
-	public static class DataSet2 {
-		@Data(alias="alias1")
-		WebComponent comp4;
-		@Data("component5")
-		WebComponent comp5;
-		@Data(alias="alias-l1")
-		List<WebComponent> list3;
-		@Data(alias="array-alias",value="array-value",n=10)
-		WebComponent[] array1;
-	}
 
 }

@@ -189,7 +189,8 @@ public class PageObject extends DataPersistence{
 			
 			@Override
 			public void doAction(PageComponent pageComponent,Field field) {
-				if (!field.isAnnotationPresent(SkipAutoValidate.class))
+				String data=pageComponent.getData(validationMethod,true);
+				if (!field.isAnnotationPresent(SkipAutoValidate.class) && data!=null && !data.isEmpty())
 						pageComponent.validateData(validationMethod);
 			}
 		});

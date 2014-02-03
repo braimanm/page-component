@@ -78,7 +78,7 @@ public class DataPersistence {
 		
 		// If this class extends PageObject and it initialised with context 
 		// then all the WebComponent fields of this class are CGLIB proxies and by default xml node
-		// is market with attribute class. This will remove class attribute from the xml node 
+		// is marked with attribute class. This will remove class attribute from the xml node 
 		if ( PageObject.class.isAssignableFrom(this.getClass()) && 
 				((PageObject)this).getContext()!=null){
 			xstream.aliasSystemAttribute(null,"class");

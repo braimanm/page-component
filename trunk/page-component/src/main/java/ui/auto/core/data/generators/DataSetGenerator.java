@@ -186,7 +186,13 @@ public class DataSetGenerator {
 			}
 		}
 		if (root){
-			((DataPersistence) obj).setAliases(aliases);
+			if (DataPersistence.class.isAssignableFrom(obj.getClass()) && aliases!=null){
+				DataPersistence dataPersist= (DataPersistence) obj;
+				for (String key:aliases.keySet()){
+					dataPersist.setDataAlais(key,(String) aliases.get(key));
+				}
+				
+			}
 		}
 		
 	}

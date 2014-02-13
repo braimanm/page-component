@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.googlecode.page-component</groupId>
   <artifactId>page-component</artifactId>
-  <version>1.0.3</version>
+  <version>1.0.4</version>
   <packaging>jar</packaging>
   <name>page-component</name>
   <description>Selenium Page Object pattern extension to support composite components</description>
@@ -73,7 +73,7 @@
   	<dependency>
   		<groupId>org.seleniumhq.selenium</groupId>
   		<artifactId>selenium-support</artifactId>
-  		<version>2.37.1</version>
+  		<version>2.39.0</version>
   	</dependency>
   	<dependency>
   		<groupId>cglib</groupId>

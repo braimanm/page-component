@@ -7,6 +7,21 @@ This open source project is distributed through maven central repository.
 Add the following maven dependencies to your pom file for page-component project and for selenium webdriver project:
 
 {{{
+  <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>page-component</groupId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>example</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
   <dependencies>
     <dependency>
     	<groupId>com.googlecode.page-component</groupId>
@@ -19,7 +34,9 @@ Add the following maven dependencies to your pom file for page-component project
     	<version>2.39.0</version>
     </dependency>
   </dependencies>
+  <artifactId>example1</artifactId>
+</project>
 }}}
 
 ===Creating Page Object===
-For this example we will create page object for the !PrimeFaces open source project wizard component located on the following url: http://www.primefaces.org/showcase/ui/wizard.jsf
+For this example we will create page object for the !PrimeFaces open source project Wizard component located on the following url: http://www.primefaces.org/showcase/ui/wizard.jsf 

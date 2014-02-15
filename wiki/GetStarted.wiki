@@ -22,4 +22,4 @@ Add the following maven dependencies to your pom file for page-component project
 }}}
 
 ===Creating Page Object===
-For this example we will create page object for the PrimeFaces open source project wizard component located on the following url: http://www.primefaces.org/showcase/ui/wizard.jsf
+For this example we will create page object for the !PrimeFaces open source project wizard component located on the following url: http://www.primefaces.org/showcase/ui/wizard.jsf

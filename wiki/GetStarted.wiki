@@ -1,0 +1,24 @@
+#summary Creating First Test Project.
+
+=Creating your First Test=
+
+===Maven Dependency===
+This open source project is distributed through maven central repository.  
+Add the following maven dependencies to your pom file for page-component project and for selenium webdriver project:
+
+{{{
+  <dependencies>
+    <dependency>
+    	<groupId>com.googlecode.page-component</groupId>
+    	<artifactId>page-component</artifactId>
+    	<version>1.0.4</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.seleniumhq.selenium</groupId>
+    	<artifactId>selenium-java</artifactId>
+    	<version>2.39.0</version>
+    </dependency>
+  </dependencies>
+}}}
+
+===Creating Page Object===

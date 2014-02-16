@@ -12,7 +12,7 @@ This open source project is distributed through maven central repository. Here i
 </dependency>
 }}}
  
-For our example the following pom file should be created with the following dependencies for page-component project and for selenium webdriver project:
+Here is an example pom file with the dependencies for page-component project and for selenium webdriver project:
 
 {{{
 <?xml version="1.0" encoding="UTF-8"?>
@@ -56,15 +56,9 @@ For our example the following pom file should be created with the following depe
     		<artifactId>selenium-java</artifactId>
     		<version>2.39.0</version>
     	</dependency>
-    	<dependency>
-    		<groupId>org.testng</groupId>
-    		<artifactId>testng</artifactId>
-    		<version>6.8.7</version>
-    	</dependency>
 	</dependencies>
 
 </project>
 }}}
 
 ===Creating Page Object===
-For this example we will create page object for the !PrimeFaces open source project Wizard component located on the following url: http://www.primefaces.org/showcase/ui/wizard.jsf 

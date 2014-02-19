@@ -211,3 +211,5 @@ public class TestForm  {
 }
 
 }}} 
+
+Now run this file as TestNg test ans watch how this test is executed.

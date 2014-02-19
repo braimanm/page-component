@@ -130,8 +130,8 @@ public class FormPageObject extends PageObject{
 
 }
 }}}
-===!PageObject !autoFillPage() method===
-In our page-object example we created method !fillForm() this method should populate our example web form with provided data.
-The first call in this method is !autoFillPage() this method belongs to !PageObject class and it automatically populates all page-object fields which are extended from !PageComponent class with provided data. The order of data population is the order in which members are listed in the page-object class. In case there is some logic involved in web page population, each member of page-object can be populated individually. Page-objects are fully abstracted from the data so there is no explicit data visible in the page-object code. In the next topic I'll explain how to provide data to the page object.
+===PageObject autoFillPage() method===
+In our page-object example we created method fillForm() this method should populate our example web form with provided data.
+The first call in this method is autoFillPage() this method belongs to !PageObject class and it automatically populates all page-object fields which are extended from !PageComponent class with provided data. The order of data population is the order in which members are listed in the page-object class. In case there is some logic involved in web page population, each member of page-object can be populated individually. Page-objects are fully abstracted from the data so there is no explicit data visible in the page-object code. In the next topic I'll explain how to provide data to the page object.
 
 ===Data-Set generation===

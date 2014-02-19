@@ -63,3 +63,4 @@ Here is an example pom file with the dependencies for page-component project and
 }}}
 
 ===Creating Page Object===
+We will use simple Google form located at http://goo.gl/gUqDHg

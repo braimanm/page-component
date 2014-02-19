@@ -153,7 +153,7 @@ Here is a generated Data-Set after execution of !FormPageObject class:
 }}}
 
 ===Creating Specific Data-Set===
-To create concrete Data-Set we should create empty FormDataSet.xml file under the *src/test/resources* folder copy and paste generated template and modify it to include specific data.<br>
+To create concrete Data-Set we should create empty !FormDataSet.xml file under the *src/test/resources* folder copy and paste generated template and modify it to include specific data.<br>
 Here is an example of modified template:
 {{{
 <?xml version="1.0" encoding="UTF-8"?>

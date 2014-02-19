@@ -75,7 +75,7 @@ Here is an example pom file with the dependencies for page-component project and
 
 }}}
 
-page-component project consist of several artifacts, each artifact should be stored under specific folder:
+page-component test project consist of several artifacts, each artifact should be stored under specific folder:
   * *src/main/java* folder is used to store page-object classes and various helper classes
   * *src/test/java* folder is used to store !TestNG tests
   * *src/test/resources* folder is used to store Data-Sets

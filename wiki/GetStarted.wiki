@@ -10,7 +10,7 @@
 ===Create new Maven Project===
 In Eclipse create new maven project and add page-component and selenium-java as Maven dependency<br>
  
-Here is an example pom file with the dependencies for page-component project and for selenium webdriver project:
+Here is an example pom file with the dependencies for page-component project and for selenium !webdriver project:
 
 {{{
 <?xml version="1.0" encoding="UTF-8"?>
@@ -77,14 +77,14 @@ Here is an example pom file with the dependencies for page-component project and
 
 page-component project consist of several artifacts, each artifact should be stored under specific folder:
   * *src/main/java* folder is used to store page-object classes and various helper classes
-  * *src/test/java* folder is used to store TestNG tests
+  * *src/test/java* folder is used to store !TestNG tests
   * *src/test/resources* folder is used to store Data-Sets
 
 ===Creating Page Object===
 For application under the test we will use simple Google form located at http://goo.gl/gUqDHg <br>
 
-Under the folder *src/main/java* create package _page_objects_, add new FormPageObject class to the just created package. This class represents page-object for the web form we intend to test, all the page objects should extend PageObject class and have WebElement,WebComponent or any other classes which are extended from PageComponent as member of this page-object class.These members of page-object can be annotated with selenium @FindBy annotations for location strategy. 
-Here is content of FormPageObject:
+Under the folder *src/main/java* create package _page_objects_, add new !FormPageObject class to the just created package. This class represents page-object for the web form we intend to test, all the page objects should extend !PageObject class and have !WebElement,!WebComponent or any other classes which are extended from !PageComponent as member of this page-object class.These members of page-object can be annotated with selenium @FindBy annotations for location strategy. 
+Here is content of !FormPageObject:
 {{{
 package page_objects;
 
@@ -130,9 +130,8 @@ public class FormPageObject extends PageObject{
 
 }
 }}}
-===PageObject autoFillPage() method===
-In our page-object example we created method fillForm() this method should populate our example web form with provided data.
-The first call in this method is autoFillPage() this method belongs to PageObject class and it automatically populates all page-object fields which are extended from PageComponent class with provided data. The order of data population is the order in which members are listed in the page-object class. In case there is some logic involved in web page population, each member of page-object can be populated individually. Page-objects are fully abstracted from the data so there is no explicit data visible in the page-object code. In the next topic I'll explain how to provide data to the page object.
+===!PageObject !autoFillPage() method===
+In our page-object example we created method !fillForm() this method should populate our example web form with provided data.
+The first call in this method is !autoFillPage() this method belongs to !PageObject class and it automatically populates all page-object fields which are extended from !PageComponent class with provided data. The order of data population is the order in which members are listed in the page-object class. In case there is some logic involved in web page population, each member of page-object can be populated individually. Page-objects are fully abstracted from the data so there is no explicit data visible in the page-object code. In the next topic I'll explain how to provide data to the page object.
 
 ===Data-Set generation===
-

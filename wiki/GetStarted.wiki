@@ -10,7 +10,7 @@
 ===Create new Maven Project===
 In Eclipse create new maven project and add page-component and selenium-java as Maven dependency<br>
  
-Here is an example pom file with the dependencies for page-component project and for selenium !webdriver project:
+Here is an example pom file with the dependencies for page-component project and for selenium webdriver project:
 
 {{{
 <?xml version="1.0" encoding="UTF-8"?>

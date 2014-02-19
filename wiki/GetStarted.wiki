@@ -83,7 +83,7 @@ page-component project consist of several artifacts, each artifact should be sto
 ===Creating Page Object===
 For application under the test we will use simple Google form located at http://goo.gl/gUqDHg <br>
 
-Under the folder *src/main/java* create package _page_objects_, add new !FormPageObject class to the just created package. This class represents page-object for the web form we intend to test, all the page objects should extend !PageObject class and have !WebElement,!WebComponent or any other classes which are extended from !PageComponent as member of this page-object class.These members of page-object can be annotated with selenium !'@'FindBy annotations for location strategy. 
+Under the folder *src/main/java* create package _page_objects_, add new !FormPageObject class to the just created package. This class represents page-object for the web form we intend to test, all the page objects should extend !PageObject class and have !WebElement,!WebComponent or any other classes which are extended from !PageComponent as member of this page-object class.These members of page-object can be annotated with selenium @!FindBy annotations for location strategy. 
 Here is content of !FormPageObject:
 {{{
 package page_objects;

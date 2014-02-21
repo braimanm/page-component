@@ -183,9 +183,6 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-
-
-
 import pageobjects.FormPageObject;
 import ui.auto.core.context.PageComponentContext;
 import ui.auto.core.data.DataPersistence;
@@ -210,7 +207,7 @@ public class TestForm  {
         
         @AfterTest
         public void end(){
-                context.getDriver().quit();
+               context.getDriver().quit();
         }
 
 }

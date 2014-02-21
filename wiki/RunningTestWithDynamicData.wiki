@@ -111,10 +111,10 @@ public class TestForm  {
         
         @Test
         public void fillFormRandom() throws Exception{
-            FormPageObject formPageObject=new FormPageObject();
-            formPageObject.generateData();
-            formPageObject.initPage(context);
-            formPageObject.fillForm();
+        FormPageObject formPageObject=new FormPageObject();
+                formPageObject.generateData();
+                formPageObject.initPage(context);
+                formPageObject.fillForm();
         }
         
         @AfterTest

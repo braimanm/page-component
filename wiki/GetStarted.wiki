@@ -83,10 +83,10 @@ page-component test project consist of several artifacts, each artifact should b
 ===Creating Page Object===
 For application under the test we will use simple Google form located at http://goo.gl/gUqDHg <br>
 
-Under the folder *src/main/java* create package _page_objects_, add new !FormPageObject class to the just created package. This class represents page-object for the web form we intend to test, all the page objects should extend !PageObject class and have !WebElement,!WebComponent or any other classes which are extended from !PageComponent as member of this page-object class.These members of page-object can be annotated with selenium @!FindBy annotations for location strategy. 
+Under the folder *src/main/java* create package _pageobjects_ and add new !FormPageObject class to the just created package. This class represents page-object for the web form we intend to test. All page objects should extend !PageObject class and have !WebElement,!WebComponent or any other classes which are extended from !PageComponent as member of this page-object class. These members of page-object can be annotated with selenium @!FindBy annotations for location strategy. 
 Here is content of !FormPageObject:
 {{{
-package page_objects;
+package pageobjects;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -140,7 +140,7 @@ Here is a generated Data-Set after execution of !FormPageObject class:
 {{{
 <?xml version="1.0" encoding="UTF-8"?>
 
-<page__component.example.FormPageObject>
+<pageobjects.FormPageObject>
   <firstName>firstName</firstName>
   <lastName>lastName</lastName>
   <address>address</address>
@@ -149,7 +149,7 @@ Here is a generated Data-Set after execution of !FormPageObject class:
   <twitter>twitter</twitter>
   <linkedin>linkedin</linkedin>
   <email>email</email>
-</page__component.example.FormPageObject>
+</pageobjects.FormPageObject>
 }}}
 
 ===Creating Specific Data-Set===
@@ -158,7 +158,7 @@ Here is an example of modified template:
 {{{
 <?xml version="1.0" encoding="UTF-8"?>
 
-<page__component.example.FormPageObject>
+<pageobjects.FormPageObject>
   <firstName>Michael</firstName>
   <lastName>Smith</lastName>
   <address>123 Yonge Str., Toronto, ON., Canada</address>
@@ -167,13 +167,13 @@ Here is an example of modified template:
   <twitter>false</twitter>
   <linkedin>false</linkedin>
   <email>true</email>
-</page__component.example.FormPageObject>
+</pageobjects.FormPageObject>
 }}}  
 
 ===Creating Test===
-Now all we have to do is to write a test. Create !TestForm class under the *src/test/java* folder and fill it with the following code:
+Now all we have to do is to write a test. Create package webform.test  and !TestForm class under the *src/test/java* folder and fill it with the following code:
 {{{
-package page_component.example;
+package webform.test;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;

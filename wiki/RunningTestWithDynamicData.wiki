@@ -2,7 +2,7 @@
 Let’s modify our example test from GetStarted tutorial to run with randomly generated data.
 
 === @Data Annotation ===
-First let’s modify !FormPageObject class to include additional instructions for how to generate data for each field in !PageObject. Page-component framework is using field @Data annotation to instruct which generator type to use and how to generate data for the specific field. In the future will create specific Wiki page which will explain all the existing options to generate data but for now just modify your !FormPageObject to include following code:
+First let’s modify !FormPageObject class to include additional instructions for how to generate data for each field in !PageObject. Page-component framework is using @Data field annotation to instruct which generator type to use and how to generate data for the specific field. In the future will create specific Wiki page which will explain all the existing options to generate data but for now just modify your !FormPageObject to include following code:
 
 {{{
 package pageobjects;

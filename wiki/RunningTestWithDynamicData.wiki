@@ -1,4 +1,6 @@
 = Running test with dynamically generated data =
 Let’s modify our example test from GetStarted tutorial to run with randomly generated data.
 
-First 
+First let’s modify FormPageObject class to include additional instructions for how to generate data for each field in PageObject. 
+
+=== @Data Annotation ===

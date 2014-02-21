@@ -86,7 +86,7 @@ If you run this class with !TestNg framework you will see that data-set is gener
 }}}
 
 === Running Test With Dynamic Data ===
-If you run !TestForm class using !TestNg it will ran using specific data-set which we created in !GetStarted example. To use dynamically generated data we need to modify our test as following:
+If you run existing !TestForm class using !TestNg it will ran using specific data-set which we created in !GetStarted example. To use dynamically generated data we need to modify our test as following:
 
 {{{
 package webform.test;

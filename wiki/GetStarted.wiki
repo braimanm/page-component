@@ -91,42 +91,43 @@ package pageobjects;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.testng.annotations.Test;
-
 import ui.auto.core.components.CheckBox;
 import ui.auto.core.components.SelectComponent;
 import ui.auto.core.components.WebComponent;
 import ui.auto.core.pagecomponent.PageObject;
 
 public class FormPageObject extends PageObject{
-	@FindBy(id="entry_311820602")
-	WebComponent firstName;
-	@FindBy(id="entry_1396008427")
-	WebComponent lastName;
-	@FindBy(id="entry_1447188970")
-	WebComponent address;
-	@FindBy(id="entry_1264472189")
-	SelectComponent eyeColor;
-	@FindBy(id="group_1262363679_1")
-	CheckBox facebook;
-	@FindBy(id="group_1262363679_2")
-	CheckBox twitter;
-	@FindBy(id="group_1262363679_3")
-	CheckBox linkedin;
-	@FindBy(id="group_1262363679_4")
-	CheckBox email;
-	@FindBy(id="ss-submit")
-	WebElement submitButton;
-	
-	public void fillForm(){
-		autoFillPage();
-		submitButton.click();
-		waitForUrlToChange();
-	}
-	
-	@Test
-	public void generate() throws Exception{
-		System.out.println(generateXML());
-	}
+        @FindBy(id="entry_311820602")
+        WebComponent firstName;
+        @FindBy(id="entry_1396008427")
+        WebComponent lastName;
+        @FindBy(id="entry_1447188970")
+        WebComponent address;
+		@FindBy(id="entry_1453012221")
+		WebComponent emailAddress;
+        @FindBy(id="entry_1264472189")
+        SelectComponent eyeColor;
+        @FindBy(id="group_1262363679_1")
+        CheckBox facebook;
+        @FindBy(id="group_1262363679_2")
+        CheckBox twitter;
+        @FindBy(id="group_1262363679_3")
+        CheckBox linkedin;
+        @FindBy(id="group_1262363679_4")
+        CheckBox email;
+        @FindBy(id="ss-submit")
+        WebElement submitButton;
+        
+        public void fillForm(){
+                autoFillPage();
+                submitButton.click();
+                waitForUrlToChange();
+        }
+        
+        @Test
+        public void generate() throws Exception{
+                System.out.println(generateXML());
+        }
 
 }
 }}}
@@ -144,6 +145,7 @@ Here is a generated Data-Set after execution of !FormPageObject class:
   <firstName>firstName</firstName>
   <lastName>lastName</lastName>
   <address>address</address>
+  <emailAddress>emailAddress</emailAddress>
   <eyeColor>eyeColor</eyeColor>
   <facebook>facebook</facebook>
   <twitter>twitter</twitter>
@@ -162,6 +164,7 @@ Here is an example of modified template:
   <firstName>Michael</firstName>
   <lastName>Smith</lastName>
   <address>123 Yonge Str., Toronto, ON., Canada</address>
+  <emailAddress>Michael.Smith@gmail.com</emailAddress>
   <eyeColor>Green</eyeColor>
   <facebook>true</facebook>
   <twitter>false</twitter>

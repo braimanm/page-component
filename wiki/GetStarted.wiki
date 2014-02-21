@@ -103,8 +103,8 @@ public class FormPageObject extends PageObject{
         WebComponent lastName;
         @FindBy(id="entry_1447188970")
         WebComponent address;
-		@FindBy(id="entry_1453012221")
-		WebComponent emailAddress;
+	@FindBy(id="entry_1453012221")
+	WebComponent emailAddress;
         @FindBy(id="entry_1264472189")
         SelectComponent eyeColor;
         @FindBy(id="group_1262363679_1")

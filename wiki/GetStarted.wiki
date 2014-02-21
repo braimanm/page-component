@@ -215,4 +215,4 @@ public class TestForm  {
 Now run this file as !TestNg test ans watch how this test is executed.
 
 ===Using Data-Set===
-To deserialize XML Data-Set file to page-object we have to call static method fromFile() of the !DataPersistence class this method will create !FormPageObject with all members of this class initialized with data. After page-object creation this page-object should be initialized with PageComponentContext this is done by invoking method initPage(context).  
+To deserialize XML Data-Set file to page-object we have to call static method fromFile() of the !DataPersistence class this method will create !FormPageObject with all members of this class initialized with data. After page-object creation this page-object should be initialized with !PageComponentContext this is done by invoking method initPage(context).  

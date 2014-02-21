@@ -2,7 +2,7 @@
 Let’s modify our example test from GetStarted tutorial to run with randomly generated data.
 
 === @Data Annotation ===
-First let’s modify !FormPageObject class to include additional instructions for how to generate data for each field in !PageObject. Page-component framework is using @Data field annotation to instruct which generator type to use and how to generate data for the specific field. In the future will create specific Wiki page which will explain all the existing options to generate data but for now just modify your !FormPageObject to include following code:
+First let’s modify !FormPageObject class to include additional instructions for how to generate data for each field in !PageObject. Page-component framework is using @Data field annotation to instruct which generator type to use and how to generate data for the specific field. In the future I will create specific Wiki page which will explain all the existing options to generate data but for now just modify your !FormPageObject to include the following code:
 
 {{{
 package pageobjects;
@@ -83,4 +83,44 @@ If you run this class with TestNg framework you will see that data-set is genera
   <linkedin>false</linkedin>
   <email>true</email>
 </pageobjects.FormPageObject>
+}}}
+
+=== Running Test With Dynamic Data ===
+If you run !TestForm class using !TestNg it will ran using specific data-set which we created in !GetStarted example. To use dynamically generated data we need to modify our test as following:
+
+{{{
+package webform.test;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+import pageobjects.FormPageObject;
+import ui.auto.core.context.PageComponentContext;
+
+public class TestForm  {
+        PageComponentContext context;
+        
+        @BeforeTest
+        public void init(){
+                WebDriver driver=new FirefoxDriver();
+                context=new PageComponentContext(driver);
+                driver.get("http://goo.gl/gUqDHg");
+        }
+        
+        @Test
+        public void fillFormRandom() throws Exception{
+            FormPageObject formPageObject=new FormPageObject();
+            formPageObject.generateData();
+            formPageObject.initPage(context);
+            formPageObject.fillForm();
+        }
+        
+        @AfterTest
+        public void end(){
+             context.getDriver().quit();
+        }
+
+}
 }}}

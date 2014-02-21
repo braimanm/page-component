@@ -181,35 +181,36 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import page_objects.FormPageObject;
+
+
+import pageobjects.FormPageObject;
 import ui.auto.core.context.PageComponentContext;
 import ui.auto.core.data.DataPersistence;
 
 public class TestForm  {
-	PageComponentContext context;
-	
-	@BeforeTest
-	public void init(){
-		WebDriver driver=new FirefoxDriver();
-		context=new PageComponentContext(driver);
-		driver.get("http://goo.gl/gUqDHg");
-	}
-	
-	@Test
-	public void fillForm(){
-		String dataSetFilePath=this.getClass().getResource("/FormDataSet.xml").getFile();
-		FormPageObject formPageObject=DataPersistence.fromFile(dataSetFilePath,FormPageObject.class);
-		formPageObject.initPage(context);
-		formPageObject.fillForm();
-	}
-	
-	@AfterTest
-	public void end(){
-		context.getDriver().quit();
-	}
+        PageComponentContext context;
+        
+        @BeforeTest
+        public void init(){
+                WebDriver driver=new FirefoxDriver();
+                context=new PageComponentContext(driver);
+                driver.get("http://goo.gl/gUqDHg");
+        }
+        
+        @Test
+        public void fillForm(){
+                String dataSetFilePath=this.getClass().getResource("/FormDataSet.xml").getFile();
+                FormPageObject formPageObject=DataPersistence.fromFile(dataSetFilePath,FormPageObject.class);
+                formPageObject.initPage(context);
+                formPageObject.fillForm();
+        }
+        
+        @AfterTest
+        public void end(){
+                context.getDriver().quit();
+        }
 
 }
-
 }}} 
 
 Now run this file as !TestNg test ans watch how this test is executed.

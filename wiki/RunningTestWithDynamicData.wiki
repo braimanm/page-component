@@ -126,4 +126,4 @@ public class TestForm  {
 }}}
 
 Now if you run the same test you will see that web form under the test is populated with randomly generated data each run. 
-To generate data for specific !PageObject we need to execute method *generateData()* this method will generate data and will create data-set XML file in the *generated-data* folder. This generated file can be used to repeat the test with specific saved data. 
+To generate data for specific !PageObject we need to execute method *generateData()*, this method will generate data and will create data-set XML file in the *generated-data* folder. This generated file can be used to repeat the test with specific saved data. 

@@ -1,6 +1,86 @@
 = Running test with dynamically generated data =
 Let’s modify our example test from GetStarted tutorial to run with randomly generated data.
 
-First let’s modify FormPageObject class to include additional instructions for how to generate data for each field in PageObject. 
-
 === @Data Annotation ===
+First let’s modify !FormPageObject class to include additional instructions for how to generate data for each field in !PageObject. Page-component framework is using field @Data annotation to instruct which generator type to use and how to generate data for the specific field. In the future will create specific Wiki page which will explain all the existing options to generate data but for now just modify your !FormPageObject to include following code:
+
+{{{
+package pageobjects;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.testng.annotations.Test;
+
+import ui.auto.core.components.CheckBox;
+import ui.auto.core.components.SelectComponent;
+import ui.auto.core.components.WebComponent;
+import ui.auto.core.data.generators.Data;
+import ui.auto.core.data.generators.GeneratorType;
+import ui.auto.core.pagecomponent.PageObject;
+
+public class FormPageObject extends PageObject{
+		@Data(type=GeneratorType.HUMAN_NAMES,value="<A>",alias="first")
+        @FindBy(id="entry_311820602")
+        WebComponent firstName;
+		@Data(type=GeneratorType.HUMAN_NAMES,value="<S>",alias="last")
+        @FindBy(id="entry_1396008427")
+        WebComponent lastName;
+		@Data(type=GeneratorType.ADDRESS,value="<#> <S>, <T> <K> <C> <O>")
+        @FindBy(id="entry_1447188970")
+        WebComponent address;
+		@Data(value="${first}.${last}@gmail.com")
+		@FindBy(id="entry_1453012221")
+		WebComponent emailAddress;
+		@Data(type=GeneratorType.CUSTOM_LIST,value="Amber,Black,Blue,Brown,Gray,Green,Hazel,Violet")
+        @FindBy(id="entry_1264472189")
+        SelectComponent eyeColor;
+		@Data(type=GeneratorType.CUSTOM_LIST,value="false,true")
+        @FindBy(id="group_1262363679_1")
+        CheckBox facebook;
+		@Data(type=GeneratorType.CUSTOM_LIST,value="false,true")
+        @FindBy(id="group_1262363679_2")
+        CheckBox twitter;
+		@Data(type=GeneratorType.CUSTOM_LIST,value="false,true")
+        @FindBy(id="group_1262363679_3")
+        CheckBox linkedin;
+		@Data(type=GeneratorType.CUSTOM_LIST,value="false,true")
+        @FindBy(id="group_1262363679_4")
+        CheckBox email;
+        @FindBy(id="ss-submit")
+        WebElement submitButton;
+        
+        public void fillForm(){
+                autoFillPage();
+                submitButton.click();
+                waitForUrlToChange();
+        }
+        
+        @Test
+        public void generate() throws Exception{
+                System.out.println(generateXML());
+        }
+
+}
+}}} 
+
+If you run this class with TestNg framework you will see that data-set is generated with random data as shown in following example:
+
+{{{
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pageobjects.FormPageObject>
+  <aliases>
+    <last>Perkins</last>
+    <first>Darrell</first>
+  </aliases>
+  <firstName>${first}</firstName>
+  <lastName>${last}</lastName>
+  <address>1 Eagle Butte Ranch, Spalding SK CANADA S0K 4C0</address>
+  <emailAddress>${first}.${last}@gmail.com</emailAddress>
+  <eyeColor>Violet</eyeColor>
+  <facebook>true</facebook>
+  <twitter>true</twitter>
+  <linkedin>false</linkedin>
+  <email>true</email>
+</pageobjects.FormPageObject>
+}}}

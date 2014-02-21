@@ -1,3 +1,2 @@
 = Running test with dynamically generated data =
-
-Let's modify the test from 
+Let’s modify our example test from GetStrted tutorial to run with randomly generated data.

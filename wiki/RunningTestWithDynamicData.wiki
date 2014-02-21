@@ -63,7 +63,7 @@ public class FormPageObject extends PageObject{
 }
 }}} 
 
-If you run this class with TestNg framework you will see that data-set is generated with random data as shown in following example:
+If you run this class with !TestNg framework you will see that data-set is generated with random data as shown in following example:
 
 {{{
 <?xml version="1.0" encoding="UTF-8"?>

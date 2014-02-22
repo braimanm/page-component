@@ -133,6 +133,12 @@ public class DataPersistence {
 		return  (T) data;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public static <T> T fromInputStream(InputStream inputStream,Class<T> forClass){
+		DataPersistence data=(DataPersistence) initXstream(forClass).fromXML(inputStream);
+		return  (T) data;
+	}
+	
 	public static <T> T fromResource(String resourceFile,Class<T> forClass){
 		URL url=Thread.currentThread().getContextClassLoader().getResource(resourceFile);
 		if (url==null){

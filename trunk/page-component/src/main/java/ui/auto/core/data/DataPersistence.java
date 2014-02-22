@@ -20,6 +20,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
 import ui.auto.core.context.PageComponentContext;
 import ui.auto.core.data.generators.DataSetGenerator;
@@ -117,6 +119,26 @@ public class DataPersistence {
 		DataPersistence data=(DataPersistence) initXstream(forClass).fromXML(xml);
 		addAliases(data);
 		return (T) data;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T> T fromURL(URL url,Class<T> forClass){
+		InputStream inputStream=null;
+		try {
+			inputStream= url.openStream();
+		} catch (IOException e) {
+			throw new RuntimeException("Can't open stream fro URL: " + url,e);
+		}
+		DataPersistence data=(DataPersistence) initXstream(forClass).fromXML(inputStream);
+		return  (T) data;
+	}
+	
+	public static <T> T fromResource(String resourceFile,Class<T> forClass){
+		URL url=Thread.currentThread().getContextClassLoader().getResource(resourceFile);
+		if (url==null){
+			throw new RuntimeException("Resource File " + resourceFile + " was not found");
+		}
+		return fromURL(url, forClass);
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -48,7 +48,7 @@ Here is an example pom file with the dependencies for page-component project and
 		<dependency>
 			<groupId>com.googlecode.page-component</groupId>
 			<artifactId>page-component</artifactId>
-			<version>1.0.4</version>
+			<version>1.0.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>

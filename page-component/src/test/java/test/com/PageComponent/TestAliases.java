@@ -35,6 +35,14 @@ public class TestAliases {
 			Assert.assertEquals(comp.getData(DataTypes.Data,false),expectedAlias);
 			Assert.assertEquals(comp.getData(DataTypes.Data,true),expectedValue);
 			Assert.assertEquals(comp.getData(),expectedValue);
+		} else {
+			if (el instanceof String){
+				String comp=(String) el;
+				String key=comp.replace("${","").replace("}","");
+				String value=(String) PageComponentContext.getGlobalAliases().get(key);
+				Assert.assertEquals(comp,expectedAlias);
+				Assert.assertEquals(value,expectedValue);
+			}
 		}
 	}
 	
@@ -48,6 +56,7 @@ public class TestAliases {
 		assertElement(ds.dataSet2.comp5, "component5","component5");
 		assertElement(ds.dataSet2.list3, "${alias-l1}","list of web components");
 		assertElement(ds.dataSet2.array1, "${array-alias}","array-value");
+		assertElement(ds.dataSet2.string, "${alias3}","value3");
 	}
 	
 
@@ -73,11 +82,36 @@ public class TestAliases {
 		
 	}
 	
+	
+	@Test
+	public void testAliasesFromXML(){
+		PageComponentContext.getGlobalAliases().clear();
+		DataSet1 ds=DataPersistence.fromResource("ExpectedDataSet.xml",DataSet1.class);
+		String xml=ds.toXML();
+		ds=DataPersistence.fromXml(xml, DataSet1.class);
+		assertDataSet(ds);
+	}
+	
 	@Test
 	public void testAliasesFromFile(){
 		PageComponentContext.getGlobalAliases().clear();
 		String filePath=TestAliases.class.getResource("/ExpectedDataSet.xml").getPath();
 		DataSet1 ds=DataPersistence.fromFile(filePath,DataSet1.class);
+		assertDataSet(ds);
+	}
+	
+	@Test
+	public void testAliasesFromResource(){
+		PageComponentContext.getGlobalAliases().clear();
+		DataSet1 ds=DataPersistence.fromResource("ExpectedDataSet.xml",DataSet1.class);
+		assertDataSet(ds);
+	}
+	
+	@Test
+	public void testAliasesFromInputStream(){
+		PageComponentContext.getGlobalAliases().clear();
+		InputStream inputStream=TestAliases.class.getResourceAsStream("/ExpectedDataSet.xml");
+		DataSet1 ds=DataPersistence.fromInputStream(inputStream,DataSet1.class);
 		assertDataSet(ds);
 	}
 	

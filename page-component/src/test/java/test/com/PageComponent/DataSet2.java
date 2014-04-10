@@ -15,4 +15,6 @@ public class DataSet2 extends DataPersistence{
 	List<WebComponent> list3;
 	@Data(alias="array-alias",value="array-value",n=10)
 	WebComponent[] array1;
+	@Data(alias="alias3")
+	String string;
 }

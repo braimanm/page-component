@@ -105,19 +105,10 @@ public class DataPersistence {
 		}
 	}
 	
-	
-	private static void addAliases(DataPersistence data){
-		if (data.aliases!=null){
-			for (String key:data.aliases.keySet()){
-				PageComponentContext.getGlobalAliases().put(key, data.aliases.get(key));
-			}
-		}
-	}
-	
+		
 	@SuppressWarnings("unchecked")
 	public static <T> T fromXml(String xml,Class<T> forClass){	
 		DataPersistence data=(DataPersistence) initXstream(forClass).fromXML(xml);
-		addAliases(data);
 		return (T) data;
 	}
 	
@@ -156,7 +147,6 @@ public class DataPersistence {
 			throw new RuntimeException("File " + filePath + " was not found",e);
 		}
 		DataPersistence data=(DataPersistence) initXstream(forClass).fromXML(fis);
-		addAliases(data);
 		if (fis!=null){
 			try {
 				fis.close();

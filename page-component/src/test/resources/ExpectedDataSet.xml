@@ -4,6 +4,7 @@
   <aliases>
     <alias3>value3</alias3>
     <alias1></alias1>
+    <alias-int>33</alias-int>
     <alias-l1>list of web components</alias-l1>
     <array-alias>array-value</array-alias>
   </aliases>
@@ -40,5 +41,7 @@
       <web-component>${array-alias}</web-component>
       <web-component>${array-alias}</web-component>
     </array1>
+    <string>${alias3}</string>
   </dataSet2>
+  <integer>33</integer>
 </test.com.PageComponent.DataSet1>

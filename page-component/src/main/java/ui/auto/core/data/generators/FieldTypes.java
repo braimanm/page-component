@@ -23,6 +23,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import ui.auto.core.context.PageComponentContext;
 import ui.auto.core.data.ComponentData;
 import ui.auto.core.data.DataPersistence;
 
@@ -35,7 +36,7 @@ public enum FieldTypes {
 		public Object instantiate(Type type,Field field, String value) throws Exception {
 			byte val=0;
 			try {
-				val=Byte.parseByte(value);
+				val=Byte.parseByte(getValue(value));
 			} catch (Exception e) {
 				System.err.println("[WARNING] Field " + field.getName() + " was set to " + val + " Add @Data annotation for proper data generation");
 			}
@@ -50,7 +51,7 @@ public enum FieldTypes {
 		public Object instantiate(Type type,Field field, String value) throws Exception {
 			Short val=0;
 			try {
-				val=Short.parseShort(value);
+				val=Short.parseShort(getValue(value));
 			} catch (Exception e) {
 				System.err.println("[WARNING] Field " + field.getName() + " was set to " + val + " Add @Data annotation for proper data generation");
 			}
@@ -64,8 +65,9 @@ public enum FieldTypes {
 		@Override
 		public Object instantiate(Type type,Field field, String value) throws Exception {
 			Integer val=0;
+			
 			try {
-				val=Integer.parseInt(value);
+				val=Integer.parseInt(getValue(value));
 			} catch (Exception e) {
 				System.err.println("[WARNING] Field " + field.getName() + " was set to " + val + " Add @Data annotation for proper data generation");
 			}
@@ -80,7 +82,7 @@ public enum FieldTypes {
 		public Object instantiate(Type type,Field field, String value) throws Exception {
 			Long val=0L;
 			try {
-				val=Long.parseLong(value);
+				val=Long.parseLong(getValue(value));
 			} catch (Exception e) {
 				System.err.println("[WARNING] Field " + field.getName() + " was set to " + val + " Add @Data annotation for proper data generation");
 			}
@@ -95,7 +97,7 @@ public enum FieldTypes {
 		public Object instantiate(Type type,Field field, String value) throws Exception {
 			Float val=0F;
 			try {
-				val=Float.parseFloat(value);
+				val=Float.parseFloat(getValue(value));
 			} catch (Exception e) {
 				System.err.println("[WARNING] Field " + field.getName() + " was set to " + val + " Add @Data annotation for proper data generation");
 			}
@@ -110,7 +112,7 @@ public enum FieldTypes {
 		public Object instantiate(Type type,Field field, String value) throws Exception {
 			Double val=0D;
 			try {
-				val=Double.parseDouble(value);
+				val=Double.parseDouble(getValue(value));
 			} catch (Exception e) {
 				System.err.println("[WARNING] Field " + field.getName() + " was set to " + val + " Add @Data annotation for proper data generation");
 			}
@@ -252,6 +254,16 @@ public enum FieldTypes {
 
 		
 	});
+	
+	private static String getValue(String value){
+		if (value.startsWith("${")){
+			String key=value.replace("${","").replace("}", "");
+			if (PageComponentContext.getGlobalAliases().containsKey(key)){
+				return (String) PageComponentContext.getGlobalAliases().get(key);
+			}
+		}
+		return value;
+	}
 	
 	private FieldAction action;
 	private static DataSetGenerator gen=DataSetGenerator.getInstance(); 

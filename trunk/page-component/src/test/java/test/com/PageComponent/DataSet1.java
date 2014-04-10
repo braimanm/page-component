@@ -2,6 +2,8 @@ package test.com.PageComponent;
 
 import java.util.List;
 
+import org.testng.annotations.Test;
+
 import ui.auto.core.components.WebComponent;
 import ui.auto.core.data.DataPersistence;
 import ui.auto.core.data.generators.Data;
@@ -17,5 +19,12 @@ public class DataSet1 extends DataPersistence {
 	@Data(alias="alias-l1")
 	List<WebComponent> list2;
 	DataSet2 dataSet2;
+	@Data(alias="alias-int", value="33")
+	Short integer;
+	
+	@Test
+	public void generate() throws Exception{
+		System.out.println(generateXML());
+	}
 
 }

@@ -16,6 +16,8 @@ Copyright 2010-2012 Michael Braiman
 
 package ui.auto.core.data;
 
+import ui.auto.core.context.PageComponentContext;
+
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
@@ -52,6 +54,7 @@ public class DataAliasesConverter implements Converter {
 			nodeName=reader.getNodeName();
 			value=reader.getValue();
 			aliases.put(nodeName, value);
+			PageComponentContext.getGlobalAliases().put(nodeName,value);
 			reader.moveUp();
 		}
 		

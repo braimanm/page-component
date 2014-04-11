@@ -1,4 +1,4 @@
-package test.com.PageComponent;
+package ui.auto.core.test;
 
 import java.util.List;
 

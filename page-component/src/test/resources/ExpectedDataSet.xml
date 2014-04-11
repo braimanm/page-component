@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<test.com.PageComponent.DataSet1>
+<dataset1>
   <aliases>
     <alias3>value3</alias3>
     <alias1></alias1>
@@ -44,4 +44,4 @@
     <string>${alias3}</string>
   </dataSet2>
   <integer>33</integer>
-</test.com.PageComponent.DataSet1>
+</dataset1>

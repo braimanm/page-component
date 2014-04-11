@@ -1,13 +1,16 @@
-package test.com.PageComponent;
+package ui.auto.core.test;
 
 import java.util.List;
 
 import org.testng.annotations.Test;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
 import ui.auto.core.components.WebComponent;
 import ui.auto.core.data.DataPersistence;
 import ui.auto.core.data.generators.Data;
 
+@XStreamAlias("dataset1")
 public class DataSet1 extends DataPersistence {
 	WebComponent comp1;
 	@Data()

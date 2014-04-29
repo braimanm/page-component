@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.googlecode.page-component</groupId>
   <artifactId>page-component</artifactId>
-  <version>1.0.5</version>
+  <version>1.0.7</version>
   <packaging>jar</packaging>
   <name>page-component</name>
   <description>Selenium Page Object pattern extension to support composite components</description>
@@ -26,10 +26,6 @@
   	<developerConnection>scm:svn:https://page-component.googlecode.com/svn/trunk/page-component</developerConnection>
   	<url>https://code.google.com/p/page-component/</url>
   </scm>
-  
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
 
   <build>
   	<plugins>
@@ -40,9 +36,10 @@
   			<configuration>
   				<source>1.7</source>
           		<target>1.7</target>
+          		<encoding>UTF-8</encoding>
   			</configuration>
   		</plugin>  
-      <plugin>
+      	<plugin>
         	<groupId>org.apache.maven.plugins</groupId>
 	        <artifactId>maven-gpg-plugin</artifactId>
 	        <version>1.4</version>
@@ -55,7 +52,7 @@
 	            </goals>
 	          </execution>
 	        </executions>
-      </plugin>   
+      	</plugin>   
   	</plugins>
   </build> 	
 
@@ -71,14 +68,14 @@
   		<version>6.8.7</version>
   	</dependency>
   	<dependency>
-  		<groupId>org.seleniumhq.selenium</groupId>
-  		<artifactId>selenium-support</artifactId>
-  		<version>2.39.0</version>
-  	</dependency>
-  	<dependency>
   		<groupId>cglib</groupId>
   		<artifactId>cglib-nodep</artifactId>
   		<version>2.1_3</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.seleniumhq.selenium</groupId>
+  		<artifactId>selenium-java</artifactId>
+  		<version>2.41.0</version>
   	</dependency>
   </dependencies>   
   

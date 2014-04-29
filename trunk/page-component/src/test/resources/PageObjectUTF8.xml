@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui.auto.core.test.TestPageObjectUTF8>
+  <cityEnglish>City</cityEnglish>
+  <cityFrench>Ville de Québec</cityFrench>
+  <cityRussian>город</cityRussian>
+  <cityChinese>鎮</cityChinese>
+  <cityHindi>शहर</cityHindi>
+  <cityJapanese>都市</cityJapanese>
+</ui.auto.core.test.TestPageObjectUTF8>

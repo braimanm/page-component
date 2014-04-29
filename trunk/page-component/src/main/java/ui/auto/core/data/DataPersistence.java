@@ -16,11 +16,12 @@ Copyright 2010-2012 Michael Braiman
 
 package ui.auto.core.data;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.net.URL;
 
 import ui.auto.core.context.PageComponentContext;
@@ -90,19 +91,28 @@ public class DataPersistence {
 	}
 	
 	public void toFile(String filePath){
+		
 		FileOutputStream fos=null;
+		Writer writer=null;
 		try {
 			fos=new FileOutputStream(filePath);
-		} catch (FileNotFoundException e) {
-			throw new RuntimeException("File " + filePath + " was not found",e);
-		}
-		try {
-			if (fos!=null) fos.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n".getBytes());
-			initXstream(this.getClass()).toXML(this, fos);
-			if (fos!=null) fos.close();
-		} catch (IOException e) {
+			writer=new OutputStreamWriter(fos, "UTF-8");
+			writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n");
+			initXstream(this.getClass()).toXML(this, writer);
+		} catch ( IOException e) {
 			throw new RuntimeException(e);
+		} finally{
+			
+				try {
+					if (writer!=null) writer.close();
+					if (fos!=null) fos.close();
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+			
 		}
+		
+		
 	}
 	
 		
@@ -114,13 +124,7 @@ public class DataPersistence {
 	
 	@SuppressWarnings("unchecked")
 	public static <T> T fromURL(URL url,Class<T> forClass){
-		InputStream inputStream=null;
-		try {
-			inputStream= url.openStream();
-		} catch (IOException e) {
-			throw new RuntimeException("Can't open stream fro URL: " + url,e);
-		}
-		DataPersistence data=(DataPersistence) initXstream(forClass).fromXML(inputStream);
+		DataPersistence data=(DataPersistence) initXstream(forClass).fromXML(url);
 		return  (T) data;
 	}
 	
@@ -140,20 +144,11 @@ public class DataPersistence {
 	
 	@SuppressWarnings("unchecked")
 	public static <T> T fromFile(String filePath,Class<T> forClass){
-		FileInputStream fis=null;
-		try {
-			fis=new FileInputStream(filePath);
-		} catch (FileNotFoundException e) {
-			throw new RuntimeException("File " + filePath + " was not found",e);
+		File file=new File(filePath);
+		if (!file.exists()){
+			throw new RuntimeException("File " + filePath + " was not found");
 		}
-		DataPersistence data=(DataPersistence) initXstream(forClass).fromXML(fis);
-		if (fis!=null){
-			try {
-				fis.close();
-			} catch (IOException e) {
-				throw new RuntimeException(e);
-			}
-		}
+		DataPersistence data=(DataPersistence) initXstream(forClass).fromXML(file);
 		return (T) data;
 	}
 	

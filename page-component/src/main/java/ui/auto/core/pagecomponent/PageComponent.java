@@ -93,35 +93,22 @@ public abstract class PageComponent implements ComponentData, DefaultAction{
 		return dat;
 	}
 	
-	@Override
 	public String getData() {
 		return getData(DataTypes.Data,true);
 	}
 	
-	@Override
 	public String getInitialData() {
 		return getData(DataTypes.Initial,true);
 	}
 	
-	@Override
 	public String getExpectedData() {
 		return getData(DataTypes.Expected,true);
 	}
 	
-	@Override
-	public void setData(String data) {
+	void setData(String data) {
 		this.data=data;
 	}
 
-	@Override
-	public void setInitialData(String data) {
-		this.initialData=data;
-	}
-
-	@Override
-	public void setExpectedData(String data) {
-		expectedData=data;
-	}
 
 	public void click() {
 		coreElement.click();

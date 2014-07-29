@@ -26,6 +26,7 @@ import org.openqa.selenium.support.pagefactory.ElementLocator;
 import org.openqa.selenium.support.pagefactory.ElementLocatorFactory;
 
 import ui.auto.core.data.ComponentData;
+import ui.auto.core.data.DataTypes;
 
 public class ComponentFieldDecorator extends DefaultFieldDecorator {
 	PageObject page;
@@ -53,9 +54,9 @@ public class ComponentFieldDecorator extends DefaultFieldDecorator {
 				throw new RuntimeException(e);
 			}
             if (componentData!=null) {
-				dataValue=componentData.getData();
-				initialValue=componentData.getInitialData();
-				expectedValue=componentData.getExpectedData();
+				dataValue=componentData.getData(DataTypes.Data,false);
+				initialValue=componentData.getData(DataTypes.Initial,false);
+				expectedValue=componentData.getData(DataTypes.Expected,false);
             }
           
 			Enhancer enhancer=new Enhancer();

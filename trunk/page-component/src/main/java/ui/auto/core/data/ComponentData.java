@@ -20,5 +20,4 @@ package ui.auto.core.data;
 public interface ComponentData {
 	public String getData(DataTypes type, boolean resolveAliases);
 	public void initializeData(String data,String initial,String expected);
-	
 }

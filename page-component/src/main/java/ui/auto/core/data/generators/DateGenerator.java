@@ -21,11 +21,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
-
-public class DateGenerator {
+public class DateGenerator implements GeneratorInterface {
 	DateFormat dateFormater;
 	long dateFrom;
 	long dateTo;
+	
+	DateGenerator(){
+	}
 	
 	public DateGenerator(String from,String to,String pattern) throws ParseException {
 		dateFormater=new SimpleDateFormat(pattern);
@@ -47,6 +49,21 @@ public class DateGenerator {
 		formater.setTimeZone(TimeZone.getTimeZone("GMT"));
 		return formater.format(getRandomDate());
 	}
+
+	@Override
+	public String generate(String pattern, String value) {
+		String[] args=pattern.split("\\|");
+		try {
+			DateGenerator dg=new DateGenerator(args[0],args[1],args[2]);
+			if (value==null || value.isEmpty()){
+				return dg.getDate();
+			} else {
+				return dg.getDate(value);
+			}
+		} catch (ParseException e) {
+			throw new RuntimeException(e);
+		}
+	}
 	
 	
 //	@Test
@@ -55,5 +72,6 @@ public class DateGenerator {
 //		System.out.println(generator.getDate());
 //		System.out.println(generator.getDate("dd MMM yyyy"));
 //		System.out.println(generator.getDate("MMMM dd yyyy hh:mm:ss"));
+//		System.out.println(generator.generate("2010/01/01|2013/12/31|yyyy/MM/dd","dd MMM yyyy"));
 //	}
 }

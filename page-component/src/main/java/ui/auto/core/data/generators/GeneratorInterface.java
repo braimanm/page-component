@@ -16,29 +16,6 @@ Copyright 2010-2012 Michael Braiman
 
 package ui.auto.core.data.generators;
 
-import java.util.List;
-
-public class File2ListGenerator extends File2ListReader implements GeneratorInterface{
-	private List<String> list;
-	
-	File2ListGenerator() {
-	}
-	
-	public File2ListGenerator(String fileName){
-		list=populate("/" + fileName);
-	}
-	
-	public String getValue(){
-		if (list.size()==0) 
-			throw new RuntimeException("The file is empty!");
-		int index=(int) (Math.random()*list.size());
-		return list.get(index);
-	}
-
-	@Override
-	public String generate(String pattern, String value) {
-		list=populate("/" + value);
-		return getValue();
-	}
-	
+public interface GeneratorInterface {
+	public String generate(String pattern,String value);
 }

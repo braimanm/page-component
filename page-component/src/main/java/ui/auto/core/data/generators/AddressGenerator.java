@@ -18,7 +18,7 @@ package ui.auto.core.data.generators;
 
 import java.util.List;
 
-public class AddressGenerator extends File2ListReader{
+public class AddressGenerator extends File2ListReader implements GeneratorInterface{
 	List<String> streets;
 	List<String> cities;
 	
@@ -91,6 +91,12 @@ public class AddressGenerator extends File2ListReader{
 		} 
 		return address;
 	}
+
+	@Override
+	public String generate(String pattern, String value) {
+		Address address=generateAddress();
+		return address.toString(pattern);
+	}
 	
 //	@Test
 //	public static void test(){
@@ -99,6 +105,7 @@ public class AddressGenerator extends File2ListReader{
 //		System.out.println(addrGen.generateAddress(true) + "\n");
 //		Address address=addrGen.generateAddress();
 //		System.out.println(address.toString("<#> <S>, <T>, <O>, <K> (<P>)"));
+//		System.out.println(((GeneratorInterface) addrGen).generate("<#> <S>, <T>, <O>, <K> (<P>)",null));
 //	}
 
 

@@ -19,8 +19,7 @@ package ui.auto.core.data.generators;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
-public class AlphaNumericGenerator {
+public class AlphaNumericGenerator implements GeneratorInterface{
 	
 	private String getLetter(boolean capital){
 		int offset=97;
@@ -82,6 +81,11 @@ public class AlphaNumericGenerator {
 		return out;
 		
 	}
+
+	@Override
+	public String generate(String pattern, String value) {
+		return generate(pattern);
+	}
 	
 //	@Test
 //	public void test(){
@@ -91,6 +95,8 @@ public class AlphaNumericGenerator {
 //		System.out.println(alpha.generate("(A)(B)(C)(D)(E)"));
 //		System.out.println(alpha.generate("{A}{B}{C}{D}{E}"));
 //		System.out.println(alpha.generate("<A><B><C><D><0><1><2>"));
+//		System.out.println(alpha.generate("<A><B><C><D><0><1><2>",null));
+//		
 //	}
 	
 }

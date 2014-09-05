@@ -18,7 +18,7 @@ package ui.auto.core.data.generators;
 
 import java.util.List;
 
-public class HumanNameGenerator extends File2ListReader{
+public class HumanNameGenerator extends File2ListReader implements GeneratorInterface{
 	private List<String> femaleNames;
 	private List<String> maleNames;
 	private List<String> sureNames;
@@ -76,6 +76,11 @@ public class HumanNameGenerator extends File2ListReader{
 		}
 		return fullName;
 	}
+
+	@Override
+	public String generate(String pattern, String value) {
+		return getFullName(value);
+	}
 	
 //	@Test
 //	public void test(){
@@ -87,6 +92,7 @@ public class HumanNameGenerator extends File2ListReader{
 //		System.out.println("Full Female Name ('<F> <S>'): " +generator.getFullName("<F> <S>"));
 //		System.out.println("Full Male Name ('<S> <M>'): " + generator.getFullName("<S> <M>"));
 //		System.out.println("Male and Female Full Name ('<M> and <F> <S>'): " + generator.getFullName("<M> and <F> <S>"));
+//		
 //	}
 	
 }

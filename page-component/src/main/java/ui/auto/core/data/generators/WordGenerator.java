@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class WordGenerator extends File2ListReader {
+public class WordGenerator extends File2ListReader implements GeneratorInterface{
 	List<String> words;
 	
 	public WordGenerator() {
@@ -73,7 +73,11 @@ public class WordGenerator extends File2ListReader {
 		}
 		return out;
 	}
-	
+
+	@Override
+	public String generate(String pattern, String value) {
+		return generate(pattern);
+	}
 	
 	
 //	@Test

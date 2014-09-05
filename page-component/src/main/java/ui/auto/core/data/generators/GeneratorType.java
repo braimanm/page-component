@@ -16,14 +16,32 @@ Copyright 2010-2012 Michael Braiman
 
 package ui.auto.core.data.generators;
 
-public enum GeneratorType {
-	FIXED_VALUE,
-	ADDRESS,
-	ALPHANUMERIC,
-	CUSTOM_LIST,
-	DATE,
-	HUMAN_NAMES,
-	WORD,
-	NUMBER,
-	FILE2LIST;
+public enum GeneratorType implements GeneratorInterface{
+	FIXED_VALUE(null),
+	ADDRESS(new AddressGenerator()),
+	ALPHANUMERIC(new AlphaNumericGenerator()),
+	CUSTOM_LIST(new CustomListGenerator()),
+	DATE(new DateGenerator()),
+	HUMAN_NAMES(new HumanNameGenerator()),
+	WORD(new WordGenerator()),
+	NUMBER(new NumberGenerator()),
+	FILE2LIST(new File2ListGenerator());
+	
+	private GeneratorInterface gen;
+	
+	private GeneratorType(GeneratorInterface generator) {
+		this.gen=generator;
+	}
+
+	@Override
+	public String generate(String pattern, String value) {
+		if (gen!=null){
+			return gen.generate(pattern, value);
+		} else {
+			return value;
+		}
+	}
+	
+	
+	
 }

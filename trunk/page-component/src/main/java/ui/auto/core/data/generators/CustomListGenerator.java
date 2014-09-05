@@ -16,11 +16,15 @@ Copyright 2010-2012 Michael Braiman
 
 package ui.auto.core.data.generators;
 
+
 import java.util.Arrays;
 import java.util.List;
 
-public class CustomListGenerator {
+public class CustomListGenerator implements GeneratorInterface{
 	private List<String> list;
+
+	CustomListGenerator(){	
+	}
 	
 	public CustomListGenerator(List<String> list) {
 		this.list=list;
@@ -35,6 +39,11 @@ public class CustomListGenerator {
 		return list.get(index);
 	}
 	
+	@Override
+	public String generate(String pattern, String value) {
+		list= Arrays.asList(value.split(","));
+		return getValue();
+	}
 	
 //	@Test
 //	public static void test(){
@@ -55,7 +64,11 @@ public class CustomListGenerator {
 //		
 //		CustomListGenerator arl=new CustomListGenerator(ar);
 //		System.out.println(arl.getValue());
+//		
+//		System.out.println(arl.generate(null, "aaa,bbb,ccc,ddd"));
 //				
 //	}
+
+	
 	
 }

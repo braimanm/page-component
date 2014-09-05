@@ -18,12 +18,14 @@ package ui.auto.core.data.generators;
 
 import java.text.DecimalFormat;
 
-
-public class NumberGenerator {
+public class NumberGenerator implements GeneratorInterface{
 	
 	long minNum;
 	long maxNum;
 	String format;
+	
+	NumberGenerator() {
+	}
 	
 	public NumberGenerator(String min,String max,String format){
 		minNum=Long.parseLong(min);
@@ -36,11 +38,21 @@ public class NumberGenerator {
 		DecimalFormat dec=new DecimalFormat(format);
 		return dec.format(num);
 	}
+
+	@Override
+	public String generate(String pattern, String value) {
+		String[] limits=pattern.split(",");
+		minNum=Long.parseLong(limits[0]);
+		maxNum=Long.parseLong(limits[1]);
+		format=value;
+		return getNum();
+	}
 	
 //	@Test
 //	public static void test(){
 //		NumberGenerator gen=new NumberGenerator("0", "1000","$###.##");
 //		System.out.println(gen.getNum());
+//		System.out.println(gen.generate("0,100", "##.000)"));
 //	}
 	
 }

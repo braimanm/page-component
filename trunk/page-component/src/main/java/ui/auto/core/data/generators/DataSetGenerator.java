@@ -18,22 +18,16 @@ package ui.auto.core.data.generators;
 
 import java.io.File;
 import java.lang.reflect.Field;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import ui.auto.core.context.PageComponentContext;
 import ui.auto.core.data.DataAliases;
 import ui.auto.core.data.DataPersistence;
-import ui.auto.core.data.generators.AddressGenerator.Address;
 
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 public class DataSetGenerator {
-	private AddressGenerator addrGen=null;
-	private Address address = null;
-	private HumanNameGenerator nameGen=null;
-	private WordGenerator wordGen=null;
 	private static String timeStamp=new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss").format(Calendar.getInstance().getTime());
 	private static String filePath="generated-data/"+timeStamp; 
 	private static DataSetGenerator instance=null;
@@ -42,7 +36,7 @@ public class DataSetGenerator {
 	int containerLevelCounter=0;
 	private DataAliases aliases;
 	
-	protected DataSetGenerator(){	
+	protected DataSetGenerator(){
 	}
 	
 	public int getRecursionLevel() {
@@ -74,57 +68,9 @@ public class DataSetGenerator {
 			return "${" + alias + "}";
 		if (value.isEmpty() && type==null)
 			value=field.getName();
-		switch (type){
-			case FIXED_VALUE:
-				returnValue=value;
-				break;
-			case ADDRESS:
-				if (addrGen==null) addrGen=new AddressGenerator();
-				if (!init.isEmpty() || address==null) {
-					address=addrGen.generateAddress();
-				}
-				returnValue=address.toString(value);
-				break;
-			case CUSTOM_LIST:
-				CustomListGenerator genList=new CustomListGenerator(value.split(","));
-				returnValue=genList.getValue();
-				break;
-			case ALPHANUMERIC:
-				AlphaNumericGenerator genAlpha=new AlphaNumericGenerator();
-				returnValue= genAlpha.generate(value);
-				break;
-			case DATE:
-				String[] args=init.split("\\|");
-				try {
-					DateGenerator dateGen=new DateGenerator(args[0],args[1],args[2]);
-					if (value.isEmpty()){
-						returnValue=dateGen.getDate();
-					} else {
-						returnValue=dateGen.getDate(value);
-					}
-					
-				} catch (ParseException e) {
-					throw new RuntimeException(e);
-				}
-				break;
-			case HUMAN_NAMES:
-				if (nameGen==null) nameGen=new HumanNameGenerator();
-				returnValue=nameGen.getFullName(value);
-				break;
-			case WORD:
-				if (wordGen==null) wordGen=new WordGenerator();
-				returnValue=wordGen.generate(value);
-				break;
-			case NUMBER:
-				String[] limits=init.split(",");
-				NumberGenerator numGen=new NumberGenerator(limits[0],limits[1],value);
-				returnValue=numGen.getNum();
-				break;
-			case FILE2LIST:
-				File2ListGenerator fileList=new File2ListGenerator(value);
-				returnValue=fileList.getValue();
-				break;
-		}
+		
+		returnValue=type.generate(init, value);
+		
 		
 		if (!alias.isEmpty()) {
 			if (aliases==null){

@@ -2,8 +2,8 @@
 
 <form>
   <aliases>
-    <last>$[HUMAN_NAMES('null','&lt;S&gt;')]</last>
-	<first>$[HUMAN_NAMES('null','&lt;A&gt;')]</first>
+    <lastName>$[HUMAN_NAMES('null','&lt;S&gt;')]</lastName>
+	<firstName>$[HUMAN_NAMES('null','&lt;A&gt;')]</firstName>
 	
 	<address>$[ADDRESS('&lt;#&gt; &lt;S&gt;, &lt;T&gt;, &lt;O&gt;, &lt;K&gt; (&lt;P&gt;)','null')]</address>
 	<alphanumeric>$[ALPHANUMERIC('&lt;A&gt;&lt;B&gt;&lt;C&gt;&lt;D&gt;(a)(A)(a)','null')]</alphanumeric>
@@ -12,8 +12,8 @@
 	<number>$[NUMBER('-100,100', '##.000')]</number>
 	<word>$[WORD('&lt;a&gt; &lt;b&gt;','null')]</word>
   </aliases>
-  <firstName>${first}</firstName>
-  <lastName>${last}</lastName>
+  <firstName>${firstName}</firstName>
+  <lastName>${lastName}</lastName>
   <address>418 Richard Pond, Canton Stanstead QC CANADA J1X 3W2</address>
   <emailAddress>${first}.${last}@gmail.com</emailAddress>
   <eyeColor>Amber</eyeColor>

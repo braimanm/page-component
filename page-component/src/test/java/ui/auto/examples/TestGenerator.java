@@ -1,11 +1,10 @@
-package ui.auto.core.test;
+package ui.auto.examples;
 
 
 import org.testng.annotations.Test;
 
 import ui.auto.core.data.DataPersistence;
 import ui.auto.core.data.generators.GeneratorType;
-import ui.auto.examples.FormPageObject;
 
 public class TestGenerator {
 	

@@ -18,12 +18,11 @@ package ui.auto.core.pagecomponent;
 
 import java.lang.reflect.Method;
 
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.pagefactory.ElementLocator;
 
 import ui.auto.core.data.ComponentData;
-
-import net.sf.cglib.core.Signature;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
@@ -37,28 +36,31 @@ public class ComponentMethodInterceptor implements MethodInterceptor {
 	@Override
 	public Object intercept(Object obj, Method method, Object[] args,MethodProxy proxy) throws Throwable {
 			String methodName=method.getName();
-			//Don't Initialize element if methods belongs to ComponentData interface
-			boolean dataMethodFound=false;
+			//Skip methods belonging to ComponentData interface
 			for (Method dataMethod: ComponentData.class.getMethods()){
 				if (dataMethod.getName().equals(methodName)){
-					dataMethodFound=true;
-					break;
+					return proxy.invokeSuper(obj, args);
 				}
 			}
 			
-			if (!dataMethodFound && !"finalize".equals(methodName)){		
-				//System.out.println("Method: " + method.getName() + " invoked!");
-				WebElement elm=locator.findElement();
-				PageComponent webc=(PageComponent)obj;
-				if (webc.coreElement==null || !webc.coreElement.equals(elm)){
-					webc.setCoreElement(elm);
-					MethodProxy.find(obj.getClass(),new Signature("init","()V")).invokeSuper(obj,null);	
+			//Skip finalize method
+			if (!"finalize".equals(methodName)){	
+				PageComponent pageComponent=(PageComponent)obj;
+				WebElement currentCoreElement=pageComponent.coreElement;
+				WebElement newCoreElement=locator.findElement();
+				boolean staleElement=false;
+				try {
+					if (currentCoreElement!=null)
+						currentCoreElement.isDisplayed();//This should trigger exception if element is detached from Dom
+				} catch (StaleElementReferenceException e){
+					staleElement=true;
+				}
+				if (currentCoreElement==null || staleElement || !currentCoreElement.equals(newCoreElement)){
+					pageComponent.initComponent(newCoreElement);
 				}
 				
 			}
-			
-			Object retValue=proxy.invokeSuper(obj, args);
-			return retValue;	
+			return proxy.invokeSuper(obj, args);
 	}
 	
 }

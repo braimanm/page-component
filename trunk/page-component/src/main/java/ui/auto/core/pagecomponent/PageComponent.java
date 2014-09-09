@@ -35,6 +35,7 @@ public abstract class PageComponent implements ComponentData, DefaultAction{
 	private String data;
 	private String initialData;
 	private String expectedData;
+	By selector;
 	
 	protected abstract void init();
 	
@@ -49,16 +50,16 @@ public abstract class PageComponent implements ComponentData, DefaultAction{
 	}
 	
 	public PageComponent(WebElement coreElement) {
-		this.coreElement=coreElement;
-		init();
+		initComponent(coreElement);
 	}
 	
 	public WebElement getCoreElement(){
 		return coreElement;
 	}
 	
-	void setCoreElement(WebElement coreElement){
+	void initComponent(WebElement coreElement){
 		this.coreElement=coreElement;
+		init();
 	}
 	
 	@Override
@@ -142,5 +143,9 @@ public abstract class PageComponent implements ComponentData, DefaultAction{
 		return coreElement.findElement(by);
 	}	
 	
-
+	@Override
+	public By getLocator() {
+		return selector;
+	}
+	
 }

@@ -17,7 +17,10 @@ Copyright 2010-2012 Michael Braiman
 
 package ui.auto.core.data;
 
+import org.openqa.selenium.By;
+
 public interface ComponentData {
 	public String getData(DataTypes type, boolean resolveAliases);
 	public void initializeData(String data,String initial,String expected);
+	public By getLocator();
 }

@@ -21,6 +21,7 @@ import java.lang.reflect.Field;
 
 import net.sf.cglib.proxy.Enhancer;
 
+import org.openqa.selenium.support.pagefactory.Annotations;
 import org.openqa.selenium.support.pagefactory.DefaultFieldDecorator;
 import org.openqa.selenium.support.pagefactory.ElementLocator;
 import org.openqa.selenium.support.pagefactory.ElementLocatorFactory;
@@ -64,6 +65,8 @@ public class ComponentFieldDecorator extends DefaultFieldDecorator {
 			enhancer.setCallback(new ComponentMethodInterceptor(locator));
 			Object componentProxy=enhancer.create();
 			((ComponentData) componentProxy).initializeData(dataValue, initialValue, expectedValue);
+			Annotations annotations = new Annotations(field);
+			((PageComponent) componentProxy).selector=annotations.buildBy();
 			return componentProxy;
 		}
 		

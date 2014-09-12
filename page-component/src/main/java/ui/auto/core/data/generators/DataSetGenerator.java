@@ -126,10 +126,10 @@ public class DataSetGenerator {
 			if (obj.getClass().equals(field.getType())) //This is to avoid nested object recursion
 				levelCounter++;
 			if (levelCounter<=recursionLevel){
-				Object oValue=fieldType.instantiate(null,field,dataValue);
 				int mod=field.getModifiers();
 				//Do not set static final fields
 				if (!(Modifier.isStatic(mod) && Modifier.isFinal(mod))){
+					Object oValue=fieldType.instantiate(null,field,dataValue);
 					field.set(obj, oValue);
 				}
 			} else {

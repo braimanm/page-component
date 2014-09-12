@@ -18,6 +18,7 @@ package ui.auto.core.data.generators;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -126,7 +127,11 @@ public class DataSetGenerator {
 				levelCounter++;
 			if (levelCounter<=recursionLevel){
 				Object oValue=fieldType.instantiate(null,field,dataValue);
-				field.set(obj, oValue);
+				int mod=field.getModifiers();
+				//Do not set static final fields
+				if (!(Modifier.isStatic(mod) && Modifier.isFinal(mod))){
+					field.set(obj, oValue);
+				}
 			} else {
 				levelCounter=0;
 			}

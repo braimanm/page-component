@@ -25,12 +25,18 @@ public class PageComponentContext {
 	private int ajaxTimeOut=10; //in seconds
 	private int waitForUrlTimeOut=10000; //in milliseconds 
 	private String dataGenerationPath=System.getProperty("user.dir");
-	private static DataAliases globalAliases;
+	private static ThreadLocal<DataAliases> globalAliases=new ThreadLocal<DataAliases>(){
+
+		@Override
+		protected DataAliases initialValue() {
+			return new DataAliases();
+		}
+		
+	};
+
 	
 	public static DataAliases getGlobalAliases() {
-		if (globalAliases==null)
-			globalAliases=new DataAliases();
-		return globalAliases;
+		return globalAliases.get();
 	}
 	
 	public PageComponentContext(WebDriver driver) {

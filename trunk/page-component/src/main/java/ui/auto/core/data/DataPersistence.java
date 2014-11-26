@@ -31,8 +31,14 @@ import ui.auto.core.pagecomponent.PageObject;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
-
+/**
+ * @author Michael Braiman braimanm@gmail.com
+ *
+ * This class encapsulate object persistence capabilities. It allows to persist any derived from this class object with all his data.
+ * All the class members which are not annotated with {@link XStreamOmitField} are serialized and deserialized to and from various formats 
+ */
 public class DataPersistence {
 	@XStreamAlias("xmlns")
 	@XStreamAsAttribute
@@ -55,11 +61,12 @@ public class DataPersistence {
 		return null;
 	}
 	
-	public void setDataAlais(String key,String value){
+	public void setDataAlias(String key,String value){
 		if (aliases==null){
-			aliases=PageComponentContext.getGlobalAliases();
+			aliases=new DataAliases();
 		}
 		aliases.put(key, value);
+		PageComponentContext.getGlobalAliases().put(key, value);
 	}
 	
 	private static XStream getXStream(){
@@ -111,7 +118,6 @@ public class DataPersistence {
 				}
 			
 		}
-		
 		
 	}
 	
@@ -170,10 +176,6 @@ public class DataPersistence {
 		} else {
 			return fromXml("<" + forClass.getName() + "/>", forClass);
 		}
-	}
-
-	public void setAliases(DataAliases aliases) {
-		this.aliases=aliases;
 	}
 	
 	public String generateXML() throws Exception{

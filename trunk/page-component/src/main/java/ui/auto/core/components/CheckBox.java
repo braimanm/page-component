@@ -22,6 +22,12 @@ import org.testng.Assert;
 import ui.auto.core.data.DataTypes;
 import ui.auto.core.pagecomponent.PageComponent;
 
+/**
+ * @author Michael Braiman braimanm@gmail.com
+ * 			<p/>
+ * 			This is a basic Check Box component 
+ *  
+ */
 public class CheckBox extends PageComponent {
 	
 	public CheckBox() {}
@@ -64,8 +70,6 @@ public class CheckBox extends PageComponent {
 		Assert.assertEquals(coreElement.isSelected(),validationMethod.getData(this).toLowerCase().trim().equals("true"));
 	}
 	
-	
-
 }
 
 

@@ -20,6 +20,12 @@ import org.openqa.selenium.WebDriver;
 
 import ui.auto.core.data.DataAliases;
 
+/**
+ * @author Michael Braiman braimanm@gmail.com
+ * 			<p/>
+ * 			This class represent context for the page-component library. 
+ * 			It stores instance of the WebDriver, global data aliases and some timeout parameters 
+ */
 public class PageComponentContext {
 	protected WebDriver driver;
 	private int ajaxTimeOut=10; //in seconds
@@ -33,40 +39,86 @@ public class PageComponentContext {
 		}
 		
 	};
+	
 
-	
-	public static DataAliases getGlobalAliases() {
-		return globalAliases.get();
-	}
-	
+	/**
+     * Construct new context with provided {@link WebDriver}
+     *
+     * @param driver instance of WebDriver
+     */
 	public PageComponentContext(WebDriver driver) {
 		this.driver=driver;
 	}
 	
+	
+	/**
+     * Returns global aliases
+     *
+     * @return global aliases store
+     */
+	public static DataAliases getGlobalAliases() {
+		return globalAliases.get();
+	}
+	
+	/**
+     * Returns {@link WebDriver}
+     *
+     * @return WebDriver instance
+     */
 	public WebDriver getDriver() {
 		return driver;
 	}
 	
+	/**
+     * Returns global timeout for polling web elements in seconds
+     *
+     * @return timeout for slowly loaded web elements
+     */
 	public int getAjaxTimeOut() {
 		return ajaxTimeOut;
 	}
 
+	/**
+	 * The default value for AjaxTimeout is 10 seconds 
+	 * 
+	 * @param ajaxTimeOut maximum time to poll for Ajax affected web elements    
+	 */
 	public void setAjaxTimeOut(int ajaxTimeOut) {
 		this.ajaxTimeOut = ajaxTimeOut;
 	}
 	
+	/**
+     * Returns global timeout for loading web pages in milliseconds
+     *
+     * @return timeout for loading web pages
+     */
 	public int getWaitForUrlTimeOut() {
 		return waitForUrlTimeOut;
 	}
 
+	/**
+	 * The default value for wait for url is 10000 milliseconds which is 10 seconds 
+	 * 
+	 * @param waitForUrlTimeOut maximum time to poll for url to load
+	 */
 	public void setWaitForUrlTimeOut(int waitForUrlTimeOut) {
 		this.waitForUrlTimeOut = waitForUrlTimeOut;
 	}
 
+	/**
+	 * Returns the file path for generated data-sets
+	 * 
+	 * @return
+	 */
 	public String getDataGenerationFilePath(){
 		return dataGenerationPath;
 	}
 	
+	/**
+	 * Provides the file path to store generated data-sets 
+	 * 
+	 * @param filePath file path to store generated data-sets
+	 */
 	public void setDataGenerationFilePath(String filePath){
 		dataGenerationPath=filePath;
 	}

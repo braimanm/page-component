@@ -24,6 +24,14 @@ import ui.auto.core.pagecomponent.PageComponent;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
+
+/**
+* @author Michael Braiman braimanm@gmail.com
+* 			<p/>
+* 			This is a generic component which is similar to {@link WebElement} but have data abstraction  
+*  
+*/
+
 @XStreamAlias("web-component")
 public class WebComponent extends PageComponent {
 

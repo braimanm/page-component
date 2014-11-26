@@ -19,8 +19,41 @@ package ui.auto.core.data;
 
 import org.openqa.selenium.By;
 
+import ui.auto.core.pagecomponent.ComponentMethodInterceptor;
+import ui.auto.core.pagecomponent.PageComponent;
+
+/**
+ * 	@author Michael Braiman braimanm@gmail.com
+ * 			<p/>
+ * 			This interface represents data dimension, each {@link PageComponent} have data which can be used to populate 
+ * 			and validate specific page component.
+ * 			<p/> 
+ * 			{@link ComponentMethodInterceptor} will not initialize page component during
+ * 			invocations of the methods of this interface. 
+ */
 public interface ComponentData {
+	/**
+	 * Get specific data of {@link DataTypes} 
+	 * 
+	 * @param type data type to retrieve 
+	 * @param resolveAliases if set to true will resolve alias to the specific value
+	 * @return returns specific data for the specific data type
+	 */
 	public String getData(DataTypes type, boolean resolveAliases);
+	
+	/**
+	 * Initialize three types of data: initial, populated and expected
+	 * 
+	 * @param data set populated data value
+	 * @param initial set initial data value
+	 * @param expected set expected data value
+	 */
 	public void initializeData(String data,String initial,String expected);
+	
+	/**
+	 * Returns selenium {@link By} locator for the specific page component 
+	 * 
+	 * @return locator which was used to locate this page component
+	 */
 	public By getLocator();
 }

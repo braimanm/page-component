@@ -140,7 +140,7 @@ public class DataSetGenerator {
 			if (DataPersistence.class.isAssignableFrom(obj.getClass()) && aliases!=null){
 				DataPersistence dataPersist= (DataPersistence) obj;
 				for (String key:aliases.keySet()){
-					dataPersist.setDataAlais(key,(String) aliases.get(key));
+					dataPersist.setDataAlias(key,(String) aliases.get(key));
 				}
 				
 			}

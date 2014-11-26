@@ -23,6 +23,12 @@ import org.testng.Assert;
 import ui.auto.core.data.DataTypes;
 import ui.auto.core.pagecomponent.PageComponent;
 
+/**
+* @author Michael Braiman braimanm@gmail.com
+* 			<p/>
+* 			This is a basic Select component 
+*  
+*/
 public class SelectComponent extends PageComponent{
 	private Select select;
 	

@@ -14,7 +14,7 @@ Copyright 2010-2012 Michael Braiman
    limitations under the License.
 */
 
-package ui.auto.core.pagecomponent;
+package ui.auto.core.utils;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotVisibleException;

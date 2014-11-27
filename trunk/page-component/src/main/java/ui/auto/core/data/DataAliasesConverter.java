@@ -22,12 +22,20 @@ import java.util.regex.Pattern;
 import ui.auto.core.context.PageComponentContext;
 import ui.auto.core.data.generators.GeneratorType;
 
+import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
+/**
+ * 
+ * @author Michael Braiman braimanm@gmail.com
+ *          <p/>
+ *          This is{@link XStream} Converter implementation for marshaling and unmarshaling {@link DataAliases} map.
+ *          During unmarshaling, if alias value is data generator expression then this expression is resolved to data using specific generator. 
+ */
 public class DataAliasesConverter implements Converter {
 
 	@SuppressWarnings("rawtypes")
@@ -61,13 +69,11 @@ public class DataAliasesConverter implements Converter {
 				Pattern pattern=Pattern.compile("\\$\\[(.+)\\(\\s*'\\s*(.*)\\s*'\\s*\\,\\s*'\\s*(.*)\\s*'\\s*\\)");
 				Matcher matcher=pattern.matcher(value);
 				if (matcher.find()!=true){
-					throw new RuntimeException(value + " - invalid dynamic expression!");
+					throw new RuntimeException(value + " - invalid data generation expression!");
 				}
 				GeneratorType genType=GeneratorType.valueOf(matcher.group(1).trim());
 				String init=matcher.group(2);
-				//if (init.toLowerCase().trim().equals("null")) init=null;
 				String val=matcher.group(3);
-				//if (val.toLowerCase().trim().equals("null")) val=null;
 				value=genType.generate(init, val);
 			}
 			aliases.put(nodeName, value);

@@ -16,13 +16,19 @@ Copyright 2010-2012 Michael Braiman
 
 package ui.auto.core.data;
 
+import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
-
+/**
+ * 
+ * @author Michael Braiman braimanm@gmail.com
+ *          <p/>
+ *          This is{@link XStream} Converter implementation for marshaling and unmarshaling {@link ComponentData}.
+ */
 public class PageComponentDataConverter implements Converter{
 
 	@SuppressWarnings("rawtypes")

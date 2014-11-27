@@ -37,16 +37,21 @@ public abstract class AjaxTriggeredAction {
 	
 	public static void waitForAjax(AjaxTriggeredAction action, WebElement affectedElement,long time_out,boolean throwException){
 		long to=System.currentTimeMillis()+time_out;
+		boolean isStaleElement = false;
 		action.doAction();
 		do {
 			try {
-				affectedElement.isDisplayed();//This should trigger exception if element is detached from Dom
+				affectedElement.isDisplayed(); //This should trigger exception if element is detached from DOM
+				if (isStaleElement) return;
 			} catch (StaleElementReferenceException e){
-				return;
+			    isStaleElement = true;
 			}
 		} while (System.currentTimeMillis()<to);
 		if (throwException){
 			throw new RuntimeException("[TIME-OUT ERROR] Ajax event was not triggered!");
 		}
 	}
+	
+	
+	
 }

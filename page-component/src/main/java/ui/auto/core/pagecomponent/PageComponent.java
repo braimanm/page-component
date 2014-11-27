@@ -29,7 +29,12 @@ import ui.auto.core.data.ComponentData;
 import ui.auto.core.data.DataAliases;
 import ui.auto.core.data.DataTypes;
 
-
+/**
+ * @author Michael Braiman braimanm@gmail.com
+ *			<p/>
+ *			This is main page component class all the other user defined components must inherit this class.
+ *			User defined page component must implement {@link DefaultAction} interface and abstract init() method
+ */
 public abstract class PageComponent implements ComponentData, DefaultAction{
 	protected WebElement coreElement;
 	private String data;
@@ -37,8 +42,14 @@ public abstract class PageComponent implements ComponentData, DefaultAction{
 	private String expectedData;
 	By selector;
 	
+	/**
+	 * This method is needed for initialization of page component
+	 */
 	protected abstract void init();
 	
+	/**
+	 * Default constructor is neded for serialization purposes
+	 */
 	public PageComponent(){
 	}
 	
@@ -49,14 +60,26 @@ public abstract class PageComponent implements ComponentData, DefaultAction{
 		this.expectedData=expectedData;
 	}
 	
+	/**
+	 * Construct page component using existing web element as root of this component
+	 * @param coreElement web element which is a core element for this component 
+	 */
 	public PageComponent(WebElement coreElement) {
 		initComponent(coreElement);
 	}
 	
+	/**
+	 * 
+	 * @return core web element for this component
+	 */
 	public WebElement getCoreElement(){
 		return coreElement;
 	}
 	
+	/**
+	 * 
+	 * @param coreElement core web element for this component
+	 */
 	void initComponent(WebElement coreElement){
 		this.coreElement=coreElement;
 		init();
@@ -94,22 +117,37 @@ public abstract class PageComponent implements ComponentData, DefaultAction{
 		return dat;
 	}
 	
+	/**
+	 * Get populated data for this component
+	 * @return data 
+	 */
 	public String getData() {
 		return getData(DataTypes.Data,true);
 	}
 	
+	/**
+	 *Get Initial data for this component 
+	 * @return initial data
+	 */
 	public String getInitialData() {
 		return getData(DataTypes.Initial,true);
 	}
 	
+	/**
+	 * Get Expected data for this component
+	 * @return expected data
+	 */
 	public String getExpectedData() {
 		return getData(DataTypes.Expected,true);
 	}
 	
+	/**
+	 * 
+	 * @param data string which represent data
+	 */
 	void setData(String data) {
 		this.data=data;
 	}
-
 
 	public void click() {
 		coreElement.click();

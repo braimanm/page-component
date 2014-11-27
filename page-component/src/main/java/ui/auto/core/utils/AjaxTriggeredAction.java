@@ -19,32 +19,65 @@ package ui.auto.core.utils;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 
+import ui.auto.core.pagecomponent.PageComponent;
+
+/**
+ * @author Michael Braiman braimanm@gmail.com
+ * 			<p/>
+ * 			This is utility to handle Ajax loaded components  
+ */
 public abstract class AjaxTriggeredAction {
 	public abstract void doAction();
 	
-	
-	public void waitForAjax(WebElement affectedElement,long time_out){
+	/**
+	 * 
+	 * @param affectedElement
+	 * @param time_out
+	 */
+	public void waitForAjax(PageComponent affectedElement,long time_out){
 		waitForAjax(affectedElement, time_out,true);
 	}
 	
-	public void waitForAjax(WebElement affectedElement,long time_out,boolean throwException){
+	/**
+	 * 
+	 * @param affectedElement
+	 * @param time_out
+	 * @param throwException
+	 */
+	public void waitForAjax(PageComponent affectedElement,long time_out,boolean throwException){
 		waitForAjax(this, affectedElement, time_out,throwException);
 	}
 	
-	public static void waitForAjax(AjaxTriggeredAction action, WebElement affectedElement,long time_out){
+	/**
+	 * 
+	 * @param action
+	 * @param affectedElement
+	 * @param time_out
+	 */
+	public static void waitForAjax(AjaxTriggeredAction action, PageComponent affectedElement,long time_out){
 		waitForAjax(action, affectedElement, time_out, true);
 	}
 	
-	public static void waitForAjax(AjaxTriggeredAction action, WebElement affectedElement,long time_out,boolean throwException){
+	/**
+	 * This method will wait for Ajax event to complete redrawing the DOM.
+	 * The idea behind this method is: first to trigger an action which will cause Ajax event and then to wait until affected 
+	 * by Ajax element become stale. this means that affected element loses his handler as Ajax renders portion of the DOM 
+	 * where affected element resides.    
+	 * 
+	 * @param action action to perform which will trigger Ajax event
+	 * @param affectedComponent affected by Ajax component
+	 * @param time_out maximum time to wait until component is affected by Ajax 
+	 * @param throwException if true will throw exception if Ajax event is not detected
+	 */
+	public static void waitForAjax(AjaxTriggeredAction action, PageComponent affectedComponent,long time_out,boolean throwException){
 		long to=System.currentTimeMillis()+time_out;
-		boolean isStaleElement = false;
+		WebElement coreElement=affectedComponent.getCoreElement();
 		action.doAction();
 		do {
 			try {
-				affectedElement.isDisplayed(); //This should trigger exception if element is detached from DOM
-				if (isStaleElement) return;
+				coreElement.isDisplayed(); 		//This should trigger exception if element is detached from DOM
 			} catch (StaleElementReferenceException e){
-			    isStaleElement = true;
+			    return;
 			}
 		} while (System.currentTimeMillis()<to);
 		if (throwException){
@@ -52,6 +85,33 @@ public abstract class AjaxTriggeredAction {
 		}
 	}
 	
-	
+	/**
+	 * This method is the same as waitForAjax method but it will wait after Ajax event that affected element is usable.
+	 * Use this method when component is stale or redrawn by the Ajax event and there is no other visual indications on the 
+	 * web page that Ajax event was triggered.  
+	 * 
+	 * @param action action to perform which will trigger Ajax event
+	 * @param affectedComponent affected by Ajax component
+	 * @param time_out maximum time to wait until component is usable after Ajax event 
+	 * @param throwException if true will throw exception if Ajax event is not detected
+	 */
+	public static void waitForAjaxAndComponent(AjaxTriggeredAction action, PageComponent affectedComponent,long time_out,boolean throwException){
+		long to=System.currentTimeMillis()+time_out;
+		boolean isStaleElement = false;
+		WebElement coreElement=affectedComponent.getCoreElement();
+		action.doAction();
+		do {
+			try {
+				coreElement.isDisplayed(); 		//This should trigger exception if element is detached from DOM
+				if (isStaleElement) return;		
+			} catch (StaleElementReferenceException e){
+			    isStaleElement = true;
+			    coreElement=affectedComponent.getCoreElement(); //This will try to locate page component again using ComponentMethodInterceptor
+			}
+		} while (System.currentTimeMillis()<to);
+		if (throwException){
+			throw new RuntimeException("[TIME-OUT ERROR] Ajax event was not triggered!");
+		}
+	}
 	
 }

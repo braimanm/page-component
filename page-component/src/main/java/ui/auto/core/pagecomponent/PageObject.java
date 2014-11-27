@@ -28,7 +28,12 @@ import ui.auto.core.data.DataTypes;
 
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
-
+/**
+ * @author Michael Braiman braimanm@gmail.com
+ *			<p/>
+ *			This is main Page Object class and it includes all the page component manipulation methods.
+ *			All user defined page object classes must inherit this class and override required constructors.
+ */
 public class PageObject extends DataPersistence{
 	@XStreamOmitField
 	private PageComponentContext context;
@@ -203,7 +208,7 @@ public class PageObject extends DataPersistence{
 			initPage(currentContext);
 	}
 	
-	public static void sleep(long millis){
+	private static void sleep(long millis){
 		try {
 			Thread.sleep(millis);
 		} catch (InterruptedException e) {

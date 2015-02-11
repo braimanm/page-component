@@ -24,10 +24,11 @@ import java.util.regex.Pattern;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import datainstiller.data.DataAliases;
 import ui.auto.core.context.PageComponentContext;
 import ui.auto.core.data.ComponentData;
-import ui.auto.core.data.DataAliases;
 import ui.auto.core.data.DataTypes;
+
 
 /**
  * @author Michael Braiman braimanm@gmail.com

@@ -2,9 +2,9 @@ package ui.auto.core.test;
 
 import java.util.List;
 
+import datainstiller.data.Data;
+import datainstiller.data.DataPersistence;
 import ui.auto.core.components.WebComponent;
-import ui.auto.core.data.DataPersistence;
-import ui.auto.core.data.generators.Data;
 
 public class DataSet2 extends DataPersistence{
 	@Data(alias="alias1")
@@ -13,7 +13,7 @@ public class DataSet2 extends DataPersistence{
 	WebComponent comp5;
 	@Data(alias="alias-l1")
 	List<WebComponent> list3;
-	@Data(alias="array-alias",value="array-value",n=10)
+	@Data(alias="array-alias",value="array-value",nArray=10)
 	WebComponent[] array1;
 	@Data(alias="alias3")
 	String string;

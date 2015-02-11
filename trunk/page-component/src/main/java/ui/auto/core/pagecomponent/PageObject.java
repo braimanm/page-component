@@ -16,17 +16,27 @@ Copyright 2010-2012 Michael Braiman
 
 package ui.auto.core.pagecomponent;
 
+import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.DefaultElementLocatorFactory;
 
 import ui.auto.core.context.PageComponentContext;
-import ui.auto.core.data.DataPersistence;
 import ui.auto.core.data.DataTypes;
+import ui.auto.core.data.PageComponentDataConverter;
 
+import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
+import com.thoughtworks.xstream.converters.SingleValueConverter;
+
+import datainstiller.data.DataAliases;
+import datainstiller.data.DataGenerator;
+import datainstiller.data.DataPersistence;
 
 /**
  * @author Michael Braiman braimanm@gmail.com
@@ -60,6 +70,76 @@ public class PageObject extends DataPersistence{
 	
 	protected PageObject() {}
 
+	private DataGenerator getGenerator(){
+		List<SingleValueConverter> converters = new ArrayList<>();
+		converters.add(new PageComponentDataConverter());
+		return new DataGenerator(converters);
+	}
+	
+	private void addToGlobalAliases(DataPersistence data){
+		DataAliases global = PageComponentContext.getGlobalAliases();
+		DataAliases local = data.getDataAliases();
+		if (local !=null ) {
+			global.putAll(local);
+		}
+	}
+	
+	@Override
+	public <T extends DataPersistence> T fromXml(String xml,boolean resolveAliases) {
+		T data = super.fromXml(xml, resolveAliases);
+		addToGlobalAliases(data);
+		return data;
+	}
+
+	@Override
+	public <T extends DataPersistence> T fromURL(URL url, boolean resolveAliases) {
+		T data = super.fromURL(url, resolveAliases);
+		addToGlobalAliases(data);
+		return data;
+	}
+
+	@Override
+	public <T extends DataPersistence> T fromInputStream(InputStream inputStream, boolean resolveAliases) {
+		T data = super.fromInputStream(inputStream, resolveAliases);
+		addToGlobalAliases(data);
+		return data;
+	}
+
+	@Override
+	public <T extends DataPersistence> T fromFile(String filePath, boolean resolveAliases) {
+		T data = super.fromFile(filePath, resolveAliases);
+		addToGlobalAliases(data);
+		return data;
+	}
+
+	@Override
+	public void generateData() {
+		DataPersistence obj = getGenerator().generate(this.getClass());
+		deepCopy(obj, this);
+	}
+
+	@Override
+	public String generateXML() {
+		DataPersistence obj = getGenerator().generate(this.getClass());
+		return obj.toXML();
+	}
+
+	@Override
+	public String toXML(){
+		String header="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n";
+		XStream xstream=getXstream();
+		
+		// If this class extends PageObject and it initialized with context 
+		// then all the WebComponent fields of this class are CGLIB proxies and by default xml node
+		// is marked with attribute class. This will remove class attribute from the xml node 
+		if ( PageObject.class.isAssignableFrom(this.getClass()) && 
+				((PageObject)this).getContext()!=null){
+			xstream.aliasSystemAttribute(null,"class");
+		}
+		String xml=xstream.toXML(this);
+		return header + xml;
+	}
+	
 	public <T extends PageComponentContext> void  initPage(T context,boolean ajaxIsUsed){
 		this.context=context;
 		this.ajaxIsUsed=ajaxIsUsed;
@@ -203,9 +283,10 @@ public class PageObject extends DataPersistence{
 	
 	public void initData(PageObject pageObject){
 		PageComponentContext currentContext=context;
-		deepCopy(pageObject,this);
-		if (currentContext!=null)
+		deepCopy(pageObject, this);
+		if (currentContext!=null){
 			initPage(currentContext);
+		}
 	}
 	
 	private static void sleep(long millis){
@@ -222,5 +303,5 @@ public class PageObject extends DataPersistence{
 		}
 		return null;
 	}
-	
+
 }

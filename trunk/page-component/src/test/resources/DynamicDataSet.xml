@@ -2,20 +2,20 @@
 
 <form>
   <aliases>
-    <lastName>$[HUMAN_NAMES('null','&lt;S&gt;')]</lastName>
-	<firstName>$[HUMAN_NAMES('null','&lt;A&gt;')]</firstName>
+    <lastName>$[HUMAN_NAMES('null','{S}')]</lastName>
+	<firstName>$[HUMAN_NAMES('null','{A}')]</firstName>
 	
-	<address>$[ADDRESS('&lt;#&gt; &lt;S&gt;, &lt;T&gt;, &lt;O&gt;, &lt;K&gt; (&lt;P&gt;)','null')]</address>
-	<alphanumeric>$[ALPHANUMERIC('&lt;A&gt;&lt;B&gt;&lt;C&gt;&lt;D&gt;(a)(A)(a)','null')]</alphanumeric>
+	<address>$[ADDRESS('{#} {S}, {T}, {O}, {K} ({P})','null')]</address>
+	<alphanumeric>$[ALPHANUMERIC('{A}{B}{C}{D}(a)(A)(a)','null')]</alphanumeric>
 	<customlist>$[CUSTOM_LIST('null', 'aa,bb,cc,dd,ee,ff,gg,hh,ii,jj,kk,ll,mm,nn,oo')]</customlist>
 	<date>$[DATE('2010/01/01|2013/12/31|yyyy/MM/dd','dd MMM yyyy')]</date>
 	<number>$[NUMBER('-100,100', '##.000')]</number>
-	<word>$[WORD('&lt;a&gt; &lt;b&gt;','null')]</word>
+	<word>$[WORD('{a} {b}','null')]</word>
   </aliases>
   <firstName>${firstName}</firstName>
   <lastName>${lastName}</lastName>
   <address>418 Richard Pond, Canton Stanstead QC CANADA J1X 3W2</address>
-  <emailAddress>${first}.${last}@gmail.com</emailAddress>
+  <emailAddress>${firstName}.${lastName}@gmail.com</emailAddress>
   <eyeColor>Amber</eyeColor>
   <facebook>false</facebook>
   <twitter>true</twitter>

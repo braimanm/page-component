@@ -18,7 +18,7 @@ package ui.auto.core.context;
 
 import org.openqa.selenium.WebDriver;
 
-import ui.auto.core.data.DataAliases;
+import datainstiller.data.DataAliases;
 
 /**
  * @author Michael Braiman braimanm@gmail.com

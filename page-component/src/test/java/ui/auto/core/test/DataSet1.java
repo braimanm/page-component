@@ -6,12 +6,12 @@ import org.testng.annotations.Test;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
+import datainstiller.data.Data;
 import ui.auto.core.components.WebComponent;
-import ui.auto.core.data.DataPersistence;
-import ui.auto.core.data.generators.Data;
+import ui.auto.core.pagecomponent.PageObject;
 
 @XStreamAlias("dataset1")
-public class DataSet1 extends DataPersistence {
+public class DataSet1 extends PageObject {
 	WebComponent comp1;
 	@Data()
 	WebComponent comp2;
@@ -26,7 +26,7 @@ public class DataSet1 extends DataPersistence {
 	Short integer;
 	
 	@Test
-	public void generate() throws Exception{
+	public void generate() {
 		System.out.println(generateXML());
 	}
 

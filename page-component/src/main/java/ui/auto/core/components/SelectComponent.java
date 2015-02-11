@@ -20,6 +20,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
+
 import ui.auto.core.data.DataTypes;
 import ui.auto.core.pagecomponent.PageComponent;
 
@@ -30,6 +32,7 @@ import ui.auto.core.pagecomponent.PageComponent;
 *  
 */
 public class SelectComponent extends PageComponent{
+	@XStreamOmitField
 	private Select select;
 	
 	public SelectComponent(){}

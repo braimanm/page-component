@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.googlecode.page-component</groupId>
   <artifactId>page-component</artifactId>
-  <version>1.1.0</version>
+  <version>1.2.0</version>
   <packaging>jar</packaging>
   <name>page-component</name>
   <description>Selenium Page Object pattern extension to support composite components</description>
@@ -73,11 +73,6 @@
 
   <dependencies>
   	<dependency>
-  		<groupId>com.thoughtworks.xstream</groupId>
-  		<artifactId>xstream</artifactId>
-  		<version>1.4.7</version>
-  	</dependency>
-  	<dependency>
   		<groupId>org.testng</groupId>
   		<artifactId>testng</artifactId>
   		<version>6.8.8</version>
@@ -97,6 +92,11 @@
   		<artifactId>selenium-java</artifactId>
   		<version>2.43.1</version>
   		<scope>test</scope>
+  	</dependency>
+  	<dependency>
+  		<groupId>com.googlecode.datainstiller</groupId>
+  		<artifactId>datainstiller</artifactId>
+  		<version>1.0.0</version>
   	</dependency>
   </dependencies>   
   

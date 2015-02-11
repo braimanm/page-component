@@ -5,8 +5,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+
 import ui.auto.core.context.PageComponentContext;
-import ui.auto.core.data.DataPersistence;
 
 public class WebFormTest {
     PageComponentContext context;
@@ -20,7 +20,7 @@ public class WebFormTest {
     
     @Test
     public void fillForm(){
-            FormPageObject formPageObject=DataPersistence.fromResource("FormDataSet.xml", FormPageObject.class);
+            FormPageObject formPageObject=new FormPageObject().fromResource("FormDataSet.xml",false);
             formPageObject.initPage(context);
             formPageObject.fillForm();
     }

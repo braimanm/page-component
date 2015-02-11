@@ -19,6 +19,8 @@ package ui.auto.core.data;
 
 import org.openqa.selenium.By;
 
+import com.thoughtworks.xstream.annotations.XStreamConverter;
+
 import ui.auto.core.pagecomponent.ComponentMethodInterceptor;
 import ui.auto.core.pagecomponent.PageComponent;
 
@@ -31,6 +33,7 @@ import ui.auto.core.pagecomponent.PageComponent;
  * 			{@link ComponentMethodInterceptor} will not initialize page component during
  * 			invocations of the methods of this interface. 
  */
+@XStreamConverter(PageComponentDataConverter.class)
 public interface ComponentData {
 	/**
 	 * Get specific data of {@link DataTypes} 

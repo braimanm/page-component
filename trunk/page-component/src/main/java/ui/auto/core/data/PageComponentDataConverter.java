@@ -19,12 +19,12 @@ package ui.auto.core.data;
 import java.lang.reflect.Modifier;
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
-import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
+
+import datainstiller.data.DataValueConverter;
 
 /**
  * 
@@ -32,17 +32,12 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
  *          <p/>
  *          This is{@link XStream} Converter implementation for marshaling and unmarshaling {@link ComponentData}.
  */
-public class PageComponentDataConverter extends AbstractSingleValueConverter implements Converter{
-	private Class<? extends ComponentData> type;
+public class PageComponentDataConverter implements DataValueConverter{
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ "rawtypes" })
 	@Override
 	public boolean canConvert(Class type) {
-		if (ComponentData.class.isAssignableFrom(type) && !Modifier.isAbstract(type.getModifiers())){
-			this.type=type;
-			return true;
-		}
-		return false;
+		return (ComponentData.class.isAssignableFrom(type) && !Modifier.isAbstract(type.getModifiers()));
 	}
 
 	@Override
@@ -72,15 +67,15 @@ public class PageComponentDataConverter extends AbstractSingleValueConverter imp
 	}
 
 	@Override
-	public Object fromString(String str) {
-		ComponentData data;
+	public <T> T fromString(String str, Class<T> cls) {
+		T obj =null;
 		try {
-			data = type.newInstance();
+			obj = cls.newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
-		data.initializeData(str,null,null);
-		return data;
+		((ComponentData) obj).initializeData(str, null, null);
+		return obj;
 	}
 
 	

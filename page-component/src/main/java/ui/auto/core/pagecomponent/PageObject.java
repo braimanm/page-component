@@ -32,11 +32,11 @@ import ui.auto.core.data.PageComponentDataConverter;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
-import com.thoughtworks.xstream.converters.SingleValueConverter;
 
 import datainstiller.data.DataAliases;
 import datainstiller.data.DataGenerator;
 import datainstiller.data.DataPersistence;
+import datainstiller.data.DataValueConverter;
 
 /**
  * @author Michael Braiman braimanm@gmail.com
@@ -71,7 +71,7 @@ public class PageObject extends DataPersistence{
 	protected PageObject() {}
 
 	private DataGenerator getGenerator(){
-		List<SingleValueConverter> converters = new ArrayList<>();
+		List<DataValueConverter> converters = new ArrayList<>();
 		converters.add(new PageComponentDataConverter());
 		return new DataGenerator(converters);
 	}

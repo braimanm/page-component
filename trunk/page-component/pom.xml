@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.googlecode.page-component</groupId>
   <artifactId>page-component</artifactId>
-  <version>1.2.1</version>
+  <version>1.2.2</version>
   <packaging>jar</packaging>
   <name>page-component</name>
   <description>Selenium Page Object pattern extension to support composite components</description>
@@ -96,7 +96,7 @@
   	<dependency>
   		<groupId>com.googlecode.datainstiller</groupId>
   		<artifactId>datainstiller</artifactId>
-  		<version>1.0.1</version>
+  		<version>1.0.2</version>
   	</dependency>
   </dependencies>   
   

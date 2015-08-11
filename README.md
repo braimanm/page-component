@@ -1,5 +1,4 @@
 # page-component
-Overview
 In today’s web application technologies, webpages are composed from the JavaScript UI component libraries like GWT, YUI, jQuery UI, Ext JS, JSF PrimeFaces and others. All these libraries uses special templates composed by collection of primitive HTML elements that acts as a single UI component.
 
 This project extends Selenium PageObject design pattern to support composite components. It also helps to create data-driven Web UI Automation tests more easily by generating XML data-sets from the PageObjects.

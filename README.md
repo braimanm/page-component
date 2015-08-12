@@ -7,7 +7,7 @@ This project extends Selenium PageObject design pattern to support composite com
 ###Here Are the key features of this project:
 
 * ####Support for page-components in PageObjcts
-Currently Selenium PageObject supports WebElement interface for fields of PageObject. This project allows to declare any page-component as member of the PageObject classes and use current Selenium @FindBy annotation to specify locator for those page-components. Page-components are initialized lazily using proxies.
+Currently Selenium PageObject design pattern supports the WebElement interface for fields of PageObject classes. This project allows to declare any page-component as member of the PageObject classes and use current Selenium @FindBy annotation to specify locator for those page-components. Page-components are initialized lazily using proxies.
 
 * ####Support for data-driven testing
 To support data-driven testing, "page-component" incorporates XStream open source project, which adds the option to serialize any PageObject to and from XML files. To support this feature, PageObject should be annotated with XStream annotations.

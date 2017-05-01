@@ -122,7 +122,7 @@ public abstract class PageComponent implements ComponentData, DefaultAction {
      * @return data
      */
     public String getData() {
-        return getData(DataTypes.Data, true);
+        return getData(DataTypes.Data);
     }
 
     /**
@@ -130,6 +130,17 @@ public abstract class PageComponent implements ComponentData, DefaultAction {
      */
     void setData(String data) {
         this.data = data;
+    }
+
+    /**
+     * Get populated data for this component
+     *
+     * @param type data type to retrieve
+     * @return data for the requested data type
+     */
+
+    public String getData(DataTypes type) {
+        return getData(type, true);
     }
 
     public void click() {

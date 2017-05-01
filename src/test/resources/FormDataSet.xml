@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<form>
+    <aliases>
+        <last>Lacroix</last>
+        <first>Cayla</first>
+    </aliases>
+    <firstName>${first}</firstName>
+    <lastName>${last}</lastName>
+    <address>418 Richard Pond, Canton Stanstead QC CANADA J1X 3W2</address>
+    <emailAddress>${first}.${last}@gmail.com</emailAddress>
+    <eyeColor>Amber</eyeColor>
+    <facebook>false</facebook>
+    <twitter>true</twitter>
+    <linkedin>false</linkedin>
+    <email>true</email>
+</form>

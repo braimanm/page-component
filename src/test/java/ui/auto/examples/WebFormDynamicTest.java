@@ -1,7 +1,7 @@
 package ui.auto.examples;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -12,7 +12,7 @@ public class WebFormDynamicTest {
 
     @BeforeTest
     public void init() {
-        WebDriver driver = new FirefoxDriver();
+        WebDriver driver = new ChromeDriver();
         context = new PageComponentContext(driver);
         driver.get("http://goo.gl/gUqDHg");
     }

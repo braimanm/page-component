@@ -6,7 +6,7 @@ import ui.auto.core.components.WebComponent;
 
 import java.util.List;
 
-class DataSet2 extends DataPersistence {
+public class DataSet2 extends DataPersistence {
     @Data(alias = "alias1")
     WebComponent comp4;
     @Data("component5")

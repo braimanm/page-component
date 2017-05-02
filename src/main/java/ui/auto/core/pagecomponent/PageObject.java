@@ -120,14 +120,16 @@ public class PageObject extends DataPersistence {
 
     @Override
     public void generateData() {
-        DataPersistence obj = getGenerator().generate(this.getClass());
-        deepCopy(obj, this);
+        DataPersistence dataPersistence = getGenerator().generate(this.getClass());
+        addToGlobalAliases(dataPersistence);
+        deepCopy(dataPersistence, this);
     }
 
     @Override
     public String generateXML() {
-        DataPersistence obj = getGenerator().generate(this.getClass());
-        return obj.toXML();
+        DataPersistence dataPersistence = getGenerator().generate(this.getClass());
+        addToGlobalAliases(dataPersistence);
+        return dataPersistence.toXML();
     }
 
     @Override

@@ -11,13 +11,13 @@ import ui.auto.core.pagecomponent.PageObject;
 
 @XStreamAlias("form")
 public class FormPageObject extends PageObject {
-    @Data(generatorType = "HUMAN_NAMES", value = "{A}", alias = "first")
+    @Data(generatorType = "HUMAN_NAMES", pattern = "{A}", alias = "first")
     @FindBy(id = "entry_311820602")
     WebComponent firstName;
-    @Data(generatorType = "HUMAN_NAMES", value = "{S}", alias = "last")
+    @Data(generatorType = "HUMAN_NAMES", pattern = "{S}", alias = "last")
     @FindBy(id = "entry_1396008427")
     WebComponent lastName;
-    @Data(generatorType = "ADDRESS", value = "{#} {S}, {T} {K} {C} {O}")
+    @Data(generatorType = "ADDRESS", pattern = "{#} {S}, {T} {K} {C} {O}")
     @FindBy(id = "entry_1447188970")
     WebComponent address;
     @Data(value = "${first}.${last}@gmail.com")

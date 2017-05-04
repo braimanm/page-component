@@ -160,7 +160,12 @@ public abstract class PageComponent implements ComponentData, DefaultAction {
     }
 
     public boolean isDisplayed() {
-        return coreElement.isDisplayed();
+        boolean displayed = false;
+        try {
+            displayed = coreElement.isDisplayed();
+        } catch (Exception ignore) {
+        }
+        return displayed;
     }
 
     public String getText() {

@@ -195,7 +195,10 @@ public class PageObject extends DataPersistence {
         long endTime = System.currentTimeMillis() + context.getWaitForUrlTimeOut();
         boolean exitWhile = false;
         while (System.currentTimeMillis() < endTime && !exitWhile) {
-            if (!context.getDriver().getCurrentUrl().contains(currentUrl)) exitWhile = true;
+            if (!context.getDriver().getCurrentUrl().contains(currentUrl)) {
+                currentUrl = context.getDriver().getCurrentUrl();
+                exitWhile = true;
+            }
             sleep(100);
         }
         return exitWhile;

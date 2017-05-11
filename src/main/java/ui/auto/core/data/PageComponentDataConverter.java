@@ -27,7 +27,6 @@ import java.lang.reflect.Modifier;
 
 /**
  * @author Michael Braiman braimanm@gmail.com
- *         <p/>
  *         This is{@link XStream} Converter implementation for marshaling and unmarshaling {@link ComponentData}.
  */
 public class PageComponentDataConverter implements DataValueConverter {

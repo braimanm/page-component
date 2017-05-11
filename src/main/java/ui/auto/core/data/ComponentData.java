@@ -24,10 +24,8 @@ import ui.auto.core.pagecomponent.PageComponent;
 
 /**
  * @author Michael Braiman braimanm@gmail.com
- *         <p/>
  *         This interface represents data dimension, each {@link PageComponent} have data which can be used to populate
  *         and validate specific page component.
- *         <p/>
  *         {@link ComponentMethodInterceptor} will not initialize page component during
  *         invocations of the methods of this interface.
  */

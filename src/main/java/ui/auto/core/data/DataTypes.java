@@ -20,9 +20,7 @@ import ui.auto.core.pagecomponent.PageComponent;
 
 /**
  * @author Michael Braiman braimanm@gmail.com
- *         <p/>
  *         There are three types of supported data: Populated, Initial and Expected.
- *         <p/>
  *         {@link PageComponent} can use Populated data to populate page component, Initial data for initial validation and Expected data for final validation of page component
  */
 public enum DataTypes {

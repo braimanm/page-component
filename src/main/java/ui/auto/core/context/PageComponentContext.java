@@ -21,7 +21,6 @@ import org.openqa.selenium.WebDriver;
 
 /**
  * @author Michael Braiman braimanm@gmail.com
- *         <p/>
  *         This class represent context for the page-component library.
  *         It stores instance of the WebDriver, global data aliases and some timeout parameters
  */
@@ -107,7 +106,7 @@ public class PageComponentContext {
     /**
      * Returns the file path for generated data-sets
      *
-     * @return
+     * @return data generation file path
      */
     public String getDataGenerationFilePath() {
         return dataGenerationPath;

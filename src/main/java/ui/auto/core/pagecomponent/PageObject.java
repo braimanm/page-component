@@ -37,7 +37,6 @@ import java.util.List;
 
 /**
  * @author Michael Braiman braimanm@gmail.com
- *         <p/>
  *         This is main Page Object class and it includes all the page component manipulation methods.
  *         All user defined page object classes must inherit this class and override required constructors.
  */

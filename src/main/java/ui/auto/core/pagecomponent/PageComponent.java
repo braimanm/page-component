@@ -31,7 +31,6 @@ import java.util.regex.Pattern;
 
 /**
  * @author Michael Braiman braimanm@gmail.com
- *         <p/>
  *         This is main page component class all the other user defined components must inherit this class.
  *         User defined page component must implement {@link DefaultAction} interface and abstract init() method
  */

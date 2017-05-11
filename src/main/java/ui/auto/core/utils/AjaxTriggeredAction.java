@@ -22,7 +22,6 @@ import ui.auto.core.pagecomponent.PageComponent;
 
 /**
  * @author Michael Braiman braimanm@gmail.com
- *         <p/>
  *         This is utility to handle Ajax loaded components
  */
 public abstract class AjaxTriggeredAction {

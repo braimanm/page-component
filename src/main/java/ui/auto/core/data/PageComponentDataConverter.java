@@ -69,7 +69,10 @@ public class PageComponentDataConverter implements DataValueConverter {
         T obj = null;
         try {
             obj = cls.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
+        } catch (InstantiationException e) {
+            throw new RuntimeException("Component " + cls.getCanonicalName() +
+                    " must have default constructor !", e.getCause());
+        } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
         ((ComponentData) obj).initializeData(str, null, null);

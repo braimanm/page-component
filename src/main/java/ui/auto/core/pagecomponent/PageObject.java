@@ -42,7 +42,7 @@ import java.util.List;
  */
 public class PageObject extends DataPersistence {
     @XStreamOmitField
-    private PageComponentContext context;
+    protected PageComponentContext context;
     @XStreamOmitField
     private String currentUrl;
     @XStreamOmitField
@@ -93,6 +93,9 @@ public class PageObject extends DataPersistence {
     public <T extends DataPersistence> T fromXml(String xml, boolean resolveAliases) {
         T data = super.fromXml(xml, resolveAliases);
         addToGlobalAliases(data);
+        if (context != null) {
+            ((PageObject) data).initPage(context, resolveAliases);
+        }
         return data;
     }
 
@@ -100,6 +103,9 @@ public class PageObject extends DataPersistence {
     public <T extends DataPersistence> T fromURL(URL url, boolean resolveAliases) {
         T data = super.fromURL(url, resolveAliases);
         addToGlobalAliases(data);
+        if (context != null) {
+            ((PageObject) data).initPage(context, resolveAliases);
+        }
         return data;
     }
 
@@ -107,6 +113,9 @@ public class PageObject extends DataPersistence {
     public <T extends DataPersistence> T fromInputStream(InputStream inputStream, boolean resolveAliases) {
         T data = super.fromInputStream(inputStream, resolveAliases);
         addToGlobalAliases(data);
+        if (context != null) {
+            ((PageObject) data).initPage(context, resolveAliases);
+        }
         return data;
     }
 
@@ -114,14 +123,31 @@ public class PageObject extends DataPersistence {
     public <T extends DataPersistence> T fromFile(String filePath, boolean resolveAliases) {
         T data = super.fromFile(filePath, resolveAliases);
         addToGlobalAliases(data);
+        if (context != null) {
+            ((PageObject) data).initPage(context, resolveAliases);
+        }
         return data;
+    }
+
+
+    public <T extends DataPersistence> T generateData(boolean resolveAliases) {
+        DataPersistence data = getGenerator().generate(this.getClass());
+        addToGlobalAliases(data);
+        if (context != null) {
+            ((PageObject) data).initPage(context, resolveAliases);
+        }
+        return (T) data;
     }
 
     @Override
     public void generateData() {
         DataPersistence dataPersistence = getGenerator().generate(this.getClass());
         addToGlobalAliases(dataPersistence);
+        PageComponentContext cont = context;
         deepCopy(dataPersistence, this);
+        if (cont != null) {
+            initPage(cont);
+        }
     }
 
     @Override

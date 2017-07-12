@@ -94,7 +94,7 @@ public class PageObject extends DataPersistence {
         T data = super.fromXml(xml, resolveAliases);
         addToGlobalAliases(data);
         if (context != null) {
-            ((PageObject) data).initPage(context, resolveAliases);
+            ((PageObject) data).initPage(context, ajaxIsUsed);
         }
         return data;
     }
@@ -104,7 +104,7 @@ public class PageObject extends DataPersistence {
         T data = super.fromURL(url, resolveAliases);
         addToGlobalAliases(data);
         if (context != null) {
-            ((PageObject) data).initPage(context, resolveAliases);
+            ((PageObject) data).initPage(context, ajaxIsUsed);
         }
         return data;
     }
@@ -114,7 +114,7 @@ public class PageObject extends DataPersistence {
         T data = super.fromInputStream(inputStream, resolveAliases);
         addToGlobalAliases(data);
         if (context != null) {
-            ((PageObject) data).initPage(context, resolveAliases);
+            ((PageObject) data).initPage(context, ajaxIsUsed);
         }
         return data;
     }
@@ -124,7 +124,7 @@ public class PageObject extends DataPersistence {
         T data = super.fromFile(filePath, resolveAliases);
         addToGlobalAliases(data);
         if (context != null) {
-            ((PageObject) data).initPage(context, resolveAliases);
+            ((PageObject) data).initPage(context, ajaxIsUsed);
         }
         return data;
     }
@@ -134,7 +134,7 @@ public class PageObject extends DataPersistence {
         DataPersistence data = getGenerator().generate(this.getClass());
         addToGlobalAliases(data);
         if (context != null) {
-            ((PageObject) data).initPage(context, resolveAliases);
+            ((PageObject) data).initPage(context, ajaxIsUsed);
         }
         return (T) data;
     }
@@ -319,9 +319,10 @@ public class PageObject extends DataPersistence {
 
     public void initData(PageObject pageObject) {
         PageComponentContext currentContext = context;
+        boolean currentAjaxIsUsed = ajaxIsUsed;
         deepCopy(pageObject, this);
         if (currentContext != null) {
-            initPage(currentContext);
+            initPage(currentContext, currentAjaxIsUsed);
         }
     }
 

@@ -24,6 +24,9 @@ import org.openqa.selenium.support.pagefactory.ElementLocator;
 import ui.auto.core.data.ComponentData;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ComponentMethodInterceptor implements MethodInterceptor {
     private ElementLocator locator;
@@ -35,29 +38,29 @@ public class ComponentMethodInterceptor implements MethodInterceptor {
     @Override
     public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
         String methodName = method.getName();
-        //Skip methods belonging to ComponentData interface
-        for (Method dataMethod : ComponentData.class.getMethods()) {
+
+        //Skip methods belonging to Object class and ComponentData interface
+        Set<Method> skippedMethods = new HashSet<>();
+        skippedMethods.addAll(Arrays.asList(Object.class.getDeclaredMethods()));
+        skippedMethods.addAll(Arrays.asList(ComponentData.class.getMethods()));
+        for (Method dataMethod : skippedMethods) {
             if (dataMethod.getName().equals(methodName)) {
                 return proxy.invokeSuper(obj, args);
             }
         }
 
-        //Skip finalize method
-        if (!"finalize".equals(methodName)) {
-            PageComponent pageComponent = (PageComponent) obj;
-            WebElement currentCoreElement = pageComponent.coreElement;
-            WebElement newCoreElement = locator.findElement();
-            boolean staleElement = false;
-            try {
-                if (currentCoreElement != null)
-                    currentCoreElement.isDisplayed();//This should trigger exception if element is detached from Dom
-            } catch (StaleElementReferenceException e) {
-                staleElement = true;
-            }
-            if (currentCoreElement == null || staleElement || !currentCoreElement.equals(newCoreElement)) {
-                pageComponent.initComponent(newCoreElement);
-            }
-
+        PageComponent pageComponent = (PageComponent) obj;
+        WebElement currentCoreElement = pageComponent.coreElement;
+        WebElement newCoreElement = locator.findElement();
+        boolean staleElement = false;
+        try {
+            if (currentCoreElement != null)
+                currentCoreElement.isDisplayed();//This should trigger exception if element is detached from Dom
+        } catch (StaleElementReferenceException e) {
+            staleElement = true;
+        }
+        if (currentCoreElement == null || staleElement || !currentCoreElement.equals(newCoreElement)) {
+            pageComponent.initComponent(newCoreElement);
         }
         return proxy.invokeSuper(obj, args);
     }

@@ -20,15 +20,14 @@ import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocator;
-import org.openqa.selenium.support.ui.Clock;
-import org.openqa.selenium.support.ui.SystemClock;
 
 import java.lang.reflect.Field;
+import java.time.Clock;
 
 public class AjaxVisibleElementLocator extends AjaxElementLocator {
 
     public AjaxVisibleElementLocator(SearchContext searchContext, Field field, int timeOutInSeconds) {
-        super(new SystemClock(), searchContext, field, timeOutInSeconds);
+        super(searchContext, field, timeOutInSeconds);
     }
 
     public AjaxVisibleElementLocator(Clock clock, WebDriver driver, Field field, int timeOutInSeconds) {

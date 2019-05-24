@@ -17,7 +17,6 @@ Copyright 2010-2012 Michael Braiman
 package ui.auto.core.utils;
 
 import org.openqa.selenium.*;
-import org.openqa.selenium.internal.WrapsDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 

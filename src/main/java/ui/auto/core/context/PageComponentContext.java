@@ -25,14 +25,7 @@ import org.openqa.selenium.WebDriver;
  *         It stores instance of the WebDriver, global data aliases and some timeout parameters
  */
 public class PageComponentContext {
-    private static ThreadLocal<DataAliases> globalAliases = new ThreadLocal<DataAliases>() {
-
-        @Override
-        protected DataAliases initialValue() {
-            return new DataAliases();
-        }
-
-    };
+    private static ThreadLocal<DataAliases> globalAliases = ThreadLocal.withInitial(DataAliases::new);
     protected WebDriver driver;
     private int ajaxTimeOut = 10; //in seconds
     private int waitForUrlTimeOut = 10000; //in milliseconds
@@ -46,6 +39,11 @@ public class PageComponentContext {
      */
     public PageComponentContext(WebDriver driver) {
         this.driver = driver;
+    }
+
+    public PageComponentContext(WebDriver driver, int timeOutInSeconds) {
+        this.driver = driver;
+        ajaxTimeOut = timeOutInSeconds;
     }
 
 

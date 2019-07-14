@@ -17,8 +17,8 @@ Copyright 2010-2012 Michael Braiman
 package ui.auto.core.components;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import org.assertj.core.api.Assertions;
 import org.openqa.selenium.WebElement;
-import org.testng.Assert;
 import ui.auto.core.data.DataTypes;
 import ui.auto.core.pagecomponent.PageComponent;
 
@@ -62,11 +62,11 @@ public class WebComponent extends PageComponent {
     public void validateData(DataTypes validationMethod) {
         String valData = validationMethod.getData(this);
         if (valData != null)
-            Assert.assertEquals(getValue(), valData);
+            Assertions.assertThat(getData()).isEqualTo(valData);
     }
 
     public void validateData(String data) {
-        Assert.assertEquals(getValue(), data);
+        Assertions.assertThat(getValue()).isEqualTo(data);
     }
 
     public void validateData() {

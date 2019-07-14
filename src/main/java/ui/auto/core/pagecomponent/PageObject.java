@@ -22,6 +22,7 @@ import datainstiller.data.DataAliases;
 import datainstiller.data.DataGenerator;
 import datainstiller.data.DataPersistence;
 import datainstiller.data.DataValueConverter;
+import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.DefaultElementLocatorFactory;
@@ -176,13 +177,17 @@ public class PageObject extends DataPersistence {
     public <T extends PageComponentContext> void initPage(T context, boolean ajaxIsUsed) {
         this.context = context;
         this.ajaxIsUsed = ajaxIsUsed;
-        currentUrl = context.getDriver().getCurrentUrl();
-        if (ajaxIsUsed) {
-            AjaxVisibleElementLocatorFactory ajaxVisibleElementLocatorFactory = new AjaxVisibleElementLocatorFactory(context.getDriver(), context.getAjaxTimeOut());
-            PageFactory.initElements(new ComponentFieldDecorator(ajaxVisibleElementLocatorFactory, this), this);
+        if (AppiumDriver.class.isAssignableFrom(getDriver().getClass())) {
+            PageFactory.initElements(new WidgetFieldDecorator(context, this), this);
         } else {
-            DefaultElementLocatorFactory defLocFactory = new DefaultElementLocatorFactory(context.getDriver());
-            PageFactory.initElements(new ComponentFieldDecorator(defLocFactory, this), this);
+            currentUrl = context.getDriver().getCurrentUrl();
+            if (ajaxIsUsed) {
+                AjaxVisibleElementLocatorFactory ajaxVisibleElementLocatorFactory = new AjaxVisibleElementLocatorFactory(context.getDriver(), context.getAjaxTimeOut());
+                PageFactory.initElements(new ComponentFieldDecorator(ajaxVisibleElementLocatorFactory, this), this);
+            } else {
+                DefaultElementLocatorFactory defLocFactory = new DefaultElementLocatorFactory(context.getDriver());
+                PageFactory.initElements(new ComponentFieldDecorator(defLocFactory, this), this);
+            }
         }
     }
 
@@ -266,7 +271,7 @@ public class PageObject extends DataPersistence {
             if (!field.isAnnotationPresent(XStreamOmitField.class)) {
                 if (PageComponent.class.isAssignableFrom(field.getType())) {
                     field.setAccessible(true);
-                    PageComponent component = null;
+                    PageComponent component;
                     try {
                         component = (PageComponent) field.get(this);
                     } catch (IllegalAccessException e) {
@@ -289,13 +294,9 @@ public class PageObject extends DataPersistence {
 
     protected void autoFillPage(final boolean validate) {
         if (context == null) throw new RuntimeException("PageObject is not initialized, invoke initPage method!");
-        enumerateFields(new FieldEnumerationAction() {
-
-            @Override
-            public void doAction(PageComponent PageComponent, Field field) {
-                if (!field.isAnnotationPresent(SkipAutoFill.class))
-                    setElementValue(PageComponent, validate);
-            }
+        enumerateFields((PageComponent, field) -> {
+            if (!field.isAnnotationPresent(SkipAutoFill.class))
+                setElementValue(PageComponent, validate);
         });
 
     }
@@ -306,14 +307,10 @@ public class PageObject extends DataPersistence {
 
     protected void autoValidatePage(final DataTypes validationMethod) {
         if (context == null) throw new RuntimeException("PageObject is not initialized, invoke initPage method!");
-        enumerateFields(new FieldEnumerationAction() {
-
-            @Override
-            public void doAction(PageComponent pageComponent, Field field) {
-                String data = pageComponent.getData(validationMethod, true);
-                if (!field.isAnnotationPresent(SkipAutoValidate.class) && data != null && !data.isEmpty())
-                    pageComponent.validateData(validationMethod);
-            }
+        enumerateFields((pageComponent, field) -> {
+            String data = pageComponent.getData(validationMethod, true);
+            if (!field.isAnnotationPresent(SkipAutoValidate.class) && data != null && !data.isEmpty())
+                pageComponent.validateData(validationMethod);
         });
     }
 

@@ -18,9 +18,12 @@ package ui.auto.core.pagecomponent;
 
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
+import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.pagefactory.ElementLocator;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import ui.auto.core.context.PageComponentContext;
 import ui.auto.core.data.ComponentData;
 
 import java.lang.reflect.Method;
@@ -28,11 +31,13 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ComponentMethodInterceptor implements MethodInterceptor {
-    private ElementLocator locator;
+public class WidgetMethodInterceptor implements MethodInterceptor {
+    private By locator;
+    private PageComponentContext context;
 
-    public ComponentMethodInterceptor(ElementLocator locator) {
+    public WidgetMethodInterceptor(By locator, PageComponentContext context) {
         this.locator = locator;
+        this.context = context;
     }
 
     @Override
@@ -50,17 +55,11 @@ public class ComponentMethodInterceptor implements MethodInterceptor {
         }
 
         PageComponent pageComponent = (PageComponent) obj;
-        WebElement currentCoreElement = pageComponent.coreElement;
-        WebElement newCoreElement = locator.findElement();
-        boolean staleElement = false;
-        try {
-            if (currentCoreElement != null)
-                currentCoreElement.isDisplayed();//This should trigger exception if element is detached from Dom
-        } catch (StaleElementReferenceException e) {
-            staleElement = true;
-        }
-        if (currentCoreElement == null || staleElement || !currentCoreElement.equals(newCoreElement)) {
-            pageComponent.initComponent(newCoreElement);
+        WebDriverWait wait = new WebDriverWait(context.getDriver(), context.getAjaxTimeOut(), 200);
+        WebElement coreElement = wait.ignoring(StaleElementReferenceException.class).
+                until(ExpectedConditions.visibilityOfElementLocated(locator));
+        if (coreElement != null) {
+            pageComponent.initComponent(coreElement);
         }
         return proxy.invokeSuper(obj, args);
     }

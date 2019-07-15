@@ -39,6 +39,6 @@ This open source project is distributed through maven central repository. Here i
 <dependency>
     <groupId>com.googlecode.page-component</groupId>
     <artifactId>page-component</artifactId>
-    <version>1.3.5</version>
+    <version>1.3.6</version>
 </dependency>
 ```

@@ -62,7 +62,7 @@ public class WebComponent extends PageComponent {
     public void validateData(DataTypes validationMethod) {
         String valData = validationMethod.getData(this);
         if (valData != null)
-            Assertions.assertThat(getData()).isEqualTo(valData);
+            Assertions.assertThat(getValue()).isEqualTo(valData);
     }
 
     public void validateData(String data) {

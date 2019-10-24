@@ -21,7 +21,6 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
 import datainstiller.data.DataAliases;
 import datainstiller.data.DataGenerator;
 import datainstiller.data.DataPersistence;
-import datainstiller.data.DataValueConverter;
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
@@ -33,8 +32,6 @@ import ui.auto.core.data.PageComponentDataConverter;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Michael Braiman braimanm@gmail.com
@@ -68,6 +65,14 @@ public class PageObject extends DataPersistence {
     protected PageObject() {
     }
 
+
+    @Override
+    protected XStream getXstream() {
+        XStream xStream = super.getXstream();
+        xStream.registerConverter(new PageComponentDataConverter());
+        return xStream;
+    }
+
     private static void sleep(long millis) {
         try {
             Thread.sleep(millis);
@@ -76,10 +81,9 @@ public class PageObject extends DataPersistence {
         }
     }
 
+
     private DataGenerator getGenerator() {
-        List<DataValueConverter> converters = new ArrayList<>();
-        converters.add(new PageComponentDataConverter());
-        return new DataGenerator(converters);
+        return new DataGenerator(getXstream());
     }
 
     private void addToGlobalAliases(DataPersistence data) {

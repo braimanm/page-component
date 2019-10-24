@@ -23,6 +23,7 @@ import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import datainstiller.data.DataValueConverter;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 /**
@@ -63,8 +64,12 @@ public class PageComponentDataConverter implements DataValueConverter {
         return type;
     }
 
-    @Override
     public <T> T fromString(String str, Class<T> cls) {
+        return fromString(str, cls, null);
+    }
+
+    @Override
+    public <T> T fromString(String str, Class<T> cls, Field field) {
         T obj = null;
         try {
             obj = cls.newInstance();
@@ -77,6 +82,4 @@ public class PageComponentDataConverter implements DataValueConverter {
         ((ComponentData) obj).initializeData(str, null, null);
         return obj;
     }
-
-
 }

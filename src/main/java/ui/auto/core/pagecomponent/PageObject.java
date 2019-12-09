@@ -22,6 +22,7 @@ import datainstiller.data.DataAliases;
 import datainstiller.data.DataGenerator;
 import datainstiller.data.DataPersistence;
 import io.appium.java_client.AppiumDriver;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.DefaultElementLocatorFactory;
@@ -45,6 +46,8 @@ public class PageObject extends DataPersistence {
     private String currentUrl;
     @XStreamOmitField
     private boolean ajaxIsUsed;
+    @XStreamOmitField
+    By locator;
 
     protected <T extends PageComponentContext> PageObject(T context) {
         initPage(context);
@@ -332,6 +335,10 @@ public class PageObject extends DataPersistence {
             return context.getDriver();
         }
         return null;
+    }
+
+    public By getLocator() {
+        return locator;
     }
 
 }

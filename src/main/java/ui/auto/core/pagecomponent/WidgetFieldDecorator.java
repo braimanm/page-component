@@ -22,6 +22,9 @@ import io.appium.java_client.pagefactory.DefaultElementByBuilder;
 import net.sf.cglib.proxy.Enhancer;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.pagefactory.Annotations;
+import org.openqa.selenium.support.pagefactory.ByChained;
 import ui.auto.core.context.PageComponentContext;
 import ui.auto.core.data.ComponentData;
 import ui.auto.core.data.DataTypes;
@@ -67,6 +70,10 @@ public class WidgetFieldDecorator extends AppiumFieldDecorator {
             By by = builder.buildBy();
             if (by == null) return null;
 
+            if (page.getLocator() != null) {
+                by = new ByChained(page.getLocator(), by);
+            }
+
             ComponentData componentData;
             try {
                 field.setAccessible(true);
@@ -87,6 +94,22 @@ public class WidgetFieldDecorator extends AppiumFieldDecorator {
             ((ComponentData) componentProxy).initializeData(dataValue, initialValue, expectedValue);
             ((PageComponent) componentProxy).selector = by;
             return componentProxy;
+        }
+        if (PageObject.class.isAssignableFrom(field.getType())) {
+            field.setAccessible(true);
+            if (field.getAnnotation(FindBy.class) != null) {
+                PageObject po;
+                try {
+                    field.setAccessible(true);
+                    po = (PageObject) field.get(page);
+                    if (po != null) {
+                        Annotations annotations = new Annotations(field);
+                        po.locator = annotations.buildBy();
+                    }
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
 
         return super.decorate(ignored, field);

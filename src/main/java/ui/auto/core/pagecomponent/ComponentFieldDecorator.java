@@ -18,10 +18,9 @@ package ui.auto.core.pagecomponent;
 
 
 import net.sf.cglib.proxy.Enhancer;
-import org.openqa.selenium.support.pagefactory.Annotations;
-import org.openqa.selenium.support.pagefactory.DefaultFieldDecorator;
-import org.openqa.selenium.support.pagefactory.ElementLocator;
-import org.openqa.selenium.support.pagefactory.ElementLocatorFactory;
+import org.openqa.selenium.By;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.pagefactory.*;
 import ui.auto.core.data.ComponentData;
 import ui.auto.core.data.DataTypes;
 
@@ -35,6 +34,26 @@ public class ComponentFieldDecorator extends DefaultFieldDecorator {
         this.page = page;
     }
 
+    private By modifyLocator(ElementLocator locator, By parentLocator) {
+        By bys = null;
+        if (DefaultElementLocator.class.isAssignableFrom(locator.getClass())) {
+            try {
+                Field by = DefaultElementLocator.class.getDeclaredField("by");
+                by.setAccessible(true);
+                By childLocator = (By) by.get(locator);
+                if (parentLocator != null) {
+                    bys = new ByChained(parentLocator, childLocator);
+                    by.set(locator, bys);
+                } else {
+                    bys = childLocator;
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return bys;
+    }
+
     @Override
     public Object decorate(ClassLoader loader, final Field field) {
         String dataValue = null;
@@ -45,7 +64,9 @@ public class ComponentFieldDecorator extends DefaultFieldDecorator {
             ElementLocator locator = factory.createLocator(field);
             if (locator == null) return null;
 
-            ComponentData componentData = null;
+            By by = modifyLocator(locator, page.getLocator());
+
+            ComponentData componentData;
             try {
                 field.setAccessible(true);
                 componentData = (ComponentData) field.get(page);
@@ -63,9 +84,24 @@ public class ComponentFieldDecorator extends DefaultFieldDecorator {
             enhancer.setCallback(new ComponentMethodInterceptor(locator));
             Object componentProxy = enhancer.create();
             ((ComponentData) componentProxy).initializeData(dataValue, initialValue, expectedValue);
-            Annotations annotations = new Annotations(field);
-            ((PageComponent) componentProxy).selector = annotations.buildBy();
+            ((PageComponent) componentProxy).selector = by;
             return componentProxy;
+        }
+        if (PageObject.class.isAssignableFrom(field.getType())) {
+            field.setAccessible(true);
+            if (field.getAnnotation(FindBy.class) != null) {
+                PageObject po;
+                try {
+                    field.setAccessible(true);
+                    po = (PageObject) field.get(page);
+                    if (po != null) {
+                        Annotations annotations = new Annotations(field);
+                        po.locator = annotations.buildBy();
+                    }
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
 
         return super.decorate(loader, field);

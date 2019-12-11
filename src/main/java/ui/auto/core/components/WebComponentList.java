@@ -39,9 +39,12 @@ public class WebComponentList extends PageObject {
         for (int i = 0; i < elements.size(); i++) {
             WebComponent component = new WebComponent(elements.get(i));
             if (items != null && items.size() > i) {
-                String data = items.get(i).getData().trim().replaceAll("\\n\\s", "\n");
-                String init = items.get(i).getData(DataTypes.Initial).replaceAll("\\n\\s", "\n");
-                String expected = items.get(i).getData(DataTypes.Expected).replaceAll("\\n\\s", "\n");
+                String data = items.get(i).getData();
+                if (data != null) data = data.trim().replaceAll("\\n\\s*", "\n");
+                String init = items.get(i).getData(DataTypes.Initial);
+                if (init != null) init = init.trim().replaceAll("\\n\\s*", "\n");
+                String expected = items.get(i).getData(DataTypes.Expected);
+                if (expected != null) expected = expected.trim().replaceAll("\\n\\s*", "\n");
                 component.initializeData(data, init, expected);
             }
             components.add(component);

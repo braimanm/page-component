@@ -47,7 +47,7 @@ public class PageObject extends DataPersistence {
     @XStreamOmitField
     private boolean ajaxIsUsed;
     @XStreamOmitField
-    By locator;
+    protected By locator;
 
     protected <T extends PageComponentContext> PageObject(T context) {
         initPage(context);

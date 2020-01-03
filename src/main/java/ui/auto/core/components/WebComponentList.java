@@ -17,47 +17,83 @@ Copyright 2010-2019 Michael Braiman braimanm@gmail.com
 package ui.auto.core.components;
 
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
 import org.assertj.core.api.Assertions;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import ui.auto.core.context.PageComponentContext;
 import ui.auto.core.data.DataTypes;
 import ui.auto.core.pagecomponent.PageObject;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class WebComponentList extends PageObject {
     @XStreamImplicit(itemFieldName = "item")
     private List<WebComponent> items;
+    @XStreamOmitField
+    private LinkedHashMap<String, WebElement> elementsMap;
+
+    public WebComponentList() {
+    }
+
+    public WebComponentList(List<WebComponent> items, By locator) {
+        this.items = items;
+        this.locator = locator;
+    }
+
+    private String getValue(WebElement el) {
+        String value = el.getAttribute("value");
+        if (value == null) {
+            value = el.getText();
+        }
+        if (value != null) {
+            value = value.trim().replaceAll("\\n\\s*", "\n");
+        }
+        return value;
+    }
+
+    protected String getData(WebComponent cmp, DataTypes type) {
+        String data = cmp.getData(type);
+        if (data != null) {
+            data = data.trim().replaceAll("\\n\\s*", "\n");
+        }
+        return data;
+    }
+
 
     @Override
     public <T extends PageComponentContext> void initPage(T context) {
         super.initPage(context);
-        List<WebElement> elements = getDriver().findElements(getLocator());
-        List<WebComponent> components = new ArrayList<>();
-        for (int i = 0; i < elements.size(); i++) {
-            WebComponent component = new WebComponent(elements.get(i));
-            if (items != null && items.size() > i) {
-                String data = items.get(i).getData();
-                if (data != null) data = data.trim().replaceAll("\\n\\s*", "\n");
-                String init = items.get(i).getData(DataTypes.Initial);
-                if (init != null) init = init.trim().replaceAll("\\n\\s*", "\n");
-                String expected = items.get(i).getData(DataTypes.Expected);
-                if (expected != null) expected = expected.trim().replaceAll("\\n\\s*", "\n");
-                component.initializeData(data, init, expected);
-            }
-            components.add(component);
-        }
-        items = components;
+        List<WebElement> elementList = getDriver().findElements(getLocator());
+        elementsMap = new LinkedHashMap<>();
+        elementList.forEach(element -> elementsMap.put(getValue(element), element));
+        items.forEach(comp -> {
+            String data = getData(comp, DataTypes.Data);
+            String init = getData(comp, DataTypes.Initial);
+            String exp = getData(comp, DataTypes.Expected);
+            comp.initializeData(data, init, exp);
+        });
     }
 
     public void validateAll() {
-        enumerate(el -> Assertions.assertThat(el.getText()).isEqualTo((el.getData())));
+        List<String> expectedList = new ArrayList<>();
+        items.forEach(comp -> expectedList.add(comp.getData(DataTypes.Data)));
+        Assertions.assertThat(elementsMap.keySet()).containsExactlyElementsOf(expectedList);
     }
 
-    public void enumerate(Consumer<WebComponent> consumer) {
-        items.forEach(consumer);
+    public void validateUnordered() {
+        List<String> expectedList = new ArrayList<>();
+        items.forEach(comp -> expectedList.add(comp.getData(DataTypes.Data)));
+        Assertions.assertThat(elementsMap.keySet()).containsExactlyInAnyOrderElementsOf(expectedList);
     }
 
+    public LinkedHashMap<String, WebElement> getElementsMap() {
+        return elementsMap;
+    }
+
+    public List<WebComponent> getData() {
+        return items;
+    }
 }

@@ -69,22 +69,30 @@ public class WebComponentList extends PageObject {
         List<WebElement> elementList = getDriver().findElements(getLocator());
         elementsMap = new LinkedHashMap<>();
         elementList.forEach(element -> elementsMap.put(getValue(element), element));
-        items.forEach(comp -> {
-            String data = getData(comp, DataTypes.Data);
-            String init = getData(comp, DataTypes.Initial);
-            String exp = getData(comp, DataTypes.Expected);
-            comp.initializeData(data, init, exp);
-        });
+        if (items != null && !items.isEmpty()) {
+            items.forEach(comp -> {
+                String data = getData(comp, DataTypes.Data);
+                String init = getData(comp, DataTypes.Initial);
+                String exp = getData(comp, DataTypes.Expected);
+                comp.initializeData(data, init, exp);
+            });
+        }
     }
 
     public void validateAll() {
         List<String> expectedList = new ArrayList<>();
+        if (items == null) {
+            throw new RuntimeException("WebComponentList: Please provide data for validation!");
+        }
         items.forEach(comp -> expectedList.add(comp.getData(DataTypes.Data)));
         Assertions.assertThat(elementsMap.keySet()).containsExactlyElementsOf(expectedList);
     }
 
     public void validateUnordered() {
         List<String> expectedList = new ArrayList<>();
+        if (items == null) {
+            throw new RuntimeException("WebComponentList: Please provide data for validation!");
+        }
         items.forEach(comp -> expectedList.add(comp.getData(DataTypes.Data)));
         Assertions.assertThat(elementsMap.keySet()).containsExactlyInAnyOrderElementsOf(expectedList);
     }

@@ -48,6 +48,8 @@ public class PageObject extends DataPersistence {
     private boolean ajaxIsUsed;
     @XStreamOmitField
     protected By locator;
+    @XStreamOmitField
+    protected boolean dataProvided;
 
     protected <T extends PageComponentContext> PageObject(T context) {
         initPage(context);
@@ -339,6 +341,10 @@ public class PageObject extends DataPersistence {
 
     public By getLocator() {
         return locator;
+    }
+
+    public boolean isDataProvided() {
+        return dataProvided;
     }
 
 }

@@ -87,20 +87,27 @@ public class ComponentFieldDecorator extends DefaultFieldDecorator {
             ((PageComponent) componentProxy).selector = by;
             return componentProxy;
         }
+
         if (PageObject.class.isAssignableFrom(field.getType())) {
             field.setAccessible(true);
-            if (field.getAnnotation(FindBy.class) != null) {
-                PageObject po;
-                try {
-                    field.setAccessible(true);
-                    po = (PageObject) field.get(page);
-                    if (po != null) {
-                        Annotations annotations = new Annotations(field);
-                        po.locator = annotations.buildBy();
-                    }
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
+            PageObject po;
+            try {
+                field.setAccessible(true);
+                po = (PageObject) field.get(page);
+                if (po == null) {
+                    Object value = field.getType().newInstance();
+                    po = (PageObject) value;
+                    field.set(page, value);
+                    po.dataProvided = false;
+                } else {
+                    po.dataProvided = true;
                 }
+                if (field.getAnnotation(FindBy.class) != null) {
+                    Annotations annotations = new Annotations(field);
+                    po.locator = annotations.buildBy();
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
         }
 

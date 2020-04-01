@@ -22,7 +22,9 @@ import io.appium.java_client.pagefactory.DefaultElementByBuilder;
 import net.sf.cglib.proxy.Enhancer;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.pagefactory.Annotations;
 import org.openqa.selenium.support.pagefactory.ByChained;
 import ui.auto.core.context.PageComponentContext;
@@ -50,6 +52,7 @@ public class WidgetFieldDecorator extends AppiumFieldDecorator {
         String initialValue = null;
         String expectedValue = null;
 
+        field.setAccessible(true);
         if (PageComponent.class.isAssignableFrom(field.getType())) {
             String platform = null;
             String automation = null;
@@ -76,7 +79,6 @@ public class WidgetFieldDecorator extends AppiumFieldDecorator {
 
             ComponentData componentData;
             try {
-                field.setAccessible(true);
                 componentData = (ComponentData) field.get(page);
             } catch (IllegalArgumentException | IllegalAccessException e) {
                 throw new RuntimeException(e);
@@ -95,11 +97,14 @@ public class WidgetFieldDecorator extends AppiumFieldDecorator {
             ((PageComponent) componentProxy).selector = by;
             return componentProxy;
         }
-        if (PageObject.class.isAssignableFrom(field.getType())) {
-            field.setAccessible(true);
+
+        //PageObject as Web Component
+        if (PageObject.class.isAssignableFrom(field.getType()) &&
+                (field.isAnnotationPresent(FindBy.class) ||
+                        field.isAnnotationPresent(FindAll.class) || field.isAnnotationPresent(FindBys.class))) {
+
             PageObject po;
             try {
-                field.setAccessible(true);
                 po = (PageObject) field.get(page);
                 if (po == null) {
                     Object value = field.getType().newInstance();
@@ -109,10 +114,8 @@ public class WidgetFieldDecorator extends AppiumFieldDecorator {
                 } else {
                     po.dataProvided = true;
                 }
-                if (field.getAnnotation(FindBy.class) != null) {
-                    Annotations annotations = new Annotations(field);
-                    po.locator = annotations.buildBy();
-                }
+                Annotations annotations = new Annotations(field);
+                po.locator = annotations.buildBy();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

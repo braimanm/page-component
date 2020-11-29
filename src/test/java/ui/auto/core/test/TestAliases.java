@@ -36,7 +36,7 @@ public class TestAliases {
             if (el instanceof String) {
                 String comp = (String) el;
                 String key = comp.replace("${", "").replace("}", "");
-                String value = PageComponentContext.getGlobalAliases().get(key);
+                Object value = PageComponentContext.getGlobalAliases().get(key);
                 Assert.assertEquals(comp, expectedAlias);
                 Assert.assertEquals(value, expectedValue);
             }

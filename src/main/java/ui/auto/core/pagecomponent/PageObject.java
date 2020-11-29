@@ -71,19 +71,19 @@ public class PageObject extends DataPersistence {
     }
 
 
-    @Override
-    protected XStream getXstream() {
-        XStream xStream = super.getXstream();
-        xStream.registerConverter(new PageComponentDataConverter());
-        return xStream;
-    }
-
-    private static void sleep(long millis) {
+    private static void sleep() {
         try {
-            Thread.sleep(millis);
+            Thread.sleep(100);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected XStream getXstream() {
+        XStream xStream = super.getXstream(PageComponentContext.getGlobalAliases());
+        xStream.registerConverter(new PageComponentDataConverter());
+        return xStream;
     }
 
 
@@ -141,10 +141,10 @@ public class PageObject extends DataPersistence {
 
 
     public <T extends DataPersistence> T generateData(boolean resolveAliases) {
-        DataPersistence data = getGenerator().generate(this.getClass());
+        PageObject data = getGenerator().generate(this.getClass());
         addToGlobalAliases(data);
         if (context != null) {
-            ((PageObject) data).initPage(context, ajaxIsUsed);
+            data.initPage(context, ajaxIsUsed);
         }
         return (T) data;
     }
@@ -175,8 +175,7 @@ public class PageObject extends DataPersistence {
         // If this class extends PageObject and it initialized with context
         // then all the WebComponent fields of this class are CGLIB proxies and by default xml node
         // is marked with attribute class. This will remove class attribute from the xml node
-        if (PageObject.class.isAssignableFrom(this.getClass()) &&
-                this.getContext() != null) {
+        if (this.getContext() != null) {
             xstream.aliasSystemAttribute(null, "class");
         }
         String xml = xstream.toXML(this);
@@ -225,7 +224,7 @@ public class PageObject extends DataPersistence {
                 currentUrl = context.getDriver().getCurrentUrl();
                 return;
             }
-            sleep(100);
+            sleep();
         }
         throw new RuntimeException("Expected url:" + expectedUrl + " is not displayed!");
     }
@@ -238,7 +237,7 @@ public class PageObject extends DataPersistence {
                 currentUrl = context.getDriver().getCurrentUrl();
                 exitWhile = true;
             }
-            sleep(100);
+            sleep();
         }
         return exitWhile;
     }

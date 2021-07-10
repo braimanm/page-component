@@ -256,10 +256,7 @@ public class PageObject extends DataPersistence {
             for (int i = 0; i < 3; i++) {
                 component.setValue();
                 if (!validate) return;
-                valData = component.getData();
-                if (component.getData(DataTypes.Expected, true) != null)
-                    valData = component.getData(DataTypes.Expected, true);
-                if (component.getValue().equals(valData)) return;
+                if (component.validate()) return;
             }
             throw new RuntimeException("Can't set element '" + component.getClass().getSimpleName() + "' to value: " + valData);
         }

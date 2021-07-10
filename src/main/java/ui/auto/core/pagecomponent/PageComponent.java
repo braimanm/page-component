@@ -216,4 +216,11 @@ public abstract class PageComponent implements ComponentData, DefaultAction {
         return selector;
     }
 
+    @Override
+    public boolean validate() {
+        String valData = getData();
+        if (getData(DataTypes.Expected, true) != null)
+            valData =getData(DataTypes.Expected, true);
+        return  getValue().equals(valData);
+    }
 }

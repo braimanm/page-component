@@ -25,4 +25,6 @@ public interface DefaultAction {
     String getValue();
 
     void validateData(DataTypes validationMethod);
+
+    boolean validate();
 }

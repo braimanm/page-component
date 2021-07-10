@@ -22,6 +22,8 @@ import org.openqa.selenium.By;
 import ui.auto.core.pagecomponent.ComponentMethodInterceptor;
 import ui.auto.core.pagecomponent.PageComponent;
 
+import java.util.Map;
+
 /**
  * @author Michael Braiman braimanm@gmail.com
  *         This interface represents data dimension, each {@link PageComponent} have data which can be used to populate
@@ -40,6 +42,17 @@ public interface ComponentData {
      */
     String getData(DataTypes type, boolean resolveAliases);
 
+
+    Map<String, String> getCustomData();
+
+    /**
+     * Get custom data
+     *
+     * @param dataName custom data name to retrieve
+     * @return returns specific data for the custom data
+     */
+    String getData(String dataName, boolean resolveAliases);
+
     /**
      * Initialize three types of data: initial, populated and expected
      *
@@ -48,6 +61,13 @@ public interface ComponentData {
      * @param expected set expected data value
      */
     void initializeData(String data, String initial, String expected);
+
+    /**
+     * Initialize custom data
+     *
+     * @param customData set custom data
+     */
+    void addCustomData(Map<String,String> customData);
 
     /**
      * Returns selenium {@link By} locator for the specific page component

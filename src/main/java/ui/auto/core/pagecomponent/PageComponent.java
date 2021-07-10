@@ -14,7 +14,6 @@ Copyright 2010-2019 Michael Braiman braimanm@gmail.com
    limitations under the License.
 */
 
-
 package ui.auto.core.pagecomponent;
 
 import datainstiller.data.DataAliases;
@@ -25,9 +24,9 @@ import ui.auto.core.data.ComponentData;
 import ui.auto.core.data.DataTypes;
 
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 
 /**
  * @author Michael Braiman braimanm@gmail.com
@@ -40,6 +39,7 @@ public abstract class PageComponent implements ComponentData, DefaultAction {
     private String data;
     private String initialData;
     private String expectedData;
+    private Map<String, String> customData;
 
     /**
      * Default constructor is neded for serialization purposes
@@ -68,6 +68,11 @@ public abstract class PageComponent implements ComponentData, DefaultAction {
         this.expectedData = expectedData;
     }
 
+    @Override
+    public void addCustomData(Map<String, String> customData) {
+        this.customData = customData;
+    }
+
     /**
      * @return core web element for this component
      */
@@ -83,36 +88,63 @@ public abstract class PageComponent implements ComponentData, DefaultAction {
         init();
     }
 
-    @Override
-    public String getData(DataTypes type, boolean resolveAliases) {
-        String dat = null;
-        switch (type) {
-            case Data:
-                dat = data;
-                break;
-            case Initial:
-                dat = initialData;
-                break;
-            case Expected:
-                dat = expectedData;
-                break;
-        }
-        if (dat != null && resolveAliases) {
-            Pattern pat = Pattern.compile("\\$\\{[\\w-]+\\}");
-            Matcher mat = pat.matcher(dat);
-            while (mat.find()) {
-                String alias = mat.group();
-                String key = alias.replace("${", "").replace("}", "");
-                DataAliases aliases = PageComponentContext.getGlobalAliases();
-                if (aliases.containsKey(key)) {
-                    String value = aliases.get(key).toString();
-                    if (value != null) {
-                        dat = dat.replace(alias, value);
-                    }
+    private String resolveAliasesForData(String data) {
+        String dat = data;
+        Pattern pat = Pattern.compile("\\$\\{[\\w-]+}");
+        Matcher mat = pat.matcher(dat);
+        while (mat.find()) {
+            String alias = mat.group();
+            String key = alias.replace("${", "").replace("}", "");
+            DataAliases aliases = PageComponentContext.getGlobalAliases();
+            if (aliases.containsKey(key)) {
+                String value = aliases.get(key).toString();
+                if (value != null) {
+                    dat = dat.replace(alias, value);
                 }
             }
         }
         return dat;
+    }
+
+    @Override
+    public String getData(DataTypes type, boolean resolveAliases) {
+        String data = null;
+        switch (type) {
+            case Data:
+                data = this.data;
+                break;
+            case Initial:
+                data = this.initialData;
+                break;
+            case Expected:
+                data = this.expectedData;
+                break;
+        }
+        if (data != null && resolveAliases) {
+            data = resolveAliasesForData(data);
+        }
+        return data;
+    }
+
+    @Override
+    public String getData(String dataName, boolean resolveAliases) {
+        String data = null;
+        if (customData != null && !customData.isEmpty()) {
+            data = customData.get(dataName);
+            if (data != null && resolveAliases) {
+                data = resolveAliasesForData(data);
+            }
+        }
+        return data;
+    }
+
+    public String getData(String dataName) {
+        return getData(dataName, true);
+    }
+
+    @Override
+    public Map<String, String> getCustomData() {
+        return customData;
     }
 
     /**

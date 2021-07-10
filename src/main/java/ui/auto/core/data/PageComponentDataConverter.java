@@ -25,6 +25,8 @@ import datainstiller.data.DataValueConverter;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Michael Braiman braimanm@gmail.com
@@ -44,8 +46,12 @@ public class PageComponentDataConverter implements DataValueConverter {
         String initial = dataValue.getData(DataTypes.Initial, false);
         String expected = dataValue.getData(DataTypes.Expected, false);
         String data = dataValue.getData(DataTypes.Data, false);
+        Map<String, String> customData = dataValue.getCustomData();
         if (initial != null) writer.addAttribute("initial", initial);
         if (expected != null) writer.addAttribute("expected", expected);
+        if (customData != null && !customData.isEmpty()) {
+            customData.forEach((k, v) -> writer.addAttribute(k,v));
+        }
         if (data != null) writer.setValue(data);
     }
 
@@ -53,6 +59,12 @@ public class PageComponentDataConverter implements DataValueConverter {
     public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
         String initial = reader.getAttribute("initial");
         String expected = reader.getAttribute("expected");
+        Map<String, String> attributes = new HashMap<>();
+        reader.getAttributeNames().forEachRemaining(key -> {
+            if (!key.equals("initial") && !key.equals("expected")) {
+                attributes.put(key.toString(), reader.getAttribute(key.toString()));
+            }
+        });
         String value = reader.getValue();
         Object type = null;
         try {
@@ -61,6 +73,7 @@ public class PageComponentDataConverter implements DataValueConverter {
             throw new RuntimeException(e);
         }
         ((ComponentData) type).initializeData(value, initial, expected);
+        ((ComponentData) type).addCustomData(attributes);
         return type;
     }
 

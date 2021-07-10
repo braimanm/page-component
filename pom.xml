@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.googlecode.page-component</groupId>
     <artifactId>page-component</artifactId>
-    <version>1.4.7</version>
+    <version>1.4.8</version>
     <packaging>jar</packaging>
     <name>page-component</name>
     <description>Selenium Page Object pattern extension to support composite components</description>
@@ -66,7 +66,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.4</version>
+                        <version>3.0.1</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>

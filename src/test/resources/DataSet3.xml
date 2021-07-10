@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Data-set-3>
+    <aliases>
+        <name>Michael</name>
+        <email>123@gmail.com</email>
+    </aliases>
+    <component initial="initial"
+               expected="expected"
+               name="${name}"
+               email="${email}"
+               custom="CUSTOM"
+               num="123">component</component>
+</Data-set-3>

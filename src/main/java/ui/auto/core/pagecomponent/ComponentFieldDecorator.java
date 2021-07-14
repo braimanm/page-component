@@ -27,6 +27,7 @@ import ui.auto.core.data.ComponentData;
 import ui.auto.core.data.DataTypes;
 
 import java.lang.reflect.Field;
+import java.util.Map;
 
 public class ComponentFieldDecorator extends DefaultFieldDecorator {
     PageObject page;
@@ -61,6 +62,7 @@ public class ComponentFieldDecorator extends DefaultFieldDecorator {
         String dataValue = null;
         String initialValue = null;
         String expectedValue = null;
+        Map<String, String> customData = null;
 
         field.setAccessible(true);
         if (PageComponent.class.isAssignableFrom(field.getType())) {
@@ -79,6 +81,7 @@ public class ComponentFieldDecorator extends DefaultFieldDecorator {
                 dataValue = componentData.getData(DataTypes.Data, false);
                 initialValue = componentData.getData(DataTypes.Initial, false);
                 expectedValue = componentData.getData(DataTypes.Expected, false);
+                customData = componentData.getCustomData();
             }
 
             Enhancer enhancer = new Enhancer();
@@ -86,6 +89,7 @@ public class ComponentFieldDecorator extends DefaultFieldDecorator {
             enhancer.setCallback(new ComponentMethodInterceptor(locator));
             Object componentProxy = enhancer.create();
             ((ComponentData) componentProxy).initializeData(dataValue, initialValue, expectedValue);
+            ((ComponentData) componentProxy).addCustomData(customData);
             ((PageComponent) componentProxy).selector = by;
             return componentProxy;
         }

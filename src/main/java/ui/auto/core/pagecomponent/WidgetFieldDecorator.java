@@ -32,6 +32,7 @@ import ui.auto.core.data.ComponentData;
 import ui.auto.core.data.DataTypes;
 
 import java.lang.reflect.Field;
+import java.util.Map;
 
 import static io.appium.java_client.pagefactory.utils.WebDriverUnpackUtility.unpackWebDriverFromSearchContext;
 import static java.util.Optional.ofNullable;
@@ -51,6 +52,7 @@ public class WidgetFieldDecorator extends AppiumFieldDecorator {
         String dataValue = null;
         String initialValue = null;
         String expectedValue = null;
+        Map<String, String> customData = null;
 
         field.setAccessible(true);
         if (PageComponent.class.isAssignableFrom(field.getType())) {
@@ -87,6 +89,7 @@ public class WidgetFieldDecorator extends AppiumFieldDecorator {
                 dataValue = componentData.getData(DataTypes.Data, false);
                 initialValue = componentData.getData(DataTypes.Initial, false);
                 expectedValue = componentData.getData(DataTypes.Expected, false);
+                customData = componentData.getCustomData();
             }
 
             Enhancer enhancer = new Enhancer();
@@ -94,6 +97,7 @@ public class WidgetFieldDecorator extends AppiumFieldDecorator {
             enhancer.setCallback(new WidgetMethodInterceptor(by, context));
             Object componentProxy = enhancer.create();
             ((ComponentData) componentProxy).initializeData(dataValue, initialValue, expectedValue);
+            ((ComponentData) componentProxy).addCustomData(customData);
             ((PageComponent) componentProxy).selector = by;
             return componentProxy;
         }

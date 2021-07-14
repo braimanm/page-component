@@ -32,9 +32,9 @@ import java.util.Map;
  * @author Michael Braiman braimanm@gmail.com
  *         This is{@link XStream} Converter implementation for marshaling and unmarshaling {@link ComponentData}.
  */
+@SuppressWarnings("unused")
 public class PageComponentDataConverter implements DataValueConverter {
 
-    @SuppressWarnings({"rawtypes"})
     @Override
     public boolean canConvert(Class type) {
         return (ComponentData.class.isAssignableFrom(type) && !Modifier.isAbstract(type.getModifiers()));
@@ -50,28 +50,25 @@ public class PageComponentDataConverter implements DataValueConverter {
         if (initial != null) writer.addAttribute("initial", initial);
         if (expected != null) writer.addAttribute("expected", expected);
         if (customData != null && !customData.isEmpty()) {
-            customData.forEach((k, v) -> writer.addAttribute(k,v));
+            customData.forEach(writer::addAttribute);
         }
         if (data != null) writer.setValue(data);
     }
 
     @Override
     public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
-        String initial = reader.getAttribute("initial");
-        String expected = reader.getAttribute("expected");
         Map<String, String> attributes = new HashMap<>();
-        reader.getAttributeNames().forEachRemaining(key -> {
-            if (!key.equals("initial") && !key.equals("expected")) {
-                attributes.put(key.toString(), reader.getAttribute(key.toString()));
-            }
-        });
+        reader.getAttributeNames().forEachRemaining(key ->
+                attributes.put(key.toString(), reader.getAttribute(key.toString())));
         String value = reader.getValue();
-        Object type = null;
+        Object type;
         try {
             type = context.getRequiredType().newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+        String initial = attributes.remove("initial");
+        String expected = attributes.remove("expected");
         ((ComponentData) type).initializeData(value, initial, expected);
         ((ComponentData) type).addCustomData(attributes);
         return type;
@@ -83,7 +80,7 @@ public class PageComponentDataConverter implements DataValueConverter {
 
     @Override
     public <T> T fromString(String str, Class<T> cls, Field field) {
-        T obj = null;
+        T obj;
         try {
             obj = cls.newInstance();
         } catch (InstantiationException e) {

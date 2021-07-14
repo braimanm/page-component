@@ -1,12 +1,16 @@
 package ui.auto.core.test;
 
+import org.apache.commons.io.IOUtils;
 import org.assertj.core.api.Assertions;
 import org.testng.annotations.Test;
 import ui.auto.core.data.DataTypes;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+
 public class TestCustomAttributes {
     @Test
-    public void testCustomAttributesAndAliases() {
+    public void testCustomAttributesAndAliases() throws IOException {
         DataSet3 dataSet3 = new DataSet3().fromResource("DataSet3.xml");
         Assertions.assertThat(dataSet3.component.getData()).isEqualTo("component");
         Assertions.assertThat(dataSet3.component.getData(DataTypes.Data)).isEqualTo("component");
@@ -18,6 +22,7 @@ public class TestCustomAttributes {
         Assertions.assertThat(dataSet3.component.getData("email")).isEqualTo("123@gmail.com");
         Assertions.assertThat(dataSet3.component.getData("custom")).isEqualTo("CUSTOM");
         Assertions.assertThat(dataSet3.component.getData("num")).isEqualTo("123");
-        System.out.println(dataSet3.toXML());
+        String expected = IOUtils.resourceToString("/DataSet3.xml", StandardCharsets.UTF_8);
+        Assertions.assertThat(dataSet3.toXML()).isEqualTo(expected);
     }
 }

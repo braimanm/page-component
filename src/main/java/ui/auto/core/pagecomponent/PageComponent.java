@@ -33,6 +33,7 @@ import java.util.regex.Pattern;
  *         This is main page component class all the other user defined components must inherit this class.
  *         User defined page component must implement {@link DefaultAction} interface and abstract init() method
  */
+@SuppressWarnings("unused")
 public abstract class PageComponent implements ComponentData, DefaultAction {
     protected WebElement coreElement;
     By selector;
@@ -42,7 +43,7 @@ public abstract class PageComponent implements ComponentData, DefaultAction {
     private Map<String, String> customData;
 
     /**
-     * Default constructor is neded for serialization purposes
+     * Default constructor is needed for serialization purposes
      */
     public PageComponent() {
     }
@@ -128,6 +129,8 @@ public abstract class PageComponent implements ComponentData, DefaultAction {
 
     @Override
     public String getData(String dataName, boolean resolveAliases) {
+        if (dataName.equals("initial")) return getData(DataTypes.Initial, resolveAliases);
+        if (dataName.equals("expected")) return getData(DataTypes.Expected, resolveAliases);
         String data = null;
         if (customData != null && !customData.isEmpty()) {
             data = customData.get(dataName);

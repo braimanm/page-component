@@ -265,7 +265,7 @@ public class PageObject extends DataPersistence {
     protected void setElementValue(PageComponent component, String value, boolean validate) {
         String realValue = null;
         if (component.getData() != null && !component.getData().isEmpty())
-            realValue = component.getData();
+            realValue = component.getData(DataTypes.Data,false);
         component.setData(value);
         setElementValue(component, validate);
         component.setData(realValue);

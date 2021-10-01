@@ -98,6 +98,7 @@ public class WidgetFieldDecorator extends AppiumFieldDecorator {
             Object componentProxy = enhancer.create();
             ((ComponentData) componentProxy).initializeData(dataValue, initialValue, expectedValue);
             ((ComponentData) componentProxy).addCustomData(customData);
+            ((PageComponent) componentProxy).fieldName = field.getName();
             ((PageComponent) componentProxy).selector = by;
             return componentProxy;
         }

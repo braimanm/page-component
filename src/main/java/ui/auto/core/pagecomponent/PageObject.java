@@ -36,9 +36,10 @@ import java.net.URL;
 
 /**
  * @author Michael Braiman braimanm@gmail.com
- *         This is main Page Object class and it includes all the page component manipulation methods.
+ *         This is main Page Object class, and it includes all the page component manipulation methods.
  *         All user defined page object classes must inherit this class and override required constructors.
  */
+@SuppressWarnings({"unused", "SameParameterValue"})
 public class PageObject extends DataPersistence {
     @XStreamOmitField
     protected PageComponentContext context;
@@ -172,7 +173,7 @@ public class PageObject extends DataPersistence {
         String header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n";
         XStream xstream = getXstream();
 
-        // If this class extends PageObject and it initialized with context
+        // If this class extends PageObject, and it initialized with context
         // then all the WebComponent fields of this class are CGLIB proxies and by default xml node
         // is marked with attribute class. This will remove class attribute from the xml node
         if (this.getContext() != null) {
@@ -250,26 +251,43 @@ public class PageObject extends DataPersistence {
         setElementValue(component, value, true);
     }
 
-    protected void setElementValue(PageComponent component, boolean validate) {
-        if (component.getData() != null && !component.getData().isEmpty()) {
-            String valData = null;
-            for (int i = 0; i < 3; i++) {
-                component.setValue();
-                if (!validate) return;
-                if (component.validate()) return;
-            }
-            throw new RuntimeException("Can't set element '" + component.getClass().getSimpleName() + "' to value: " + valData);
-        }
-    }
-
     protected void setElementValue(PageComponent component, String value, boolean validate) {
         String realValue = null;
-        if (component.getData() != null && !component.getData().isEmpty())
-            realValue = component.getData(DataTypes.Data,false);
+        if (component.getData() != null && !component.getData().isEmpty()) {
+            realValue = component.getData(DataTypes.Data, false);
+        }
         component.setData(value);
         setElementValue(component, validate);
         component.setData(realValue);
     }
+
+    protected void setElementValue(PageComponent component, boolean validate) {
+        String value = component.getData();
+        if (value != null && !value.isEmpty()) {
+            for (int i = 0; i < 3; i++) {
+                component.setValue();
+                if (!validate) return;
+                if (isValueAsExpected(component)) return;
+            }
+            throw new RuntimeException("Can't set page component '" + this.getClass().getName() + "." + component.getFieldName() + "' to value: " + value);
+        }
+    }
+
+    protected boolean isValueAsExpected(PageComponent component) {
+        DataTypes dataType = DataTypes.Data;
+        if (component.getData(DataTypes.Expected, true) != null) {
+            dataType = DataTypes.Expected;
+        }
+        boolean isAsExpected;
+        try {
+            component.validateData(dataType);
+            isAsExpected = true;
+        } catch (Throwable ignore) {
+            isAsExpected = false;
+        }
+        return isAsExpected;
+    }
+
 
     protected void enumerateFields(FieldEnumerationAction action) {
         for (Field field : this.getClass().getDeclaredFields()) {

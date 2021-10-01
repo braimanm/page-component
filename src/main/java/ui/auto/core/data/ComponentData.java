@@ -75,4 +75,6 @@ public interface ComponentData {
      * @return locator which was used to locate this page component
      */
     By getLocator();
+
+    String getFieldName();
 }

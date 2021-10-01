@@ -1,5 +1,6 @@
 package ui.auto.core.test;
 
+import org.assertj.core.api.Assertions;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
@@ -30,6 +31,22 @@ public class TestLocators {
         Assert.assertEquals(page2.page1.page3.web3.getLocator().toString(), "By.cssSelector: web3");
         Assert.assertEquals(page2.page1.page4.getLocator().toString(), "By.cssSelector: page4");
         Assert.assertEquals(page2.page1.page4.web3.getLocator().toString(), "By.chained({By.cssSelector: page4,By.cssSelector: web3})");
+    }
+
+
+    @Test
+    public void testSetElementValue() {
+        GooglePage googlePage = new GooglePage().fromResource("GoogleDataSet.xml");
+        googlePage.initPage(context);
+        context.getDriver().get("http://google.com");
+        googlePage.search();
+        try {
+            googlePage.search2();
+        } catch (RuntimeException e) {
+            Assertions.assertThat(e.getLocalizedMessage()).containsPattern("Can't set page component 'ui.auto.core.test.GooglePage.search2' to value: github page-component");
+        }
+
+
     }
 
     @AfterTest

@@ -35,6 +35,7 @@ import java.util.regex.Pattern;
  */
 @SuppressWarnings("unused")
 public abstract class PageComponent implements ComponentData, DefaultAction {
+    String fieldName;
     protected WebElement coreElement;
     By selector;
     private String data;
@@ -220,10 +221,7 @@ public abstract class PageComponent implements ComponentData, DefaultAction {
     }
 
     @Override
-    public boolean validate() {
-        String valData = getData();
-        if (getData(DataTypes.Expected, true) != null)
-            valData =getData(DataTypes.Expected, true);
-        return  getValue().equals(valData);
+    public String getFieldName() {
+        return fieldName;
     }
 }

@@ -17,14 +17,14 @@ Copyright 2010-2019 Michael Braiman braimanm@gmail.com
 package ui.auto.core.pagecomponent;
 
 import io.appium.java_client.HasSessionDetails;
-import io.appium.java_client.pagefactory.AppiumFieldDecorator;
-import io.appium.java_client.pagefactory.DefaultElementByBuilder;
+import io.appium.java_client.pagefactory.*;
 import net.sf.cglib.proxy.Enhancer;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.Annotations;
 import org.openqa.selenium.support.pagefactory.ByChained;
 import ui.auto.core.context.PageComponentContext;
@@ -105,9 +105,35 @@ public class WidgetFieldDecorator extends AppiumFieldDecorator {
 
         //PageObject as Web Component
         if (PageObject.class.isAssignableFrom(field.getType()) &&
-                (field.isAnnotationPresent(FindBy.class) ||
-                        field.isAnnotationPresent(FindAll.class) || field.isAnnotationPresent(FindBys.class))) {
-
+                (
+                        field.isAnnotationPresent(FindBy.class) ||
+                        field.isAnnotationPresent(FindAll.class) ||
+                        field.isAnnotationPresent(FindBys.class) ||
+                        field.isAnnotationPresent(AndroidBy.class) ||
+                        field.isAnnotationPresent(AndroidFindAll.class) ||
+                        field.isAnnotationPresent(AndroidFindBy.class) ||
+                        field.isAnnotationPresent(AndroidFindByAllSet.class) ||
+                        field.isAnnotationPresent(AndroidFindByChainSet.class) ||
+                        field.isAnnotationPresent(AndroidFindBys.class) ||
+                        field.isAnnotationPresent(AndroidFindBySet.class) ||
+                        field.isAnnotationPresent(iOSBy.class) ||
+                        field.isAnnotationPresent(iOSXCUITBy.class) ||
+                        field.isAnnotationPresent(iOSXCUITFindAll.class) ||
+                        field.isAnnotationPresent(iOSXCUITFindBy.class) ||
+                        field.isAnnotationPresent(iOSXCUITFindByAllSet.class) ||
+                        field.isAnnotationPresent(iOSXCUITFindByChainSet.class) ||
+                        field.isAnnotationPresent(iOSXCUITFindBys.class) ||
+                        field.isAnnotationPresent(iOSXCUITFindBySet.class) ||
+                        field.isAnnotationPresent(WindowsBy.class) ||
+                        field.isAnnotationPresent(WindowsFindAll.class) ||
+                        field.isAnnotationPresent(WindowsFindBy.class) ||
+                        field.isAnnotationPresent(WindowsFindByAllSet.class) ||
+                        field.isAnnotationPresent(WindowsFindByChainSet.class) ||
+                        field.isAnnotationPresent(WindowsFindBys.class) ||
+                        field.isAnnotationPresent(WindowsFindBySet.class) ||
+                        field.isAnnotationPresent(InitPage.class)
+                )
+        ) {
             PageObject po;
             try {
                 po = (PageObject) field.get(page);
@@ -119,8 +145,12 @@ public class WidgetFieldDecorator extends AppiumFieldDecorator {
                 } else {
                     po.dataProvided = true;
                 }
-                Annotations annotations = new Annotations(field);
-                po.locator = annotations.buildBy();
+                if (!field.isAnnotationPresent(InitPage.class)) {
+                    Annotations annotations = new Annotations(field);
+                    po.locator = annotations.buildBy();
+                }
+                PageFactory.initElements(new WidgetFieldDecorator(context, po), po);
+                po.context = page.getContext();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

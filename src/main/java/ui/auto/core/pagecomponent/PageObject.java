@@ -46,7 +46,7 @@ public class PageObject extends DataPersistence {
     @XStreamOmitField
     private String currentUrl;
     @XStreamOmitField
-    private boolean ajaxIsUsed;
+    protected boolean ajaxIsUsed;
     @XStreamOmitField
     protected By locator;
     @XStreamOmitField
@@ -107,6 +107,7 @@ public class PageObject extends DataPersistence {
         if (context != null) {
             ((PageObject) data).initPage(context, ajaxIsUsed);
         }
+        ((PageObject) data).dataProvided = true;
         return data;
     }
 
@@ -117,6 +118,7 @@ public class PageObject extends DataPersistence {
         if (context != null) {
             ((PageObject) data).initPage(context, ajaxIsUsed);
         }
+        ((PageObject) data).dataProvided = true;
         return data;
     }
 
@@ -127,6 +129,7 @@ public class PageObject extends DataPersistence {
         if (context != null) {
             ((PageObject) data).initPage(context, ajaxIsUsed);
         }
+        ((PageObject) data).dataProvided = true;
         return data;
     }
 
@@ -137,6 +140,7 @@ public class PageObject extends DataPersistence {
         if (context != null) {
             ((PageObject) data).initPage(context, ajaxIsUsed);
         }
+        ((PageObject) data).dataProvided = true;
         return data;
     }
 

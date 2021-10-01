@@ -22,6 +22,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.*;
 import ui.auto.core.data.ComponentData;
 import ui.auto.core.data.DataTypes;
@@ -97,9 +98,13 @@ public class ComponentFieldDecorator extends DefaultFieldDecorator {
 
         //PageObject as Web Component
         if (PageObject.class.isAssignableFrom(field.getType()) &&
-                (field.isAnnotationPresent(FindBy.class) ||
-                        field.isAnnotationPresent(FindAll.class) || field.isAnnotationPresent(FindBys.class))) {
-
+                (
+                        field.isAnnotationPresent(FindBy.class) ||
+                        field.isAnnotationPresent(FindAll.class) ||
+                        field.isAnnotationPresent(FindBys.class) ||
+                        field.isAnnotationPresent(InitPage.class)
+                )
+        ) {
             PageObject po;
             try {
                 po = (PageObject) field.get(page);
@@ -111,8 +116,13 @@ public class ComponentFieldDecorator extends DefaultFieldDecorator {
                 } else {
                     po.dataProvided = true;
                 }
-                Annotations annotations = new Annotations(field);
-                po.locator = annotations.buildBy();
+                po.ajaxIsUsed = page.ajaxIsUsed;
+                if (!field.isAnnotationPresent(InitPage.class)) {
+                    Annotations annotations = new Annotations(field);
+                    po.locator = annotations.buildBy();
+                }
+                PageFactory.initElements(new ComponentFieldDecorator(factory, po), po);
+                po.context = page.getContext();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

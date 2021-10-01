@@ -45,9 +45,16 @@ public class TestLocators {
         } catch (RuntimeException e) {
             Assertions.assertThat(e.getLocalizedMessage()).containsPattern("Can't set page component 'ui.auto.core.test.GooglePage.search2' to value: github page-component");
         }
-
-
     }
+
+
+    @Test
+    public void validateInnerPO() {
+        InnerPageObjects innerPageObjects = new InnerPageObjects().fromResource("InnerDataSet.xml");
+        innerPageObjects.initPage(context);
+        System.out.println();
+    }
+
 
     @AfterTest
     public void cleanUp() {

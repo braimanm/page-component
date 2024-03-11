@@ -1,5 +1,5 @@
 /*
-Copyright 2010-2019 Michael Braiman braimanm@gmail.com
+Copyright 2010-2024 Michael Braiman braimanm@gmail.com
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import ui.auto.core.pagecomponent.PageComponent;
  * @author Michael Braiman braimanm@gmail.com
  *         This is utility to handle Ajax loaded components
  */
+@SuppressWarnings("unused")
 public abstract class AjaxTriggeredAction {
     /**
      * @param action            action to perform which will trigger Ajax event

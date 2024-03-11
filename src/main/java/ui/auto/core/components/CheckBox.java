@@ -1,5 +1,5 @@
 /*
-Copyright 2010-2019 Michael Braiman braimanm@gmail.com
+Copyright 2010-2024 Michael Braiman braimanm@gmail.com
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import ui.auto.core.pagecomponent.PageComponent;
  * @author Michael Braiman braimanm@gmail.com
  *         This is a basic Check Box component
  */
+@SuppressWarnings("unused")
 public class CheckBox extends PageComponent {
 
     public CheckBox() {
@@ -56,7 +57,7 @@ public class CheckBox extends PageComponent {
 
     @Override
     public void setValue() {
-        check(getData().toLowerCase().equals("true"));
+        check(getData().equalsIgnoreCase("true"));
     }
 
     @Override

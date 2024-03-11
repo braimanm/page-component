@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.googlecode.page-component</groupId>
     <artifactId>page-component</artifactId>
-    <version>1.6.1</version>
+    <version>1.7.0</version>
     <packaging>jar</packaging>
     <name>page-component</name>
     <description>Selenium Page Object pattern extension to support composite components</description>
@@ -28,6 +28,14 @@
         <url>https://code.google.com/p/page-component/</url>
     </scm>
 
+    <properties>
+        <java.version>8</java.version>
+        <datainstiller.version>2.2.0</datainstiller.version>
+        <commons-io.version>2.15.1</commons-io.version>
+        <testng.version>7.4.0</testng.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
 
     <build>
         <plugins>
@@ -36,8 +44,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.2</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
@@ -66,7 +74,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>3.0.1</version>
+                        <version>3.1.0</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -86,7 +94,7 @@
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>7.4.0</version>
+            <version>${testng.version}</version>
         </dependency>
         <dependency>
             <groupId>cglib</groupId>
@@ -101,7 +109,7 @@
         <dependency>
             <groupId>com.googlecode.datainstiller</groupId>
             <artifactId>datainstiller</artifactId>
-            <version>2.1.1</version>
+            <version>${datainstiller.version}</version>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>

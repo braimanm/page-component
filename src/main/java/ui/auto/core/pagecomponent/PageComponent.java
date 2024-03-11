@@ -1,5 +1,5 @@
 /*
-Copyright 2010-2019 Michael Braiman braimanm@gmail.com
+Copyright 2010-2024 Michael Braiman braimanm@gmail.com
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -16,17 +16,9 @@ Copyright 2010-2019 Michael Braiman braimanm@gmail.com
 
 package ui.auto.core.pagecomponent;
 
-import datainstiller.data.DataAliases;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import ui.auto.core.context.PageComponentContext;
-import ui.auto.core.data.ComponentData;
-import ui.auto.core.data.DataTypes;
-
 import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author Michael Braiman braimanm@gmail.com
@@ -34,14 +26,9 @@ import java.util.regex.Pattern;
  *         User defined page component must implement {@link DefaultAction} interface and abstract init() method
  */
 @SuppressWarnings("unused")
-public abstract class PageComponent implements ComponentData, DefaultAction {
-    String fieldName;
+public abstract class PageComponent extends AliasedData implements DefaultAction {
     protected WebElement coreElement;
     By selector;
-    private String data;
-    private String initialData;
-    private String expectedData;
-    private Map<String, String> customData;
 
     /**
      * Default constructor is needed for serialization purposes
@@ -63,18 +50,6 @@ public abstract class PageComponent implements ComponentData, DefaultAction {
      */
     protected abstract void init();
 
-    @Override
-    public void initializeData(String data, String initialData, String expectedData) {
-        this.data = data;
-        this.initialData = initialData;
-        this.expectedData = expectedData;
-    }
-
-    @Override
-    public void addCustomData(Map<String, String> customData) {
-        this.customData = customData;
-    }
-
     /**
      * @return core web element for this component
      */
@@ -88,94 +63,6 @@ public abstract class PageComponent implements ComponentData, DefaultAction {
     void initComponent(WebElement coreElement) {
         this.coreElement = coreElement;
         init();
-    }
-
-    private String resolveAliasesForData(String data) {
-        String dat = data;
-        Pattern pat = Pattern.compile("\\$\\{[\\w-]+}");
-        Matcher mat = pat.matcher(dat);
-        while (mat.find()) {
-            String alias = mat.group();
-            String key = alias.replace("${", "").replace("}", "");
-            DataAliases aliases = PageComponentContext.getGlobalAliases();
-            if (aliases.containsKey(key)) {
-                String value = aliases.get(key).toString();
-                if (value != null) {
-                    dat = dat.replace(alias, value);
-                }
-            }
-        }
-        return dat;
-    }
-
-    @Override
-    public String getData(DataTypes type, boolean resolveAliases) {
-        String data = null;
-        switch (type) {
-            case Data:
-                data = this.data;
-                break;
-            case Initial:
-                data = this.initialData;
-                break;
-            case Expected:
-                data = this.expectedData;
-                break;
-        }
-        if (data != null && resolveAliases) {
-            data = resolveAliasesForData(data);
-        }
-        return data;
-    }
-
-    @Override
-    public String getData(String dataName, boolean resolveAliases) {
-        if (dataName.equals("initial")) return getData(DataTypes.Initial, resolveAliases);
-        if (dataName.equals("expected")) return getData(DataTypes.Expected, resolveAliases);
-        String data = null;
-        if (customData != null && !customData.isEmpty()) {
-            data = customData.get(dataName);
-            if (data != null && resolveAliases) {
-                data = resolveAliasesForData(data);
-            }
-        }
-        return data;
-    }
-
-    public String getData(String dataName) {
-        return getData(dataName, true);
-    }
-
-    @Override
-    public Map<String, String> getCustomData() {
-        return customData;
-    }
-
-    /**
-     * Get populated data for this component
-     *
-     * @return data
-     */
-    public String getData() {
-        return getData(DataTypes.Data);
-    }
-
-    /**
-     * @param data string which represent data
-     */
-    void setData(String data) {
-        this.data = data;
-    }
-
-    /**
-     * Get populated data for this component
-     *
-     * @param type data type to retrieve
-     * @return data for the requested data type
-     */
-
-    public String getData(DataTypes type) {
-        return getData(type, true);
     }
 
     public void click() {
@@ -207,6 +94,10 @@ public abstract class PageComponent implements ComponentData, DefaultAction {
         return coreElement.getText();
     }
 
+    public void sendKeys(CharSequence... keysToSend) {
+        coreElement.sendKeys(keysToSend);
+    }
+
     public List<WebElement> findElements(By by) {
         return coreElement.findElements(by);
     }
@@ -220,8 +111,4 @@ public abstract class PageComponent implements ComponentData, DefaultAction {
         return selector;
     }
 
-    @Override
-    public String getFieldName() {
-        return fieldName;
-    }
 }

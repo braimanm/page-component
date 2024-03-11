@@ -1,5 +1,5 @@
 /*
-Copyright 2010-2019 Michael Braiman braimanm@gmail.com
+Copyright 2010-2024 Michael Braiman braimanm@gmail.com
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
 import datainstiller.data.DataAliases;
 import datainstiller.data.DataGenerator;
 import datainstiller.data.DataPersistence;
-import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
@@ -34,12 +33,13 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.net.URL;
 
+
 /**
  * @author Michael Braiman braimanm@gmail.com
  *         This is main Page Object class, and it includes all the page component manipulation methods.
  *         All user defined page object classes must inherit this class and override required constructors.
  */
-@SuppressWarnings({"unused", "SameParameterValue"})
+@SuppressWarnings({"unused", "SameParameterValue", "NewClassNamingConvention"})
 public class PageObject extends DataPersistence {
     @XStreamOmitField
     protected PageComponentContext context;
@@ -190,18 +190,18 @@ public class PageObject extends DataPersistence {
     public <T extends PageComponentContext> void initPage(T context, boolean ajaxIsUsed) {
         this.context = context;
         this.ajaxIsUsed = ajaxIsUsed;
-        if (AppiumDriver.class.isAssignableFrom(getDriver().getClass())) {
-            PageFactory.initElements(new WidgetFieldDecorator(context, this), this);
+
+        currentUrl = context.getDriver().getCurrentUrl();
+
+        if (ajaxIsUsed) {
+            AjaxVisibleElementLocatorFactory ajaxVisibleElementLocatorFactory =
+                    new AjaxVisibleElementLocatorFactory(context.getDriver(), context.getAjaxTimeOut());
+            PageFactory.initElements(new ComponentFieldDecorator(ajaxVisibleElementLocatorFactory, this), this);
         } else {
-            currentUrl = context.getDriver().getCurrentUrl();
-            if (ajaxIsUsed) {
-                AjaxVisibleElementLocatorFactory ajaxVisibleElementLocatorFactory = new AjaxVisibleElementLocatorFactory(context.getDriver(), context.getAjaxTimeOut());
-                PageFactory.initElements(new ComponentFieldDecorator(ajaxVisibleElementLocatorFactory, this), this);
-            } else {
-                DefaultElementLocatorFactory defLocFactory = new DefaultElementLocatorFactory(context.getDriver());
-                PageFactory.initElements(new ComponentFieldDecorator(defLocFactory, this), this);
-            }
+            DefaultElementLocatorFactory defLocFactory = new DefaultElementLocatorFactory(context.getDriver());
+            PageFactory.initElements(new ComponentFieldDecorator(defLocFactory, this), this);
         }
+
     }
 
     public <T extends PageComponentContext> void initPage(T context) {

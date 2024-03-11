@@ -1,5 +1,5 @@
 /*
-Copyright 2010-2019 Michael Braiman braimanm@gmail.com
+Copyright 2010-2024 Michael Braiman braimanm@gmail.com
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -24,8 +24,9 @@ import org.openqa.selenium.WebDriver;
  *         This class represent context for the page-component library.
  *         It stores instance of the WebDriver, global data aliases and some timeout parameters
  */
+@SuppressWarnings("unused")
 public class PageComponentContext {
-    private static ThreadLocal<DataAliases> globalAliases = ThreadLocal.withInitial(DataAliases::new);
+    private static final ThreadLocal<DataAliases> globalAliases = ThreadLocal.withInitial(DataAliases::new);
     protected WebDriver driver;
     private int ajaxTimeOut = 10; //in seconds
     private int waitForUrlTimeOut = 10000; //in milliseconds
@@ -119,5 +120,12 @@ public class PageComponentContext {
         dataGenerationPath = filePath;
     }
 
+    public Object getAlias(String key) {
+        return getGlobalAliases().get(key);
+    }
+
+    public void setAlias(String key,String value) {
+        getGlobalAliases().put(key, value);
+    }
 
 }

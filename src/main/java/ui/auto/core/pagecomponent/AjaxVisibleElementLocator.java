@@ -1,5 +1,5 @@
 /*
-Copyright 2010-2019 Michael Braiman braimanm@gmail.com
+Copyright 2010-20124Michael Braiman braimanm@gmail.com
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import org.openqa.selenium.support.pagefactory.AjaxElementLocator;
 import java.lang.reflect.Field;
 import java.time.Clock;
 
+@SuppressWarnings("unused")
 public class AjaxVisibleElementLocator extends AjaxElementLocator {
 
     public AjaxVisibleElementLocator(SearchContext searchContext, Field field, int timeOutInSeconds) {

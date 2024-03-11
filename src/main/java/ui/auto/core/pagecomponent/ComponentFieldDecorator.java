@@ -1,5 +1,5 @@
 /*
-Copyright 2010-2019 Michael Braiman braimanm@gmail.com
+Copyright 2010-2024 Michael Braiman braimanm@gmail.com
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -19,10 +19,7 @@ package ui.auto.core.pagecomponent;
 
 import net.sf.cglib.proxy.Enhancer;
 import org.openqa.selenium.By;
-import org.openqa.selenium.support.FindAll;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.FindBys;
-import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.pagefactory.*;
 import ui.auto.core.data.ComponentData;
 import ui.auto.core.data.DataTypes;
@@ -38,12 +35,38 @@ public class ComponentFieldDecorator extends DefaultFieldDecorator {
         this.page = page;
     }
 
-    private By modifyLocator(ElementLocator locator, By parentLocator) {
+    private By buildFromPattern(Field field) {
+        if (field.isAnnotationPresent(FindBy.class)) {
+            FindBy fb = field.getAnnotation(FindBy.class);
+            if (fb.how().equals(How.UNSET) && !fb.using().isEmpty()) {
+                Class type = field.getType();
+                do {
+                    if (type.isAnnotationPresent(LocatorPattern.class)) {
+                        LocatorPattern lp = (LocatorPattern) type.getAnnotation(LocatorPattern.class);
+                        if (lp.how().equals(How.XPATH) || lp.how().equals(How.CSS)) {
+                            String loc = lp.pattern().replace("${val}", fb.using());
+                            return lp.how().equals(How.XPATH) ? By.xpath(loc) : By.cssSelector(loc);
+                        }
+                    } else {
+                        type = type.getSuperclass();
+                    }
+                } while (!type.equals(PageComponent.class));
+            }
+
+        }
+        return null;
+    }
+
+    private By modifyLocator(ElementLocator locator, By parentLocator, Field field) {
         By bys = null;
+        By patternLocator = buildFromPattern(field);
         if (DefaultElementLocator.class.isAssignableFrom(locator.getClass())) {
             try {
                 Field by = DefaultElementLocator.class.getDeclaredField("by");
                 by.setAccessible(true);
+                if (patternLocator != null) {
+                    by.set(locator, patternLocator);
+                }
                 By childLocator = (By) by.get(locator);
                 if (parentLocator != null) {
                     bys = new ByChained(parentLocator, childLocator);
@@ -58,6 +81,7 @@ public class ComponentFieldDecorator extends DefaultFieldDecorator {
         return bys;
     }
 
+
     @Override
     public Object decorate(ClassLoader loader, final Field field) {
         String dataValue = null;
@@ -70,7 +94,7 @@ public class ComponentFieldDecorator extends DefaultFieldDecorator {
             ElementLocator locator = factory.createLocator(field);
             if (locator == null) return null;
 
-            By by = modifyLocator(locator, page.getLocator());
+            By by = modifyLocator(locator, page.getLocator(), field);
 
             ComponentData componentData;
             try {

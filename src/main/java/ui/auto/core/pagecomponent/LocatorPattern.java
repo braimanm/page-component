@@ -16,30 +16,16 @@ Copyright 2010-2024 Michael Braiman braimanm@gmail.com
 
 package ui.auto.core.pagecomponent;
 
-import org.openqa.selenium.WebElement;
-import ui.auto.core.data.DataTypes;
+import org.openqa.selenium.support.How;
 
-@SuppressWarnings("unused")
-public abstract class PageComponentNoDefaultAction extends PageComponent {
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-    public PageComponentNoDefaultAction() {
-    }
-
-    public PageComponentNoDefaultAction(WebElement coreElement) {
-        super(coreElement);
-    }
-
-    @Override
-    public void setValue() {
-    }
-
-    @Override
-    public String getValue() {
-        return null;
-    }
-
-    @Override
-    public void validateData(DataTypes validationMethod) {
-    }
-
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface LocatorPattern {
+    How how() default How.UNSET;
+    String pattern() default "";
 }

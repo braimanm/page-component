@@ -20,6 +20,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+@SuppressWarnings("unused")
 public class WebDriverUtils {
     private WebDriver driver;
 

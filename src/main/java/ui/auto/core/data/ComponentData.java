@@ -1,5 +1,5 @@
 /*
-Copyright 2010-2019 Michael Braiman braimanm@gmail.com
+Copyright 2010-2024 Michael Braiman braimanm@gmail.com
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ package ui.auto.core.data;
 
 import com.thoughtworks.xstream.annotations.XStreamConverter;
 import org.openqa.selenium.By;
-import ui.auto.core.pagecomponent.ComponentMethodInterceptor;
 import ui.auto.core.pagecomponent.PageComponent;
 
 import java.util.Map;
@@ -28,7 +27,7 @@ import java.util.Map;
  * @author Michael Braiman braimanm@gmail.com
  *         This interface represents data dimension, each {@link PageComponent} have data which can be used to populate
  *         and validate specific page component.
- *         {@link ComponentMethodInterceptor} will not initialize page component during
+ *         {@link ui.auto.core.pagecomponent.ComponentMethodInterceptor} will not initialize page component during
  *         invocations of the methods of this interface.
  */
 @XStreamConverter(PageComponentDataConverter.class)

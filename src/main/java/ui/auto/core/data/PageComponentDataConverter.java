@@ -1,5 +1,5 @@
 /*
-Copyright 2010-2019 Michael Braiman braimanm@gmail.com
+Copyright 2010-2024 Michael Braiman braimanm@gmail.com
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import datainstiller.data.DataValueConverter;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
@@ -63,8 +64,8 @@ public class PageComponentDataConverter implements DataValueConverter {
         String value = reader.getValue();
         Object type;
         try {
-            type = context.getRequiredType().newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
+            type = context.getRequiredType().getDeclaredConstructor().newInstance();
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
         String initial = attributes.remove("initial");
@@ -82,11 +83,11 @@ public class PageComponentDataConverter implements DataValueConverter {
     public <T> T fromString(String str, Class<T> cls, Field field) {
         T obj;
         try {
-            obj = cls.newInstance();
+            obj = cls.getDeclaredConstructor().newInstance();
         } catch (InstantiationException e) {
             throw new RuntimeException("Component " + cls.getCanonicalName() +
                     " must have default constructor !", e.getCause());
-        } catch (IllegalAccessException e) {
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
         ((ComponentData) obj).initializeData(str, null, null);

@@ -120,6 +120,22 @@ public class ComponentFieldDecorator extends DefaultFieldDecorator {
             return componentProxy;
         }
 
+        if (AliasedData.class.isAssignableFrom(field.getType())) {
+            AliasedData aliasedData;
+            try {
+                aliasedData = (AliasedData) field.get(page);
+                if (aliasedData == null) {
+                    aliasedData = new AliasedData();
+                }
+            } catch (IllegalArgumentException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+
+            aliasedData.fieldName = field.getName();
+
+            return aliasedData;
+        }
+
         //PageObject as Web Component
         if (PageObject.class.isAssignableFrom(field.getType()) &&
                 (

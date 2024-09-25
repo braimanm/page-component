@@ -37,8 +37,8 @@ Page-component framework automatically handles Ajax affected page-components eve
 This open source project is distributed through maven central repository. Here is a Maven dependency for page-component project.
 ```
 <dependency>
-    <groupId>com.googlecode.page-component</groupId>
+    <groupId>com.braimanm</groupId>
     <artifactId>page-component</artifactId>
-    <version>${latest-version}</version>
+    <version>3.0.0</version>
 </dependency>
 ```

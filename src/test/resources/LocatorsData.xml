@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<ui.auto.core.test.Page2>
+<page2>
     <page1>
         <comp1>comp1</comp1>
         <page3>
@@ -11,4 +11,4 @@
         </page4>
     </page1>
     <comp3>comp3</comp3>
-</ui.auto.core.test.Page2>
+</page2>

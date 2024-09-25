@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<ui.auto.core.test.GooglePage>
+<google-page>
     <search>page-component</search>
     <search2 expected="github page-components">github page-component</search2>
-
-</ui.auto.core.test.GooglePage>
+</google-page>

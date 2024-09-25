@@ -1,13 +1,14 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.googlecode.page-component</groupId>
+
+    <groupId>com.braimanm</groupId>
     <artifactId>page-component</artifactId>
-    <version>1.7.1</version>
+    <version>3.0.0</version>
     <packaging>jar</packaging>
     <name>page-component</name>
     <description>Selenium Page Object pattern extension to support composite components</description>
-    <url>https://code.google.com/p/page-component/</url>
+    <url>https://github.com/braimanm/page-component</url>
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
@@ -21,32 +22,29 @@
             <email>braimanm@gmail.com</email>
         </developer>
     </developers>
-    <scm>
-        <connection>scm:svn:http://page-component.googlecode.com/svn/trunk/page-component</connection>
-        <developerConnection>scm:svn:https://page-component.googlecode.com/svn/trunk/page-component
-        </developerConnection>
-        <url>https://code.google.com/p/page-component/</url>
-    </scm>
 
     <properties>
-        <java.version>8</java.version>
-        <datainstiller.version>2.2.0</datainstiller.version>
+        <java.version>11</java.version>
+        <datainstiller.version>3.0.0</datainstiller.version>
         <commons-io.version>2.15.1</commons-io.version>
-        <testng.version>7.4.0</testng.version>
+        <byte-buddy.version>1.14.4</byte-buddy.version>
+        <selenium.version>4.25.0</selenium.version>
+        <appium.version>8.3.0</appium.version>
+        <asertj.version>3.24.2</asertj.version>
+        <classgraph.version>4.8.174</classgraph.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
 
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
+                <version>3.10.1</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
-                    <encoding>UTF-8</encoding>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
             <plugin>
@@ -92,29 +90,40 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>${testng.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>cglib</groupId>
-            <artifactId>cglib-nodep</artifactId>
-            <version>3.3.0</version>
-        </dependency>
-        <dependency>
-            <groupId>io.appium</groupId>
-            <artifactId>java-client</artifactId>
-            <version>7.6.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.googlecode.datainstiller</groupId>
+            <groupId>com.braimanm</groupId>
             <artifactId>datainstiller</artifactId>
             <version>${datainstiller.version}</version>
         </dependency>
         <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy</artifactId>
+            <version>${byte-buddy.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-support</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>${selenium.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.21.0</version>
+            <version>${asertj.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.classgraph</groupId>
+            <artifactId>classgraph</artifactId>
+            <version>${classgraph.version}</version>
         </dependency>
     </dependencies>
 

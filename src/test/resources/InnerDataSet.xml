@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<ui.auto.core.test.InnerPageObjects>
+<inner-page>
     <main1>data-outer</main1>
-
-</ui.auto.core.test.InnerPageObjects>
+</inner-page>

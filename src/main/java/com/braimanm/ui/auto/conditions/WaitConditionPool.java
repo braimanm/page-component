@@ -21,8 +21,8 @@ import java.util.function.BiFunction;
 
 @SuppressWarnings("unused")
 public class WaitConditionPool {
-    private long time_out;
-    private Map<String, WaitCondition> conditions = new HashMap<>();
+    private final long time_out;
+    private final Map<String, WaitCondition> conditions = new HashMap<>();
     private List<String> fulfilledConditions;
 
     public WaitConditionPool(long time_out) {

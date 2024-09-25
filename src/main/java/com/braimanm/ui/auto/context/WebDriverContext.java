@@ -2,6 +2,7 @@ package com.braimanm.ui.auto.context;
 
 import org.openqa.selenium.WebDriver;
 
+@SuppressWarnings("unused")
 public class WebDriverContext {
     private final WebDriver driver;
     private int elementLoadTimeout = 10; //in seconds

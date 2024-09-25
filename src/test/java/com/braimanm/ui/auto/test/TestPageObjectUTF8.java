@@ -34,7 +34,7 @@ public class TestPageObjectUTF8 extends PageObject {
     }
 
     @Test
-    public void testFromXML() throws Exception {
+    public void testFromXML() {
         String xml = generateXML();
         TestPageObjectUTF8 po = new TestPageObjectUTF8().fromXml(xml);
         assertPageObject(po);

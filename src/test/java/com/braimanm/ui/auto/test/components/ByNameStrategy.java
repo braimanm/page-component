@@ -3,6 +3,7 @@ package com.braimanm.ui.auto.test.components;
 import com.braimanm.ui.auto.pagecomponent.LocatorStrategy;
 import org.openqa.selenium.By;
 
+@SuppressWarnings("unused")
 public class ByNameStrategy implements LocatorStrategy {
     @Override
     public By getStrategy(String value) {

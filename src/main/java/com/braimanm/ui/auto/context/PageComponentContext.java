@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.function.Supplier;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "UnusedReturnValue"})
 public class PageComponentContext extends DataContext {
     private static final Logger logger = LoggerFactory.getLogger(PageComponentContext.class);
     private static final ThreadLocal<WebDriverContext> webDriverContextThreadLocal = new ThreadLocal<>();

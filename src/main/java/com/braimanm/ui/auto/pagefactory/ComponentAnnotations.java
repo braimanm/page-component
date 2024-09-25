@@ -5,7 +5,6 @@ import com.braimanm.ui.auto.pagecomponent.LocatorPattern;
 import com.braimanm.ui.auto.pagecomponent.LocatorStrategy;
 import com.braimanm.ui.auto.pagecomponent.PageComponent;
 import io.github.classgraph.ClassInfo;
-import io.github.classgraph.ClassInfoList;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -38,7 +37,7 @@ public class ComponentAnnotations extends Annotations {
                 //Handling LocatorStrategy
                 if (!fb.className().isEmpty()) {
                     try {
-                        Class cls = Class.forName(getFullClassName(fb.className()));
+                        Class<?> cls = Class.forName(getFullClassName(fb.className()));
                         if (LocatorStrategy.class.isAssignableFrom(cls)) {
                             LocatorStrategy locStrategy = (LocatorStrategy) cls.getDeclaredConstructor().newInstance();
                             return locStrategy.getStrategy(fb.using());

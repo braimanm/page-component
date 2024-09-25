@@ -3,13 +3,13 @@
 <dataset1>
     <aliases>
         <alias3>value3</alias3>
-        <alias1></alias1>
+        <alias1/>
         <alias-int>33</alias-int>
         <alias-l1>list of web components</alias-l1>
         <array-alias>array-value</array-alias>
     </aliases>
     <comp1>comp1</comp1>
-    <comp2></comp2>
+    <comp2/>
     <comp3>${alias3}</comp3>
     <list1>
         <web-component>${alias-l1}</web-component>

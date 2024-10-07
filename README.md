@@ -39,6 +39,6 @@ This open source project is distributed through maven central repository. Here i
 <dependency>
     <groupId>com.braimanm</groupId>
     <artifactId>page-component</artifactId>
-    <version>3.0.0</version>
+    <version>3.1.0</version>
 </dependency>
 ```

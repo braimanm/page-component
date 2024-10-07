@@ -1,7 +1,7 @@
-package com.braimanm.ui.auto.test;
+package com.braimanm.ui.auto;
 
 import com.braimanm.ui.auto.context.PageComponentContext;
-import com.braimanm.ui.auto.test.pageobjects.*;
+import com.braimanm.ui.auto.pageobjects.*;
 import org.assertj.core.api.Assertions;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
@@ -22,14 +22,22 @@ public class TestLocators {
         Page2 page2 = new Page2().fromResource("LocatorsData.xml");
         page2.initPage(PageComponentContext.getContext());
         page2.page1.page3.initPage(PageComponentContext.getContext());
+        page2.page3.initPage(PageComponentContext.getContext());
+        page2.page1.page4.page4.initPage(PageComponentContext.getContext());
         Assert.assertNull(page2.getLocator());
+        Assert.assertNull(page2.page3.getLocator());
+        Assert.assertNull(page2.page1.page3.getLocator());
+        Assert.assertNotNull(page2.page1.page4.getLocator());
+        Assert.assertNotNull(page2.page1.page4.page4);
         Assert.assertEquals(page2.comp3.getLocator().toString(), "By.xpath: //comp3");
         Assert.assertEquals(page2.page1.getLocator().toString(), "By.xpath: //page1");
         Assert.assertEquals(page2.page1.comp1.getLocator().toString(), "By.chained({By.xpath: //page1,By.xpath: //comp1})");
-        Assert.assertNull(page2.page1.page3.getLocator());
+        Assert.assertEquals(page2.page1.comp2.getLocator().toString(), "By.chained({By.xpath: //page1,by id or name \"comp2\"})");
         Assert.assertEquals(page2.page1.page3.web3.getLocator().toString(), "By.cssSelector: web3");
-        Assert.assertEquals(page2.page1.page4.getLocator().toString(), "By.cssSelector: page4");
-        Assert.assertEquals(page2.page1.page4.web3.getLocator().toString(), "By.chained({By.cssSelector: page4,By.cssSelector: web3})");
+        Assert.assertEquals(page2.page1.page4.getLocator().toString(), "By.chained({By.xpath: //page1,By.cssSelector: page4})");
+        Assert.assertEquals(page2.page1.page4.web3.getLocator().toString(), "By.chained({By.chained({By.xpath: //page1,By.cssSelector: page4}),By.cssSelector: web3})");
+        Assert.assertEquals(page2.page1.page4.page4.getLocator().toString(), "By.chained({By.chained({By.xpath: //page1,By.cssSelector: page4}),By.xpath: //div[.='page4']})");
+        Assert.assertEquals(page2.page1.page4.page4.web4.getLocator().toString(), "By.chained({By.chained({By.chained({By.xpath: //page1,By.cssSelector: page4}),By.xpath: //div[.='page4']}),By.className: web4})");
     }
 
 
@@ -43,7 +51,7 @@ public class TestLocators {
             googlePage.search2();
             Assertions.fail("You shouldn't reach here!!!!");
         } catch (RuntimeException e) {
-            Assertions.assertThat(e.getLocalizedMessage()).containsPattern("Can't set page component 'com.braimanm.ui.auto.test.pageobjects.GooglePage.search2' to value: github page-component");
+            Assertions.assertThat(e.getLocalizedMessage()).containsPattern("Can't set page component 'com.braimanm.ui.auto.pageobjects.GooglePage.search2' to value: github page-component");
         }
     }
 

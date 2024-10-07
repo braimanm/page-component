@@ -17,7 +17,6 @@ Copyright 2010-2024 Michael Braiman braimanm@gmail.com
 package com.braimanm.ui.auto.components;
 
 import com.braimanm.ui.auto.data.DataTypes;
-import com.braimanm.ui.auto.pagecomponent.PageComponent;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
@@ -28,7 +27,7 @@ import org.testng.Assert;
  *         This is a basic Select component
  */
 @SuppressWarnings("unused")
-public class SelectComponent extends PageComponent {
+public class SelectComponent extends ScreenComponent {
     @XStreamOmitField
     private Select select;
 

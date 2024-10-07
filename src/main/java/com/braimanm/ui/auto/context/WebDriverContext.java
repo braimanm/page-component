@@ -32,4 +32,9 @@ public class WebDriverContext {
         this.pageLoadTimeOut = pageLoadTimeOut;
     }
 
+    public void quit() {
+        if (driver != null) {
+            driver.quit();
+        }
+    }
 }

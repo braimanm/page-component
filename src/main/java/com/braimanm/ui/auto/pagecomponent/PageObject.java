@@ -21,9 +21,11 @@ import com.braimanm.ui.auto.context.WebDriverContext;
 import com.braimanm.ui.auto.data.DataTypes;
 import com.braimanm.ui.auto.data.PageComponentDataConverter;
 import com.braimanm.ui.auto.pagefactory.AjaxVisibleElementLocatorFactory;
+import com.braimanm.ui.auto.pagefactory.AppiumComponentLocatorFactory;
 import com.braimanm.ui.auto.pagefactory.DefaultComponentLocatorFactory;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
+import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
@@ -31,6 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
+import java.time.Duration;
 
 /**
  * @author Michael Braiman braimanm@gmail.com
@@ -125,17 +128,21 @@ public class PageObject extends DataPersistence {
         this.context = context;
         this.ajaxIsUsed = ajaxIsUsed;
 
-        currentUrl = context.getDriver().getCurrentUrl();
-
-        if (ajaxIsUsed) {
-            AjaxVisibleElementLocatorFactory ajaxElFactory =
-                    new AjaxVisibleElementLocatorFactory(context.getDriver(), context.getElementLoadTimeout());
-            PageFactory.initElements(new ComponentFieldDecorator(ajaxElFactory, this), this);
+        if (AppiumDriver.class.isAssignableFrom(getDriver().getClass())) {
+            Duration dur = Duration.ofSeconds(context.getElementLoadTimeout());
+            AppiumComponentLocatorFactory appLocFactory = new AppiumComponentLocatorFactory(context.getDriver(), dur);
+            PageFactory.initElements(new ComponentFieldDecorator(appLocFactory, this), this);
         } else {
-            DefaultComponentLocatorFactory deElFactory = new DefaultComponentLocatorFactory(context.getDriver());
-            PageFactory.initElements(new ComponentFieldDecorator(deElFactory, this), this);
+            currentUrl = context.getDriver().getCurrentUrl();
+            if (ajaxIsUsed) {
+                AjaxVisibleElementLocatorFactory ajaxElFactory =
+                        new AjaxVisibleElementLocatorFactory(context.getDriver(), context.getElementLoadTimeout());
+                PageFactory.initElements(new ComponentFieldDecorator(ajaxElFactory, this), this);
+            } else {
+                DefaultComponentLocatorFactory deElFactory = new DefaultComponentLocatorFactory(context.getDriver());
+                PageFactory.initElements(new ComponentFieldDecorator(deElFactory, this), this);
+            }
         }
-
     }
 
     public void initPage(WebDriverContext context) {

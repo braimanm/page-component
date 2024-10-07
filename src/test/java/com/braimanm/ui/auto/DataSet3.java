@@ -1,4 +1,4 @@
-package com.braimanm.ui.auto.test;
+package com.braimanm.ui.auto;
 
 import com.braimanm.ui.auto.components.WebComponent;
 import com.braimanm.ui.auto.pagecomponent.PageObject;

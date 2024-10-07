@@ -1,8 +1,9 @@
-package com.braimanm.ui.auto.test;
+package com.braimanm.ui.auto;
 
 import com.braimanm.datainstiller.data.Data;
 import com.braimanm.ui.auto.components.WebComponent;
 import com.braimanm.ui.auto.pagecomponent.PageObject;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -10,6 +11,7 @@ import java.io.InputStream;
 import java.net.URL;
 
 @SuppressWarnings("unused")
+@XStreamAlias("test-international")
 public class TestPageObjectUTF8 extends PageObject {
     @Data("City")
     private WebComponent cityEnglish;

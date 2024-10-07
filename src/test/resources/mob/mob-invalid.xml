@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<main-app>
+    <mobPage>
+        <option>Ask mom for help</option>
+        <name>Michael</name>
+        <answerText1 expected="Wrong Answer!"/>
+        <answerText2 expected="Haven't you heard about Testdroid Cloud?"/>
+    </mobPage>
+</main-app>

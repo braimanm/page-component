@@ -1,4 +1,4 @@
-package com.braimanm.ui.auto.test;
+package com.braimanm.ui.auto;
 
 import com.braimanm.ui.auto.data.DataTypes;
 import org.apache.commons.io.IOUtils;

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<com.braimanm.ui.auto.test.TestPageObjectUTF8>
+<test-international>
     <cityEnglish>City</cityEnglish>
     <cityFrench>Ville de Québec</cityFrench>
     <cityRussian>город</cityRussian>
     <cityChinese>鎮</cityChinese>
     <cityHindi>शहर</cityHindi>
     <cityJapanese>都市</cityJapanese>
-</com.braimanm.ui.auto.test.TestPageObjectUTF8>
+</test-international>

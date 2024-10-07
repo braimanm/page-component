@@ -131,4 +131,5 @@ public class AliasedData implements ComponentData {
     public String getFieldName() {
         return fieldName;
     }
+
 }

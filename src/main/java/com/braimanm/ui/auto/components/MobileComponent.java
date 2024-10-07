@@ -17,12 +17,11 @@ Copyright 2010-2024 Michael Braiman braimanm@gmail.com
 package com.braimanm.ui.auto.components;
 
 import com.braimanm.ui.auto.data.DataTypes;
-import com.braimanm.ui.auto.pagecomponent.PageComponent;
 import org.assertj.core.api.Assertions;
 import org.openqa.selenium.WebElement;
 
 @SuppressWarnings("unused")
-public class MobileComponent extends PageComponent {
+public class MobileComponent extends ScreenComponent {
 
     public MobileComponent() {
     }

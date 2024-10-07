@@ -1,4 +1,4 @@
-package com.braimanm.ui.auto.test;
+package com.braimanm.ui.auto;
 
 import com.braimanm.datainstiller.context.DataContext;
 import com.braimanm.ui.auto.data.DataTypes;

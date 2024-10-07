@@ -4,7 +4,7 @@
 
     <groupId>com.braimanm</groupId>
     <artifactId>page-component</artifactId>
-    <version>3.0.0</version>
+    <version>3.1.0</version>
     <packaging>jar</packaging>
     <name>page-component</name>
     <description>Selenium Page Object pattern extension to support composite components</description>
@@ -124,9 +124,9 @@
             <version>${commons-io.version}</version>
         </dependency>
         <dependency>
-            <groupId>io.github.classgraph</groupId>
-            <artifactId>classgraph</artifactId>
-            <version>${classgraph.version}</version>
+            <groupId>io.appium</groupId>
+            <artifactId>java-client</artifactId>
+            <version>9.3.0</version>
         </dependency>
     </dependencies>
 

@@ -1,4 +1,4 @@
-package com.braimanm.ui.auto.test.pageobjects;
+package com.braimanm.ui.auto.pageobjects;
 
 import com.braimanm.ui.auto.components.WebComponent;
 import com.braimanm.ui.auto.pagecomponent.PageObject;
@@ -7,7 +7,7 @@ import org.openqa.selenium.support.FindBy;
 
 @XStreamAlias("page3")
 @SuppressWarnings("NewClassNamingConvention")
-public class Page3 extends PageObject {
-    @FindBy(css = "web3")
-    public WebComponent web3;
+public class Page4 extends PageObject {
+    @FindBy( className = "web4")
+    public WebComponent web4;
 }

@@ -1,4 +1,4 @@
-package com.braimanm.ui.auto.test.pageobjects;
+package com.braimanm.ui.auto.pageobjects;
 
 import com.braimanm.ui.auto.components.WebComponent;
 import com.braimanm.ui.auto.pagecomponent.PageObject;
@@ -12,4 +12,6 @@ public class Page2 extends PageObject {
     public WebComponent comp3;
     @FindBy(xpath = "//page1")
     public Page1 page1;
+    public Page3 page3;
+
 }

@@ -1,4 +1,4 @@
-package com.braimanm.ui.auto.test.pageobjects;
+package com.braimanm.ui.auto.pageobjects;
 
 import com.braimanm.ui.auto.pagecomponent.PageObject;
 import org.openqa.selenium.support.FindBy;

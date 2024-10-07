@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<main-app>
+    <aliases>
+        <name>Michael</name>
+    </aliases>
+    <mobPage>
+        <option>Use Testdroid Cloud</option>
+        <name>${name}</name>
+        <answerText1 expected="You are right!"/>
+        <answerText2 expected="Congratulations ${name}!"/>
+    </mobPage>
+</main-app>

@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <page2>
+    <comp3>comp3</comp3>
     <page1>
         <comp1>comp1</comp1>
-        <page3>
-            <web3>web3</web3>
-        </page3>
+        <comp2>comp2</comp2>
         <page4>
             <web3>web3</web3>
+            <page4>
+                <web4>web4</web4>
+            </page4>
         </page4>
+        <page3>
+            <web3>web3</web3>
+            <page4>
+                <web4>web4</web4>
+            </page4>
+        </page3>
     </page1>
-    <comp3>comp3</comp3>
+    <page3>
+        <web3>web3</web3>
+        <page4/>
+    </page3>
 </page2>

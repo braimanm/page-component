@@ -1,4 +1,4 @@
-package com.braimanm.ui.auto.test;
+package com.braimanm.ui.auto;
 
 import com.braimanm.datainstiller.data.Data;
 import com.braimanm.datainstiller.data.DataPersistence;

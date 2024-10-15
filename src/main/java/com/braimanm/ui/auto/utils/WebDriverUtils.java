@@ -18,6 +18,7 @@ package com.braimanm.ui.auto.utils;
 
 import com.braimanm.ui.auto.context.PageComponentContext;
 import com.braimanm.ui.auto.pagecomponent.PageComponent;
+import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -38,6 +39,10 @@ public class WebDriverUtils {
             return PageComponentContext.getContext().getDriver();
         }
         return null;
+    }
+
+    public static boolean isAppiumDriver() {
+        return AppiumDriver.class.isAssignableFrom(getWebDriver().getClass());
     }
 
     public static JavascriptExecutor getJSExecutor() {
@@ -115,15 +120,8 @@ public class WebDriverUtils {
             return component.getCoreElement().isDisplayed();
         }
         List<WebElement> elList = getWebDriver().findElements(component.getLocator());
-        if (elList.isEmpty()) {
-            return false;
-        }
-        if (elList.get(0).isDisplayed()) {
-            scrollIntoCenter(elList.get(0));
-            return true;
-        } else {
-            return false;
-        }
+
+        return !elList.isEmpty() && elList.get(0).isDisplayed();
     }
 
     public static boolean isDisplayed(PageComponent component, long timeOut) {

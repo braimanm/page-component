@@ -26,10 +26,18 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
 public class ComponentMethodInterceptor {
     private final ElementLocator locator;
+    //Skip methods belonging to Object class and ComponentData interface
+    public static final Set<String> skippedMethods = new HashSet<>();
+    static {
+        skippedMethods.addAll(Arrays.stream(Object.class.getDeclaredMethods()).map(Method::getName).collect(Collectors.toList()));
+        skippedMethods.addAll(Arrays.stream(ComponentData.class.getMethods()).map(Method::getName).collect(Collectors.toList()));
+        skippedMethods.add("init");
+    }
 
     public ComponentMethodInterceptor(ElementLocator locator) {
         this.locator = locator;
@@ -43,14 +51,8 @@ public class ComponentMethodInterceptor {
 
         String methodName = method.getName();
 
-        //Skip methods belonging to Object class and ComponentData interface
-        Set<Method> skippedMethods = new HashSet<>();
-        skippedMethods.addAll(Arrays.asList(Object.class.getDeclaredMethods()));
-        skippedMethods.addAll(Arrays.asList(ComponentData.class.getMethods()));
-        for (Method dataMethod : skippedMethods) {
-            if (dataMethod.getName().equals(methodName) || methodName.equals("init")) {
-                return superMethod.invoke(self, args);
-            }
+        if (skippedMethods.contains(methodName)) {
+            return superMethod.invoke(self, args);
         }
 
         PageComponent pageComponent = (PageComponent) self;

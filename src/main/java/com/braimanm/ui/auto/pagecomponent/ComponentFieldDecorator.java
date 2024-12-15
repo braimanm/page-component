@@ -1,6 +1,5 @@
 package com.braimanm.ui.auto.pagecomponent;
 
-import com.braimanm.ui.auto.context.PageComponentContext;
 import com.braimanm.ui.auto.data.ComponentData;
 import com.braimanm.ui.auto.data.DataTypes;
 import com.braimanm.ui.auto.pagefactory.AppiumComponentBuilder;
@@ -162,7 +161,7 @@ public class ComponentFieldDecorator extends DefaultFieldDecorator {
                 }
                 po.ajaxIsUsed = page.ajaxIsUsed;
                 if (!field.isAnnotationPresent(InitPage.class)) {
-                    WebDriver driver = PageComponentContext.getContext().getDriver();
+                    WebDriver driver = page.getDriver();
                     if (AppiumDriver.class.isAssignableFrom(driver.getClass())) {
                         po.locator = new AppiumComponentBuilder(driver, field, page.getLocator()).buildBy();
                     } else {

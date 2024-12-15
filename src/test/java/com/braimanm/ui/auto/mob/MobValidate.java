@@ -18,7 +18,7 @@ public class MobValidate {
         UiAutomator2Options options = new UiAutomator2Options();
         options.setPlatformName("Android");
         options.setDeviceName("emulator-5554");
-        options.setApp(System.getProperty("user.dir") + "/src/test/java/com/braimanm/ui/auto/mob/bitbar-sample-app.apk");
+        options.setApp(System.getProperty("user.home") + "/src/test/java/com/braimanm/ui/auto/mob/bitbar-sample-app.apk");
         options.setNewCommandTimeout(Duration.ofSeconds(30));
         options.setFullReset(true);
         PageComponentContext.initContext(() -> new AndroidDriver(options));

@@ -21,32 +21,48 @@ import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Supplier;
 
 @SuppressWarnings({"unused", "UnusedReturnValue"})
 public class PageComponentContext extends DataContext {
     private static final Logger logger = LoggerFactory.getLogger(PageComponentContext.class);
-    private static final ThreadLocal<WebDriverContext> webDriverContextThreadLocal = new ThreadLocal<>();
+    private static final ThreadLocal<Map<String,WebDriverContext>> webDriverContextThreadLocal = ThreadLocal.withInitial(HashMap::new);
+    public static final String DEFAULT = "DEFAULT";
 
-    public static WebDriverContext getContext() {
-        return webDriverContextThreadLocal.get();
+    public static WebDriverContext getContext(String contextName) {
+        return webDriverContextThreadLocal.get().get(contextName);
     }
 
-    public static WebDriverContext initContext(Supplier<WebDriver> initDriver) {
-        if (getContext() == null) {
+    public static WebDriverContext getContext() {
+        return webDriverContextThreadLocal.get().get(DEFAULT);
+    }
+
+    public static WebDriverContext initContext(String contextName, Supplier<WebDriver> initDriver) {
+        if (getContext(contextName) == null) {
             WebDriverContext context = new WebDriverContext(initDriver.get());
-            webDriverContextThreadLocal.set(context);
+            context.contextName = contextName;
+            webDriverContextThreadLocal.get().put(contextName, context);
         } else {
             logger.warn("WebDriver already initialized. Please remove existing Context and create new one.");
         }
-        return getContext();
+        return getContext(contextName);
+    }
+
+    public static WebDriverContext initContext(Supplier<WebDriver> initDriver) {
+        return initContext(DEFAULT, initDriver);
+    }
+
+    public static void removeContext(String contextName) {
+        if (getContext(contextName) != null) {
+            getContext(contextName).quit();
+            webDriverContextThreadLocal.get().remove(contextName);
+        }
     }
 
     public static void removeContext() {
-        if (getContext() != null) {
-            getContext().quit();
-            webDriverContextThreadLocal.remove();
-        }
+        removeContext(DEFAULT);
     }
 
 }

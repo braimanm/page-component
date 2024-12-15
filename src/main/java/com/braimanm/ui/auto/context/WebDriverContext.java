@@ -7,6 +7,7 @@ public class WebDriverContext {
     private final WebDriver driver;
     private int elementLoadTimeout = 10; //in seconds
     private int pageLoadTimeOut = 10000; //in milliseconds
+    public String contextName;
 
     WebDriverContext(WebDriver driver) {
         this.driver = driver;

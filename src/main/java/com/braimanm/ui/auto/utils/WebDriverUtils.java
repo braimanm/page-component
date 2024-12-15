@@ -34,30 +34,43 @@ public class WebDriverUtils {
         } catch (InterruptedException ignored) {}
     }
 
-    public static WebDriver getWebDriver() {
-        if (PageComponentContext.getContext() != null) {
-            return PageComponentContext.getContext().getDriver();
+    public static WebDriver getWebDriver(String contextName) {
+        if (PageComponentContext.getContext(contextName) != null) {
+            return PageComponentContext.getContext(contextName).getDriver();
         }
         return null;
     }
 
+    public static WebDriver getWebDriver() {
+        return getWebDriver(PageComponentContext.DEFAULT);
+    }
+
+    public static boolean isAppiumDriver(String contextName) {
+        return AppiumDriver.class.isAssignableFrom(getWebDriver(contextName).getClass());
+    }
+
     public static boolean isAppiumDriver() {
-        return AppiumDriver.class.isAssignableFrom(getWebDriver().getClass());
+        return isAppiumDriver(PageComponentContext.DEFAULT);
+    }
+
+    public static JavascriptExecutor getJSExecutor(String contextName) {
+        return (JavascriptExecutor) getWebDriver(contextName);
     }
 
     public static JavascriptExecutor getJSExecutor() {
-        return (JavascriptExecutor) getWebDriver();
+        return getJSExecutor(PageComponentContext.DEFAULT);
     }
 
-    public static void waitForXHR(long timeout, long sleep, boolean debug) {
+
+    public static void waitForXHR(String contextName, long timeout, long sleep, boolean debug) {
         String script = "function reqCallBack(t){document.getElementsByTagName('body')[0].setAttribute('ajaxcounter',++ajaxCount)}function resCallback(t){document.getElementsByTagName('body')[0].setAttribute('ajaxcounter',--ajaxCount)}function intercept(){XMLHttpRequest.prototype.send=function(){if(reqCallBack(this),this.addEventListener){var t=this;this.addEventListener('readystatechange',function(){4===t.readyState&&resCallback(t)},!1)}else{var e=this.onreadystatechange;e&&(this.onreadystatechange=function(){4===t.readyState&&resCallbck(this),e()})}originalXhrSend.apply(this,arguments)}}var originalXhrSend=XMLHttpRequest.prototype.send,ajaxCount=0;document.getElementsByTagName('body')[0].hasAttribute('ajaxcounter')||intercept();";
-        getJSExecutor().executeScript(script);
+        getJSExecutor(contextName).executeScript(script);
 
         long to = System.currentTimeMillis() + timeout;
         boolean flag = true;
         if (debug) System.out.print("XHR: ");
         do {
-            List<WebElement> vals = getWebDriver().findElements(By.cssSelector("body"));
+            List<WebElement> vals = getWebDriver(contextName).findElements(By.cssSelector("body"));
             String val = (vals.isEmpty()) ? null :  vals.get(0).getAttribute("ajaxcounter");
             if (val == null) {
                 val = "-1";
@@ -75,63 +88,116 @@ public class WebDriverUtils {
         if (debug) System.out.println();
     }
 
+    public static void waitForXHR(long timeout, long sleep, boolean debug) {
+        waitForXHR(PageComponentContext.DEFAULT,timeout, sleep, debug);
+    }
+
+    private static long getElementTimeOut(String contextName) {
+        return PageComponentContext.getContext(contextName).getElementLoadTimeout();
+    }
+
     private static long getElementTimeOut() {
-        return PageComponentContext.getContext().getElementLoadTimeout();
+        return PageComponentContext.getContext(PageComponentContext.DEFAULT).getElementLoadTimeout();
+    }
+
+
+    public static void waitForXHR(String contextName) {
+        waitForXHR(contextName,getElementTimeOut() * 1000, 500, false);
     }
 
     public static void waitForXHR() {
         waitForXHR(getElementTimeOut() * 1000, 500, false);
     }
 
+    public static WebDriverWait getWebDriverWait(String contextName) {
+        return new WebDriverWait(getWebDriver(contextName), Duration.ofSeconds(getElementTimeOut()));
+    }
+
     public static WebDriverWait getWebDriverWait() {
-        return new WebDriverWait(getWebDriver(), Duration.ofSeconds(getElementTimeOut()));
+        return getWebDriverWait(PageComponentContext.DEFAULT);
+    }
+
+    public static void clickWebElementWithJS(String contextName,WebElement element) {
+        getJSExecutor(contextName).executeScript("arguments[0].click();", element);
     }
 
     public static void clickWebElementWithJS(WebElement element) {
-        getJSExecutor().executeScript("arguments[0].click();", element);
+        clickWebElementWithJS(PageComponentContext.DEFAULT, element);
+    }
+
+    public static void clickComponentWithJS(String contextName,PageComponent component) {
+        clickWebElementWithJS(contextName, component.getCoreElement());
     }
 
     public static void clickComponentWithJS(PageComponent component) {
-        clickWebElementWithJS(component.getCoreElement());
+        clickComponentWithJS(PageComponentContext.DEFAULT, component);
+    }
+
+    public static void scrollIntoView(String contextName, PageComponent component) {
+        scrollIntoView(contextName, component.getCoreElement());
     }
 
     public static void scrollIntoView(PageComponent component) {
-        scrollIntoView(component.getCoreElement());
+        scrollIntoView(PageComponentContext.DEFAULT, component.getCoreElement());
+    }
+
+    public static void scrollIntoView(String contextName,WebElement element) {
+        scrollIntoView(contextName, element, "true");
     }
 
     public static void scrollIntoView(WebElement element) {
-        scrollIntoView(element, "true");
+        scrollIntoView(PageComponentContext.DEFAULT, element, "true");
+    }
+
+    public static void scrollIntoView(String contextName, WebElement element, String options) {
+        getJSExecutor(contextName).executeScript("arguments[0].scrollIntoView(" + options + ");", element );
     }
 
     public static void scrollIntoView(WebElement element, String options) {
-        getJSExecutor().executeScript("arguments[0].scrollIntoView(" + options + ");", element );
+        getJSExecutor(PageComponentContext.DEFAULT).executeScript("arguments[0].scrollIntoView(" + options + ");", element );
+    }
+
+    public static void scrollIntoCenter(String contextName, WebElement element) {
+        scrollIntoView(contextName, element, "{block: 'center', inline: 'nearest'}");
     }
 
     public static void scrollIntoCenter(WebElement element) {
-        scrollIntoView(element, "{block: 'center', inline: 'nearest'}");
+        scrollIntoView(PageComponentContext.DEFAULT, element, "{block: 'center', inline: 'nearest'}");
+    }
+
+    public static void scrollIntoCenter(String contextName, PageComponent component) {
+        scrollIntoCenter(contextName, component.getCoreElement());
     }
 
     public static void scrollIntoCenter(PageComponent component) {
-        scrollIntoCenter(component.getCoreElement());
+        scrollIntoCenter(PageComponentContext.DEFAULT, component.getCoreElement());
     }
 
-    public static boolean isDisplayed(PageComponent component) {
+    public static boolean isDisplayed(String contextName, PageComponent component) {
         if (component.getLocator() == null) {
             return component.getCoreElement().isDisplayed();
         }
-        List<WebElement> elList = getWebDriver().findElements(component.getLocator());
+        List<WebElement> elList = getWebDriver(contextName).findElements(component.getLocator());
 
         return !elList.isEmpty() && elList.get(0).isDisplayed();
     }
 
-    public static boolean isDisplayed(PageComponent component, long timeOut) {
+    public static boolean isDisplayed(PageComponent component) {
+       return isDisplayed(PageComponentContext.DEFAULT, component);
+    }
+
+    public static boolean isDisplayed(String contextName, PageComponent component, long timeOut) {
         long to = System.currentTimeMillis() + timeOut;
         do {
-            if (isDisplayed(component)) {
+            if (isDisplayed(contextName, component)) {
                 return true;
             }
         } while (System.currentTimeMillis() < to);
         return false;
+    }
+
+    public static boolean isDisplayed(PageComponent component, long timeOut) {
+        return isDisplayed(PageComponentContext.DEFAULT, component, timeOut);
     }
 
 }

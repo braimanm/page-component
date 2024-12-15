@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -30,6 +31,10 @@ public class PageComponentContext extends DataContext {
     private static final Logger logger = LoggerFactory.getLogger(PageComponentContext.class);
     private static final ThreadLocal<Map<String,WebDriverContext>> webDriverContextThreadLocal = ThreadLocal.withInitial(HashMap::new);
     public static final String DEFAULT = "DEFAULT";
+
+    public static List<String> getAllContextNames() {
+        return List.copyOf(webDriverContextThreadLocal.get().keySet());
+    }
 
     public static WebDriverContext getContext(String contextName) {
         return webDriverContextThreadLocal.get().get(contextName);

@@ -13,20 +13,23 @@ Copyright 2010-2024 Michael Braiman braimanm@gmail.com
 
 package com.braimanm.ui.auto.conditions;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BiFunction;
 
 @SuppressWarnings("unused")
 public class WaitConditionPool {
-    private final long time_out;
-    private final Map<String, WaitCondition> conditions = new HashMap<>();
-    private List<String> fulfilledConditions;
+    private final long timeoutMillis;
+    private final long pollIntervalMillis;
+    private final Map<String, WaitCondition> conditions = new LinkedHashMap<>();
+    private final List<String> fulfilledConditions = new ArrayList<>();
 
-    public WaitConditionPool(long time_out) {
-        this.time_out = time_out;
+    public WaitConditionPool(long timeoutMillis) {
+        this(timeoutMillis, 300); // default 300ms poll interval
+    }
+
+    public WaitConditionPool(long timeoutMillis, long pollIntervalMillis) {
+        this.timeoutMillis = timeoutMillis;
+        this.pollIntervalMillis = pollIntervalMillis;
     }
 
     public WaitCondition add(String name, WaitCondition condition) {
@@ -35,15 +38,19 @@ public class WaitConditionPool {
     }
 
     public List<String> getFulfilledConditions() {
-        return fulfilledConditions;
+        return Collections.unmodifiableList(fulfilledConditions);
     }
 
     public boolean waitForFirst() {
-        return check (() -> {
-            for (String name : conditions.keySet()) {
-                if (conditions.get(name).evaluate()) {
-                    fulfilledConditions.add(name);
-                    return true ;
+        return waitUntil(() -> {
+            for (Map.Entry<String, WaitCondition> entry : conditions.entrySet()) {
+                try {
+                    if (entry.getValue().evaluate()) {
+                        fulfilledConditions.add(entry.getKey());
+                        return true;
+                    }
+                } catch (Exception ignored) {
+                    // ignored
                 }
             }
             return false;
@@ -51,37 +58,46 @@ public class WaitConditionPool {
     }
 
     public boolean waitForAll() {
-        return check(this::forAll);
+        return waitUntil(() -> {
+            for (Map.Entry<String, WaitCondition> entry : conditions.entrySet()) {
+                try {
+                    if (!fulfilledConditions.contains(entry.getKey()) && entry.getValue().evaluate()) {
+                        fulfilledConditions.add(entry.getKey());
+                    }
+                } catch (Exception ignored) {
+                    // ignored
+                }
+            }
+            return fulfilledConditions.size() == conditions.size();
+        });
     }
 
-    public boolean waitCustom(BiFunction<Map<String, WaitCondition>, List<String>, Boolean> check) {
-        return check(() -> check.apply(conditions, fulfilledConditions));
+    public boolean waitCustom(BiFunction<Map<String, WaitCondition>, List<String>, Boolean> customLogic) {
+        return waitUntil(() -> customLogic.apply(conditions, fulfilledConditions));
     }
 
-    private boolean check(WaitCondition condition ) {
-        fulfilledConditions = new ArrayList<>();
+    private boolean waitUntil(WaitCondition combinedCondition) {
         if (conditions.isEmpty()) {
             throw new EmptyConditionPoolException();
         }
-        long t_o = System.currentTimeMillis() + time_out;
-        do {
-            if (condition.evaluate()) return true;
-        } while (System.currentTimeMillis() < t_o);
-        return false;
-    }
 
-    private boolean forAll() {
-        for (String name : conditions.keySet()) {
-            if (!fulfilledConditions.contains(name)) {
-                if (conditions.get(name).evaluate()) {
-                    fulfilledConditions.add(name);
-                    if (fulfilledConditions.size() == conditions.size()) {
-                        return true;
-                    }
-                }
+        long endTime = System.currentTimeMillis() + timeoutMillis;
+
+        while (System.currentTimeMillis() < endTime) {
+            if (combinedCondition.evaluate()) {
+                return true;
             }
+            sleep(pollIntervalMillis);
         }
         return false;
     }
 
+    private void sleep(long millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Waiting was interrupted", e);
+        }
+    }
 }

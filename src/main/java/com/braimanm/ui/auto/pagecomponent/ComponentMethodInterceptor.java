@@ -24,33 +24,62 @@ import org.openqa.selenium.support.pagefactory.ElementLocator;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+/**
+ * Intercepts method calls on PageComponent proxies to ensure the backing WebElement is fresh.
+ * <p>
+ * This interceptor checks whether the underlying WebElement is stale or has changed since the last interaction.
+ * If so, it reinitializes the component with the latest resolved element from the associated {@link ElementLocator}.
+ * <p>
+ * In the event of a {@link StaleElementReferenceException} during the method call itself, the interceptor will
+ * automatically retry once after reinitializing the component, thus preventing flaky test failures.
+ */
 @SuppressWarnings("unused")
 public class ComponentMethodInterceptor {
 
     private final ElementLocator locator;
 
-    // Methods to skip (Object class + ComponentData interface + custom exclusions)
-    private static final Set<String> skippedMethods = new HashSet<>();
+    /**
+     * Set of method names that should be skipped (not intercepted).
+     * Includes all methods from Object, ComponentData, and "init".
+     */
+    private static final Set<String> skippedMethods = Stream.concat(
+                    Arrays.stream(Object.class.getDeclaredMethods()),
+                    Arrays.stream(ComponentData.class.getMethods())
+            )
+            .map(Method::getName)
+            .collect(Collectors.toCollection(HashSet::new));
 
     static {
-        skippedMethods.addAll(Arrays.stream(Object.class.getDeclaredMethods())
-                .map(Method::getName).collect(Collectors.toSet()));
-
-        skippedMethods.addAll(Arrays.stream(ComponentData.class.getMethods())
-                .map(Method::getName).collect(Collectors.toSet()));
-
+        // Add any explicitly skipped method names
         skippedMethods.add("init");
     }
 
+    /**
+     * Constructs a new interceptor for a PageComponent proxy.
+     *
+     * @param locator the {@link ElementLocator} used to resolve the WebElement dynamically
+     */
     public ComponentMethodInterceptor(ElementLocator locator) {
         this.locator = locator;
     }
 
+    /**
+     * Intercepts method calls on a PageComponent proxy.
+     * <p>
+     * If the WebElement is stale, null, or has changed, the component is re-initialized.
+     * If a {@link StaleElementReferenceException} occurs during method execution, it retries once.
+     *
+     * @param self         the proxy instance
+     * @param method       the method being called
+     * @param args         the arguments passed to the method
+     * @param superMethod  the actual method to invoke on the proxy
+     * @return the result of the method invocation
+     * @throws Throwable the original exception if invocation fails
+     */
     @RuntimeType
     public Object intercept(@This Object self,
                             @Origin Method method,
@@ -65,33 +94,70 @@ public class ComponentMethodInterceptor {
 
         PageComponent pageComponent = (PageComponent) self;
         WebElement currentElement = pageComponent.coreElement;
-        WebElement resolvedElement = locator.findElement();
-
-        boolean elementIsStale = false;
+        WebElement resolvedElement;
 
         try {
-            if (currentElement != null) {
-                currentElement.isDisplayed(); // triggers StaleElementReferenceException if detached
+            resolvedElement = locator.findElement();
+
+            boolean elementIsStale = false;
+            try {
+                if (currentElement != null) {
+                    currentElement.isDisplayed(); // triggers if stale
+                }
+            } catch (StaleElementReferenceException e) {
+                elementIsStale = true;
             }
-        } catch (StaleElementReferenceException e) {
-            elementIsStale = true;
-        }
 
-        if (currentElement == null || elementIsStale || !currentElement.equals(resolvedElement)) {
-            pageComponent.initComponent(resolvedElement);
-        }
+            if (currentElement == null || elementIsStale || !Objects.equals(currentElement, resolvedElement)) {
+                pageComponent.initComponent(resolvedElement);
+            }
 
-        try {
             return superMethod.invoke(self, args);
+
         } catch (InvocationTargetException e) {
             Throwable cause = e.getCause();
-            if (cause instanceof RuntimeException) {
-                throw (RuntimeException) cause;
-            } else if (cause instanceof Error) {
-                throw (Error) cause;
-            } else {
-                throw new RuntimeException("Unexpected checked exception thrown by proxy method", cause);
+
+            if (cause instanceof StaleElementReferenceException) {
+                // Retry once after reinitializing
+                resolvedElement = locator.findElement();
+                pageComponent.initComponent(resolvedElement);
+                try {
+                    return superMethod.invoke(self, args);
+                } catch (InvocationTargetException retryEx) {
+                    throw unwrapInvocationException(retryEx);
+                }
             }
+
+            throw unwrapInvocationException(e);
+
+        } catch (StaleElementReferenceException directStale) {
+            // If staleness occurs during findElement or display check
+            resolvedElement = locator.findElement();
+            pageComponent.initComponent(resolvedElement);
+            try {
+                return superMethod.invoke(self, args);
+            } catch (InvocationTargetException retryEx) {
+                throw unwrapInvocationException(retryEx);
+            }
+        }
+    }
+
+    /**
+     * Unwraps the cause of an {@link InvocationTargetException} and rethrows it in its proper form.
+     *
+     * @param e the wrapped exception
+     * @return the original runtime exception
+     * @throws Error if the cause is an error
+     * @throws RuntimeException if the cause is a checked exception
+     */
+    private RuntimeException unwrapInvocationException(InvocationTargetException e) {
+        Throwable cause = e.getCause();
+        if (cause instanceof RuntimeException) {
+            return (RuntimeException) cause;
+        } else if (cause instanceof Error) {
+            throw (Error) cause;
+        } else {
+            return new RuntimeException("Unexpected checked exception from proxy", cause);
         }
     }
 }
